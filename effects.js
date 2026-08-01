@@ -1,10 +1,34 @@
 /**
- * Aether Glassmorphic Web Music Player - Advanced Visual Effects & Smooth UI Engine
+ * Aether Glassmorphic Web Music Player - Advanced Audio Wave Spectrum & Smooth UI Engine
  * (c) 2026 Synx Music Studio. All rights reserved.
  */
 
-// 1. DYNAMIC AUDIO VISUALIZER ENGINE (CANVAS WAVE & FREQUENCY SPECTRUM)
+// 1. DYNAMIC REAL-TIME AUDIO FREQUENCY WAVE VISUALIZER ENGINE
 let visualizerAnimationId = null;
+let audioCtx = null;
+let analyserNode = null;
+let sourceNode = null;
+let frequencyData = null;
+
+function setupWebAudioAPI() {
+    try {
+        const audio = document.getElementById('audio-player');
+        if (!audio || audioCtx) return;
+
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        analyserNode = audioCtx.createAnalyser();
+        analyserNode.fftSize = 64;
+        analyserNode.smoothingTimeConstant = 0.8;
+
+        frequencyData = new Uint8Array(analyserNode.frequencyBinCount);
+
+        sourceNode = audioCtx.createMediaElementSource(audio);
+        sourceNode.connect(analyserNode);
+        analyserNode.connect(audioCtx.destination);
+    } catch (e) {
+        // Fallback to dynamic amplitude simulation if CORS or WebAudio constrained
+    }
+}
 
 function initAudioVisualizer() {
     const canvas = document.getElementById('visualizer');
@@ -19,24 +43,42 @@ function initAudioVisualizer() {
         ctx.clearRect(0, 0, width, height);
 
         const isPlaying = window.isPlaying || false;
+        const audio = document.getElementById('audio-player');
+        const currentVol = (audio && !audio.muted) ? audio.volume : 0.8;
 
-        // Draw Multi-layered Glowing Waves
+        if (isPlaying && audioCtx && audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
+
+        // Fetch real frequency data if available
+        if (analyserNode && frequencyData && isPlaying) {
+            analyserNode.getByteFrequencyData(frequencyData);
+        }
+
         const barCount = 32;
         const barWidth = (width / barCount) - 3;
 
         for (let i = 0; i < barCount; i++) {
-            let barHeight = 4;
+            let barHeight = 3; // Flat horizontal line when quiet or paused
+
             if (isPlaying) {
-                // Dynamic Sine Wave Frequency Modulation
-                const freq1 = Math.sin(phase + i * 0.25) * 0.5 + 0.5;
-                const freq2 = Math.cos(phase * 1.5 + i * 0.4) * 0.5 + 0.5;
-                barHeight = Math.max(6, (freq1 * 0.6 + freq2 * 0.4) * (height * 0.85));
+                if (frequencyData && frequencyData[i] !== undefined && frequencyData[i] > 0) {
+                    // Real-time audio frequency data (Loud = High Bars, Quiet = Low/Flat Bars)
+                    const val = frequencyData[i] / 255;
+                    barHeight = Math.max(4, val * height * 0.9 * currentVol);
+                } else {
+                    // Dynamic Sine Frequency Wave simulation fallback
+                    const freq1 = Math.sin(phase + i * 0.28) * 0.5 + 0.5;
+                    const freq2 = Math.cos(phase * 1.6 + i * 0.45) * 0.5 + 0.5;
+                    const amplitude = (freq1 * 0.65 + freq2 * 0.35) * currentVol;
+                    barHeight = Math.max(4, amplitude * (height * 0.85));
+                }
             }
 
             const x = i * (barWidth + 3);
             const y = (height - barHeight) / 2;
 
-            // Gradient fill with vibrant cyan to neon purple
+            // Vibrant Neon Gradient Fill
             const gradient = ctx.createLinearGradient(0, y, 0, y + barHeight);
             gradient.addColorStop(0, '#ec4899');
             gradient.addColorStop(0.5, '#a855f7');
@@ -53,7 +95,7 @@ function initAudioVisualizer() {
         }
 
         if (isPlaying) {
-            phase += 0.08;
+            phase += 0.09;
         }
 
         visualizerAnimationId = requestAnimationFrame(drawWave);
@@ -144,4 +186,11 @@ document.addEventListener('DOMContentLoaded', () => {
     initAudioVisualizer();
     init3DTiltEffect();
     initParticleBackground();
+
+    const audio = document.getElementById('audio-player');
+    if (audio) {
+        audio.addEventListener('play', () => {
+            setupWebAudioAPI();
+        });
+    }
 });

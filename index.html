@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aether | Web Music Player (Karaoke Precision Lyrics & Offset Sync)</title>
+    <title>Aether | Web Music Player (Cover Top + Big Karaoke Lyrics Bottom Layout)</title>
     <!-- Tailwind CSS v3 CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons CDN -->
@@ -158,14 +158,14 @@
         .lyric-line {
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             opacity: 0.35;
-            transform: scale(0.95);
+            transform: scale(0.96);
         }
         .lyric-line.active {
             opacity: 1;
             transform: scale(1.08);
             color: #06b6d4;
             font-weight: 800;
-            text-shadow: 0 0 16px rgba(6, 182, 212, 0.6);
+            text-shadow: 0 0 18px rgba(6, 182, 212, 0.7);
         }
 
         ::-webkit-scrollbar {
@@ -260,9 +260,6 @@
                         <i class="fa-solid fa-heart text-base text-pink-400"></i>
                         <span id="fav-badge-count" class="absolute top-1 right-1 w-4 h-4 rounded-full bg-pink-500 text-white text-[9px] font-bold flex items-center justify-center">0</span>
                     </button>
-                    <button onclick="toggleLyricsView(); moveVerticalLiquidPill(this);" id="side-nav-lyrics" class="side-nav-btn text-slate-400 hover:text-cyan-400" title="Lời Bài Hát (Lyrics Karaoke)">
-                        <i class="fa-solid fa-quote-left text-base text-cyan-400"></i>
-                    </button>
                     <button onclick="setFilterView('playlists'); moveVerticalLiquidPill(this);" id="side-nav-playlist" class="side-nav-btn text-slate-400 hover:text-purple-400" title="Danh Sách Playlists Cá Nhân">
                         <i class="fa-solid fa-layer-group text-base text-purple-400"></i>
                     </button>
@@ -278,11 +275,11 @@
             </div>
 
             <!-- Left Inner Container -->
-            <div class="flex-1 flex flex-col justify-between overflow-hidden py-1 pr-1 space-y-3">
+            <div class="flex-1 flex flex-col justify-between overflow-hidden py-1 pr-1 space-y-2.5">
                 
                 <!-- Next Composition Section -->
                 <div>
-                    <div class="flex items-center justify-between mb-2 px-1">
+                    <div class="flex items-center justify-between mb-1.5 px-1">
                         <h3 class="text-sm font-bold text-slate-200 tracking-tight">Next composition</h3>
                         <button onclick="openCreatePlaylistModal()" class="w-6 h-6 rounded-full bg-white/10 text-slate-300 hover:text-white hover:bg-white/20 flex items-center justify-center transition" title="Tạo Playlist Mới">
                             <i class="fa-solid fa-plus text-xs"></i>
@@ -291,15 +288,15 @@
 
                     <!-- Composition Cards Carousel -->
                     <div class="flex gap-2.5 overflow-x-auto pb-1">
-                        <div onclick="playNextInQueue(1)" class="w-40 shrink-0 p-2.5 rounded-2xl dark-card dark-card-interactive cursor-pointer flex items-center gap-2.5">
-                            <img id="next-thumb-1" src="https://i.ytimg.com/vi/4NRXx6U8ABQ/hqdefault.jpg" class="w-10 h-10 rounded-xl object-cover">
+                        <div onclick="playNextInQueue(1)" class="w-40 shrink-0 p-2 rounded-2xl dark-card dark-card-interactive cursor-pointer flex items-center gap-2.5">
+                            <img id="next-thumb-1" src="https://i.ytimg.com/vi/4NRXx6U8ABQ/hqdefault.jpg" class="w-9 h-9 rounded-xl object-cover">
                             <div class="overflow-hidden">
                                 <h4 id="next-title-1" class="text-xs font-bold truncate text-slate-100">Blinding Lights</h4>
                                 <p id="next-artist-1" class="text-[10px] text-slate-400 truncate">The Weeknd</p>
                             </div>
                         </div>
-                        <div onclick="playNextInQueue(2)" class="w-40 shrink-0 p-2.5 rounded-2xl dark-card dark-card-interactive cursor-pointer flex items-center gap-2.5">
-                            <img id="next-thumb-2" src="https://i.ytimg.com/vi/H5v3kku4y6Q/hqdefault.jpg" class="w-10 h-10 rounded-xl object-cover">
+                        <div onclick="playNextInQueue(2)" class="w-40 shrink-0 p-2 rounded-2xl dark-card dark-card-interactive cursor-pointer flex items-center gap-2.5">
+                            <img id="next-thumb-2" src="https://i.ytimg.com/vi/H5v3kku4y6Q/hqdefault.jpg" class="w-9 h-9 rounded-xl object-cover">
                             <div class="overflow-hidden">
                                 <h4 id="next-title-2" class="text-xs font-bold truncate text-slate-100">As It Was</h4>
                                 <p id="next-artist-2" class="text-[10px] text-slate-400 truncate">Harry Styles</p>
@@ -308,68 +305,68 @@
                     </div>
                 </div>
 
-                <!-- Main Floating Now Playing Card -->
-                <div class="flex-1 dark-card rounded-3xl p-5 flex flex-col justify-between relative overflow-hidden group shadow-2xl border border-white/10">
+                <!-- Main Floating Now Playing Card (COVER TOP + LYRICS BOTTOM) -->
+                <div class="flex-1 dark-card rounded-3xl p-4 flex flex-col justify-between relative overflow-hidden group shadow-2xl border border-white/10">
                     
-                    <div class="flex items-center justify-between z-10 mb-2">
-                        <span id="stream-type-badge" class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-[10px] font-semibold backdrop-blur-md flex items-center gap-1.5">
+                    <div class="flex items-center justify-between z-10 mb-1 shrink-0">
+                        <span id="stream-type-badge" class="px-2 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-[10px] font-semibold backdrop-blur-md flex items-center gap-1.5">
                             <span id="status-badge-dot" class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
                             <span id="status-badge-text">⚡ Ready - Click Play to Start</span>
                         </span>
                         <div class="flex items-center gap-2">
-                            <button onclick="toggleLyricsView()" id="btn-lyrics-toggle" class="text-slate-400 hover:text-cyan-300 text-xs transition px-2 py-0.5 rounded-full bg-white/5 border border-white/10" title="Hiện/Ẩn Lời Bài Hát">
-                                <i class="fa-solid fa-microphone mr-1"></i> Lyrics
-                            </button>
                             <button onclick="toggleFavoriteCurrent()" id="btn-fav" class="text-slate-400 hover:text-pink-400 text-base transition">
                                 <i class="fa-regular fa-heart" id="icon-fav"></i>
                             </button>
                         </div>
                     </div>
 
-                    <!-- Album Cover / Visualizer View -->
-                    <div id="player-view-artwork" class="my-auto py-2 flex flex-col items-center justify-center relative">
-                        <div class="relative w-48 h-48 lg:w-52 lg:h-52 rounded-2xl overflow-hidden shadow-2xl border border-white/15 group-hover:scale-[1.02] transition-transform duration-300">
+                    <!-- UPPER HALF: Album Cover Art & Visualizer Wave -->
+                    <div id="player-view-artwork" class="py-1 flex flex-col items-center justify-center relative shrink-0">
+                        <div class="relative w-32 h-32 lg:w-36 lg:h-36 rounded-2xl overflow-hidden shadow-2xl border border-white/15 group-hover:scale-[1.02] transition-transform duration-300">
                             <img id="album-cover-img" 
                                  src="https://i.ytimg.com/vi/34Na4j8AVgA/hqdefault.jpg" 
                                  alt="Official Cover Artwork" 
                                  class="w-full h-full object-cover">
                         </div>
 
-                        <div class="w-full h-10 mt-3 flex items-center justify-center">
+                        <div class="w-full h-6 mt-1 flex items-center justify-center">
                             <canvas id="visualizer" class="w-full h-full rounded-xl"></canvas>
                         </div>
                     </div>
 
-                    <!-- Synced Karaoke Lyrics Overlay Container & Precision Offset Controls -->
-                    <div id="player-view-lyrics" class="my-auto py-1 h-64 w-full flex flex-col items-center justify-between relative hidden overflow-hidden">
+                    <!-- LOWER HALF: Synced Karaoke Lyrics (ALWAYS SHOWN BELOW COVER ART) -->
+                    <div id="player-view-lyrics" class="flex-1 w-full flex flex-col items-center justify-between relative overflow-hidden my-1 py-1">
                         
                         <!-- Lyric Sync Precision Calibration Bar -->
-                        <div class="w-full flex items-center justify-between px-3 py-1 bg-white/5 border border-white/10 rounded-xl mb-1 text-[11px] shrink-0">
-                            <span class="text-cyan-400 font-bold flex items-center gap-1"><i class="fa-solid fa-sliders"></i> Sync Karaoke</span>
-                            <div class="flex items-center gap-1.5">
-                                <button onclick="adjustLyricOffset(-0.5)" class="px-2 py-0.5 rounded-lg bg-white/10 hover:bg-white/20 text-slate-300 font-mono" title="Chạy sớm hơn 0.5s">-0.5s</button>
-                                <span id="lyric-offset-badge" class="font-mono text-purple-300 font-bold px-1.5">Offset: 0.0s</span>
-                                <button onclick="adjustLyricOffset(0.5)" class="px-2 py-0.5 rounded-lg bg-white/10 hover:bg-white/20 text-slate-300 font-mono" title="Chạy trễ hơn 0.5s">+0.5s</button>
-                                <button onclick="resetLyricOffset()" class="px-1.5 py-0.5 text-slate-400 hover:text-white" title="Reset về 0.0s"><i class="fa-solid fa-rotate-left text-[10px]"></i></button>
+                        <div class="w-full flex items-center justify-between px-2.5 py-1 bg-white/5 border border-white/10 rounded-xl mb-1 text-[11px] shrink-0">
+                            <span class="text-cyan-400 font-bold flex items-center gap-1 text-[10px]"><i class="fa-solid fa-microphone"></i> Lyrics Karaoke</span>
+                            <div class="flex items-center gap-1">
+                                <button onclick="adjustLyricOffset(-1.0)" class="px-1.5 py-0.5 rounded-md bg-white/10 hover:bg-white/20 text-slate-300 font-mono text-[10px]" title="-1s">-1s</button>
+                                <button onclick="adjustLyricOffset(-0.5)" class="px-1.5 py-0.5 rounded-md bg-white/10 hover:bg-white/20 text-slate-300 font-mono text-[10px]" title="-0.5s">-0.5s</button>
+                                <span id="lyric-offset-badge" class="font-mono text-cyan-300 font-bold px-1 text-[10px]">0.0s</span>
+                                <button onclick="adjustLyricOffset(0.5)" class="px-1.5 py-0.5 rounded-md bg-white/10 hover:bg-white/20 text-slate-300 font-mono text-[10px]" title="+0.5s">+0.5s</button>
+                                <button onclick="adjustLyricOffset(1.0)" class="px-1.5 py-0.5 rounded-md bg-white/10 hover:bg-white/20 text-slate-300 font-mono text-[10px]" title="+1s">+1s</button>
+                                <button onclick="resetLyricOffset()" class="px-1 text-slate-400 hover:text-white" title="Reset"><i class="fa-solid fa-rotate-left text-[9px]"></i></button>
                             </div>
                         </div>
 
-                        <div id="lyrics-scroll-container" class="w-full flex-1 overflow-y-auto px-4 py-4 text-center space-y-3 scroll-smooth">
-                            <p class="text-xs text-slate-400 italic">Đang tải lời bài hát chuẩn xác...</p>
+                        <!-- Big Readable Lyrics Scroll Container -->
+                        <div id="lyrics-scroll-container" class="w-full flex-1 overflow-y-auto px-2 py-2 text-center space-y-2.5 scroll-smooth">
+                            <p class="text-sm text-slate-400 italic">Đang tải lời bài hát chuẩn xác...</p>
                         </div>
                     </div>
 
-                    <div class="text-center mt-1 z-10">
-                        <h2 id="current-track-title" class="text-lg font-bold text-slate-100 truncate">Starboy</h2>
+                    <div class="text-center mt-0.5 z-10 shrink-0">
+                        <h2 id="current-track-title" class="text-base sm:text-lg font-bold text-slate-100 truncate">Starboy</h2>
                         <p id="current-track-artist" class="text-xs text-purple-300 font-medium mt-0.5 truncate">The Weeknd ft. Daft Punk</p>
                     </div>
 
-                    <div class="flex flex-col items-center gap-2 mt-3 z-10">
+                    <div class="flex flex-col items-center gap-1.5 mt-2 z-10 shrink-0">
                         <div class="flex items-center gap-5">
                             <button onclick="toggleShuffle()" id="btn-shuffle" class="text-slate-400 hover:text-purple-400 text-xs"><i class="fa-solid fa-shuffle"></i></button>
                             <button onclick="playPrevTrack()" class="text-slate-200 hover:text-white text-base"><i class="fa-solid fa-backward-step"></i></button>
                             
-                            <button onclick="togglePlayPause()" id="btn-play-pause" class="w-12 h-12 rounded-full bg-white text-slate-950 flex items-center justify-center text-lg shadow-[0_0_20px_rgba(255,255,255,0.4)] hover:scale-105 active:scale-95 transition-all">
+                            <button onclick="togglePlayPause()" id="btn-play-pause" class="w-11 h-11 rounded-full bg-white text-slate-950 flex items-center justify-center text-lg shadow-[0_0_20px_rgba(255,255,255,0.4)] hover:scale-105 active:scale-95 transition-all">
                                 <i class="fa-solid fa-play ml-0.5" id="icon-play-pause"></i>
                             </button>
 
@@ -377,7 +374,7 @@
                             <button onclick="toggleRepeat()" id="btn-repeat" class="text-slate-400 hover:text-purple-400 text-xs"><i class="fa-solid fa-repeat"></i></button>
                         </div>
 
-                        <div class="w-full flex items-center gap-2 px-1 mt-1">
+                        <div class="w-full flex items-center gap-2 px-1 mt-0.5">
                             <span id="time-current" class="text-[10px] font-mono text-slate-400 w-8 text-right">0:00</span>
                             <input type="range" id="progress-bar" min="0" max="100" value="0" step="0.1" 
                                    oninput="onScrubInput(this.value)" 
@@ -424,9 +421,9 @@
             <!-- Hero Banner Card -->
             <div class="relative w-full h-40 rounded-3xl overflow-hidden mb-4 bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-950 p-7 flex items-center justify-between text-white shadow-xl shrink-0">
                 <div class="z-10 max-w-[65%]">
-                    <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold uppercase tracking-wider backdrop-blur-md">🎤 Karaoke Precision Sync & Calibration</span>
+                    <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold uppercase tracking-wider backdrop-blur-md">🎤 Cover Top + Big Lyrics Bottom Layout</span>
                     <h2 class="text-3xl sm:text-4xl font-black tracking-tighter mt-1 text-gradient">R&B NOW</h2>
-                    <p class="text-xs sm:text-sm text-slate-300 mt-1 line-clamp-2">Lời bài hát karaoke chạy khớp từng giây & Cho phép vi chỉnh +0.5s / -0.5s cực kỳ tiện lợi!</p>
+                    <p class="text-xs sm:text-sm text-slate-300 mt-1 line-clamp-2">Ảnh bìa phía trên, Lời bài hát cỡ to phía dưới & Vi chỉnh độ trễ -1s / +1s mượt mà!</p>
                 </div>
                 <div class="relative w-48 h-full overflow-hidden shrink-0 flex items-center justify-center">
                     <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=500&auto=format&fit=crop" class="w-full h-full object-cover rounded-2xl opacity-90">
@@ -804,7 +801,6 @@
         let isRepeat = false;
         let isMuted = false;
         let previousVolume = 0.8;
-        let isLyricsViewActive = false;
         let activePlayerMode = 'html5'; 
         let progressInterval = null;
         let lyricOffset = 0.0; // Global lyric sync offset in seconds
@@ -1225,24 +1221,7 @@
             }
         }
 
-        // SYNCED KARAOKE LYRICS ENGINE (WITH OFFSET FINE-TUNING CALIBRATION)
-        function toggleLyricsView() {
-            isLyricsViewActive = !isLyricsViewActive;
-            const viewArtwork = document.getElementById('player-view-artwork');
-            const viewLyrics = document.getElementById('player-view-lyrics');
-            const btnToggle = document.getElementById('btn-lyrics-toggle');
-
-            if (isLyricsViewActive) {
-                if (viewArtwork) viewArtwork.classList.add('hidden');
-                if (viewLyrics) viewLyrics.classList.remove('hidden');
-                if (btnToggle) btnToggle.className = "text-cyan-300 font-bold text-xs transition px-2 py-0.5 rounded-full bg-cyan-500/20 border border-cyan-500/40 shadow-sm";
-            } else {
-                if (viewArtwork) viewArtwork.classList.remove('hidden');
-                if (viewLyrics) viewLyrics.classList.add('hidden');
-                if (btnToggle) btnToggle.className = "text-slate-400 hover:text-cyan-300 text-xs transition px-2 py-0.5 rounded-full bg-white/5 border border-white/10";
-            }
-        }
-
+        // SYNCED KARAOKE LYRICS ENGINE (WITH LARGE FONT & MULTI-STEP OFFSET CALIBRATION)
         function adjustLyricOffset(delta) {
             lyricOffset += delta;
             updateLyricOffsetBadge();
@@ -1261,7 +1240,7 @@
             const badge = document.getElementById('lyric-offset-badge');
             if (badge) {
                 const sign = lyricOffset > 0 ? '+' : '';
-                badge.textContent = `Offset: ${sign}${lyricOffset.toFixed(1)}s`;
+                badge.textContent = `${sign}${lyricOffset.toFixed(1)}s`;
             }
         }
 
@@ -1282,7 +1261,7 @@
             const container = document.getElementById('lyrics-scroll-container');
             if (!container) return;
 
-            container.innerHTML = `<p class="text-xs text-slate-400 italic animate-pulse">Đang tìm lời bài hát chuẩn xác cho "${track.title}"...</p>`;
+            container.innerHTML = `<p class="text-sm text-slate-400 italic animate-pulse">Đang tìm lời bài hát chuẩn xác cho "${track.title}"...</p>`;
             currentLyricsList = [];
             activeLyricIndex = -1;
             lyricOffset = 0.0;
@@ -1376,7 +1355,7 @@
             if (!container) return;
 
             if (currentLyricsList.length === 0) {
-                container.innerHTML = `<p class="text-xs text-slate-400 italic">Không tìm thấy lời bài hát.</p>`;
+                container.innerHTML = `<p class="text-sm text-slate-400 italic">Không tìm thấy lời bài hát.</p>`;
                 return;
             }
 
@@ -1384,7 +1363,7 @@
             currentLyricsList.forEach((lyric, idx) => {
                 const p = document.createElement('p');
                 p.id = `lyric-line-${idx}`;
-                p.className = `lyric-line text-xs font-semibold py-1.5 px-3 cursor-pointer rounded-xl hover:text-cyan-300 hover:bg-white/5`;
+                p.className = `lyric-line text-sm sm:text-base font-semibold py-1.5 px-3 cursor-pointer rounded-xl hover:text-cyan-300 hover:bg-white/5 transition-all`;
                 p.textContent = lyric.text;
                 p.onclick = () => {
                     if (activePlayerMode === 'yt_iframe' && ytPlayerReady && ytPlayer && ytPlayer.seekTo) {
