@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aether | Web Music Player (Multi-Provider YouTube + Spotify + Google Lyric Engine)</title>
+    <title>Aether | Web Music Player (Direct FLAC / GitHub Release Support)</title>
     <!-- Tailwind CSS v3 CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons CDN -->
@@ -162,7 +162,7 @@
         }
         .lyric-line.active {
             opacity: 1;
-            transform: scale(1.08);
+            transform: scale(1.06);
             color: #06b6d4;
             font-weight: 800;
             text-shadow: 0 0 18px rgba(6, 182, 212, 0.7);
@@ -289,17 +289,17 @@
                     <!-- Composition Cards Carousel -->
                     <div class="flex gap-2.5 overflow-x-auto pb-1">
                         <div onclick="playNextInQueue(1)" class="w-40 shrink-0 p-2 rounded-2xl dark-card dark-card-interactive cursor-pointer flex items-center gap-2.5">
-                            <img id="next-thumb-1" src="https://i.ytimg.com/vi/4NRXx6U8ABQ/hqdefault.jpg" class="w-9 h-9 rounded-xl object-cover">
+                            <img id="next-thumb-1" src="https://i.ytimg.com/vi/kY3j_j4Q0k4/hqdefault.jpg" class="w-9 h-9 rounded-xl object-cover">
                             <div class="overflow-hidden">
-                                <h4 id="next-title-1" class="text-xs font-bold truncate text-slate-100">Blinding Lights</h4>
-                                <p id="next-artist-1" class="text-[10px] text-slate-400 truncate">The Weeknd</p>
+                                <h4 id="next-title-1" class="text-xs font-bold truncate text-slate-100">Mắt Môi Tay Chân</h4>
+                                <p id="next-artist-1" class="text-[10px] text-slate-400 truncate">MCK</p>
                             </div>
                         </div>
                         <div onclick="playNextInQueue(2)" class="w-40 shrink-0 p-2 rounded-2xl dark-card dark-card-interactive cursor-pointer flex items-center gap-2.5">
-                            <img id="next-thumb-2" src="https://i.ytimg.com/vi/H5v3kku4y6Q/hqdefault.jpg" class="w-9 h-9 rounded-xl object-cover">
+                            <img id="next-thumb-2" src="https://i.ytimg.com/vi/4NRXx6U8ABQ/hqdefault.jpg" class="w-9 h-9 rounded-xl object-cover">
                             <div class="overflow-hidden">
-                                <h4 id="next-title-2" class="text-xs font-bold truncate text-slate-100">As It Was</h4>
-                                <p id="next-artist-2" class="text-[10px] text-slate-400 truncate">Harry Styles</p>
+                                <h4 id="next-title-2" class="text-xs font-bold truncate text-slate-100">Blinding Lights</h4>
+                                <p id="next-artist-2" class="text-[10px] text-slate-400 truncate">The Weeknd</p>
                             </div>
                         </div>
                     </div>
@@ -311,7 +311,7 @@
                     <div class="flex items-center justify-between z-10 mb-1 shrink-0">
                         <span id="stream-type-badge" class="px-2 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-[10px] font-semibold backdrop-blur-md flex items-center gap-1.5">
                             <span id="status-badge-dot" class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
-                            <span id="status-badge-text">⚡ Multi-Provider Lyric Engine Active</span>
+                            <span id="status-badge-text">⚡ Direct FLAC / Archive.org Stream</span>
                         </span>
                         <div class="flex items-center gap-2">
                             <button onclick="toggleFavoriteCurrent()" id="btn-fav" class="text-slate-400 hover:text-pink-400 text-base transition">
@@ -324,7 +324,7 @@
                     <div id="player-view-artwork" class="py-1 flex flex-col items-center justify-center relative shrink-0">
                         <div class="relative w-32 h-32 lg:w-36 lg:h-36 rounded-2xl overflow-hidden shadow-2xl border border-white/15 group-hover:scale-[1.02] transition-transform duration-300">
                             <img id="album-cover-img" 
-                                 src="https://i.ytimg.com/vi/34Na4j8AVgA/hqdefault.jpg" 
+                                 src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=400&auto=format&fit=crop" 
                                  alt="Official Cover Artwork" 
                                  class="w-full h-full object-cover">
                         </div>
@@ -334,12 +334,17 @@
                         </div>
                     </div>
 
-                    <!-- LOWER HALF: Synced Karaoke Lyrics (ALWAYS SHOWN BELOW COVER ART) -->
+                    <!-- LOWER HALF: Synced Karaoke Lyrics with Live Translation Button -->
                     <div id="player-view-lyrics" class="flex-1 w-full flex flex-col items-center justify-between relative overflow-hidden my-1 py-1">
                         
-                        <!-- Lyric Sync Calibration Bar with Multi-Provider Badge -->
-                        <div class="w-full flex items-center justify-between px-2.5 py-1 bg-white/5 border border-white/10 rounded-xl mb-1 text-[11px] shrink-0">
-                            <span id="spotify-sync-badge" class="text-cyan-400 font-bold flex items-center gap-1 text-[10px] shrink-0"><i class="fa-brands fa-youtube text-red-400"></i> YouTube + Spotify Lyric Engine</span>
+                        <!-- Lyric Sync Calibration Bar & Live Translation Toggle -->
+                        <div class="w-full flex items-center justify-between px-2.5 py-1 bg-white/5 border border-white/10 rounded-xl mb-1 text-[11px] shrink-0 gap-1">
+                            
+                            <!-- Translation Toggle Button -->
+                            <button onclick="toggleLyricsTranslation()" id="btn-translate-lyrics" class="px-2 py-0.5 rounded-md bg-white/10 hover:bg-white/20 text-slate-300 text-[10px] flex items-center gap-1 shrink-0 transition" title="Bật/Tắt Dịch Lời Bài Hát Sang Tiếng Việt">
+                                <i class="fa-solid fa-language text-cyan-400"></i> Dịch Lời
+                            </button>
+
                             <div class="flex items-center gap-1 overflow-x-auto py-0.5">
                                 <button onclick="adjustLyricOffset(-2.0)" class="px-1.5 py-0.5 rounded-md bg-pink-500/20 border border-pink-500/40 hover:bg-pink-500/40 text-pink-300 font-mono text-[10px]" title="Lùi 2s">-2s</button>
                                 <button onclick="adjustLyricOffset(-1.0)" class="px-1.5 py-0.5 rounded-md bg-white/10 hover:bg-white/20 text-slate-300 font-mono text-[10px]" title="Lùi 1s">-1s</button>
@@ -359,8 +364,8 @@
                     </div>
 
                     <div class="text-center mt-0.5 z-10 shrink-0">
-                        <h2 id="current-track-title" class="text-base sm:text-lg font-bold text-slate-100 truncate">Starboy</h2>
-                        <p id="current-track-artist" class="text-xs text-purple-300 font-medium mt-0.5 truncate">The Weeknd ft. Daft Punk</p>
+                        <h2 id="current-track-title" class="text-base sm:text-lg font-bold text-slate-100 truncate">01. Elegie</h2>
+                        <p id="current-track-artist" class="text-xs text-purple-300 font-medium mt-0.5 truncate">Envy feat. ThanhDraw</p>
                     </div>
 
                     <div class="flex flex-col items-center gap-1.5 mt-2 z-10 shrink-0">
@@ -407,10 +412,10 @@
                            oninput="onMainSearchInput(this.value)">
                 </div>
 
-                <!-- Add YouTube Music Button -->
+                <!-- Add Music Button -->
                 <div class="flex items-center gap-2 shrink-0">
                     <button onclick="openMusicManagerModal()" class="px-4 py-2 rounded-full bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs shrink-0 transition shadow-sm flex items-center gap-1.5">
-                        <i class="fa-brands fa-youtube text-red-400"></i> Thêm Link YouTube
+                        <i class="fa-solid fa-plus-circle text-white"></i> Thêm Nhạc / URL
                     </button>
                     <button onclick="openAccountModal()" class="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 border border-slate-200 transition">
                         <img id="user-avatar-badge" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop" class="w-6 h-6 rounded-full object-cover border border-purple-400">
@@ -423,9 +428,9 @@
             <!-- Hero Banner Card -->
             <div class="relative w-full h-40 rounded-3xl overflow-hidden mb-4 bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-950 p-7 flex items-center justify-between text-white shadow-xl shrink-0">
                 <div class="z-10 max-w-[65%]">
-                    <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold uppercase tracking-wider backdrop-blur-md">🎤 Multi-Provider YouTube + Spotify + Google Lyric Engine</span>
+                    <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold uppercase tracking-wider backdrop-blur-md">🎵 Direct Archive.org FLAC & GitHub Release Supported</span>
                     <h2 class="text-3xl sm:text-4xl font-black tracking-tighter mt-1 text-gradient">R&B NOW</h2>
-                    <p class="text-xs sm:text-sm text-slate-300 mt-1 line-clamp-2">Tự động quét lời từ YouTube Subtitles, Spotify & Google để trùng khớp nhịp nhạc 100%!</p>
+                    <p class="text-xs sm:text-sm text-slate-300 mt-1 line-clamp-2">Hỗ trợ phát trực tiếp nhạc FLAC / MP3 từ Archive.org & GitHub Release vĩnh viễn!</p>
                 </div>
                 <div class="relative w-48 h-full overflow-hidden shrink-0 flex items-center justify-center">
                     <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=500&auto=format&fit=crop" class="w-full h-full object-cover rounded-2xl opacity-90">
@@ -625,7 +630,7 @@
                     </div>
                     <div>
                         <h3 class="font-bold text-slate-100 text-base">Quản Lý Playlist & Thêm Nhạc</h3>
-                        <p class="text-xs text-slate-400">Thêm bài hát mới từ YouTube, MP3 Link hoặc File máy tính</p>
+                        <p class="text-xs text-slate-400">Thêm bài hát mới từ Direct MP3/FLAC, GitHub Release, hoặc YouTube</p>
                     </div>
                 </div>
                 <button onclick="closeMusicManagerModal()" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white flex items-center justify-center">
@@ -634,11 +639,11 @@
             </div>
 
             <div class="flex items-center gap-2 py-3 border-b border-white/5 shrink-0 overflow-x-auto">
-                <button onclick="switchModalTab('tab-yt')" id="nav-tab-yt" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-purple-500/20 border border-purple-500/40 text-purple-300 transition shrink-0 flex items-center gap-1.5">
-                    <i class="fa-brands fa-youtube text-red-500"></i> YouTube Link
+                <button onclick="switchModalTab('tab-mp3-url')" id="nav-tab-mp3-url" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-purple-500/20 border border-purple-500/40 text-purple-300 transition shrink-0 flex items-center gap-1.5 shadow-md">
+                    <i class="fa-solid fa-link text-cyan-400"></i> Direct MP3/FLAC URL
                 </button>
-                <button onclick="switchModalTab('tab-mp3-url')" id="nav-tab-mp3-url" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-white/5 border border-white/10 text-slate-400 transition shrink-0 flex items-center gap-1.5">
-                    <i class="fa-solid fa-link text-cyan-400"></i> Direct MP3 URL
+                <button onclick="switchModalTab('tab-yt')" id="nav-tab-yt" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-white/5 border border-white/10 text-slate-400 transition shrink-0 flex items-center gap-1.5">
+                    <i class="fa-brands fa-youtube text-red-500"></i> YouTube Link
                 </button>
                 <button onclick="switchModalTab('tab-local')" id="nav-tab-local" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-white/5 border border-white/10 text-slate-400 transition shrink-0 flex items-center gap-1.5">
                     <i class="fa-solid fa-folder-open text-amber-400"></i> File MP3 Máy Tính
@@ -650,7 +655,30 @@
 
             <div class="flex-1 overflow-y-auto py-4 space-y-4 pr-1">
                 
-                <div id="content-tab-yt" class="space-y-3">
+                <div id="content-tab-mp3-url" class="space-y-3">
+                    <div class="p-3 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 text-xs text-cyan-200">
+                        <i class="fa-solid fa-bolt text-base mr-1.5 text-amber-400"></i>
+                        <span>Hỗ trợ mọi đường link Direct Audio <b>.mp3, .flac, .wav, GitHub Release, Archive.org</b>!</span>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">Đường Link File Audio Online (Direct URL)</label>
+                        <input type="text" id="modal-mp3url-input" 
+                               placeholder="https://ia903205.us.archive.org/14/items/.../01.%20Elegie.flac" 
+                               class="w-full glass-input rounded-xl px-3.5 py-2.5 text-xs text-slate-100 focus:outline-none border border-white/10 bg-white/5">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">Tên Bài Hát & Ca Sĩ (Tùy chọn)</label>
+                        <input type="text" id="modal-mp3title-input" 
+                               placeholder="VD: 01. Elegie - Envy feat. ThanhDraw" 
+                               class="w-full glass-input rounded-xl px-3.5 py-2.5 text-xs text-slate-100 focus:outline-none border border-white/10 bg-white/5">
+                    </div>
+                    <button onclick="addTrackFromModal('mp3-url')" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-bold text-xs shadow-lg flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-plus"></i> Thêm Link Audio Online Tức Thì
+                    </button>
+                </div>
+
+                <div id="content-tab-yt" class="space-y-3 hidden">
                     <div class="p-3 rounded-2xl bg-purple-500/10 border border-purple-500/20 text-xs text-purple-200">
                         <i class="fa-solid fa-bolt text-base mr-1.5 text-amber-400"></i>
                         <span>Hỗ trợ mọi link YouTube <b>(watch?v=, youtu.be/, shorts/)</b> & Chặn 100% Quảng Cáo!</span>
@@ -664,18 +692,8 @@
                     </div>
 
                     <button onclick="addTrackFromModal('yt')" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold text-xs shadow-lg shadow-pink-500/25 flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-plus"></i> Thêm Nhạc Siêu Tốc 0.1s
+                        <i class="fa-solid fa-plus"></i> Thêm Nhạc YouTube Siêu Tốc 0.1s
                     </button>
-                </div>
-
-                <div id="content-tab-mp3-url" class="space-y-3 hidden">
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">Đường Link File Audio MP3 Online</label>
-                        <input type="text" id="modal-mp3url-input" 
-                               placeholder="https://domain.com/filename.mp3" 
-                               class="w-full glass-input rounded-xl px-3.5 py-2.5 text-xs text-slate-100 focus:outline-none border border-white/10 bg-white/5">
-                    </div>
-                    <button onclick="addTrackFromModal('mp3-url')" class="w-full py-2.5 rounded-xl bg-cyan-600 text-white font-bold text-xs shadow-lg">Thêm Link MP3 Online</button>
                 </div>
 
                 <div id="content-tab-local" class="space-y-3 hidden">
@@ -704,8 +722,28 @@
     <script>
         const DEFAULT_POPULAR_PLAYLIST = [
             {
-                id: 'hit-1',
+                id: 'hit-archive-1',
                 rank: '01',
+                title: "01. Elegie",
+                artist: 'Envy feat. ThanhDraw',
+                thumbnail: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=400&auto=format&fit=crop',
+                audioUrl: 'https://ia903205.us.archive.org/14/items/25.-envy-feat.-thanhdraw/01.%20Elegie.flac',
+                duration: 210,
+                plays: 'Archive.org FLAC Stream',
+                isDirectUrl: true
+            },
+            {
+                id: 'hit-2',
+                rank: '02',
+                title: "Mắt Môi Tay Chân",
+                artist: 'MCK',
+                thumbnail: 'https://i.ytimg.com/vi/kY3j_j4Q0k4/hqdefault.jpg',
+                youtubeUrl: 'https://www.youtube.com/watch?v=kY3j_j4Q0k4',
+                duration: 245
+            },
+            {
+                id: 'hit-1',
+                rank: '03',
                 title: "November",
                 artist: 'The Cassette',
                 thumbnail: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=400&auto=format&fit=crop',
@@ -713,17 +751,8 @@
                 duration: 147
             },
             {
-                id: 'hit-2',
-                rank: '02',
-                title: "Mắt Môi Tay Chân",
-                artist: 'MCK',
-                thumbnail: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=400&auto=format&fit=crop',
-                youtubeUrl: 'https://www.youtube.com/watch?v=kY3j_j4Q0k4',
-                duration: 245
-            },
-            {
                 id: 'hit-3',
-                rank: '03',
+                rank: '04',
                 title: 'mời hôm qua',
                 artist: 'GREY D',
                 thumbnail: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=400&auto=format&fit=crop',
@@ -732,7 +761,7 @@
             },
             {
                 id: 'hit-4',
-                rank: '04',
+                rank: '05',
                 title: 'em con nho ah hog',
                 artist: 'BEERU$',
                 thumbnail: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=400&auto=format&fit=crop',
@@ -741,7 +770,7 @@
             },
             {
                 id: 'hit-5',
-                rank: '05',
+                rank: '06',
                 title: 'Starboy',
                 artist: 'The Weeknd ft. Daft Punk',
                 thumbnail: 'https://i.ytimg.com/vi/34Na4j8AVgA/hqdefault.jpg',
@@ -750,7 +779,7 @@
             },
             {
                 id: 'hit-6',
-                rank: '06',
+                rank: '07',
                 title: 'Blinding Lights',
                 artist: 'The Weeknd',
                 thumbnail: 'https://i.ytimg.com/vi/4NRXx6U8ABQ/hqdefault.jpg',
@@ -798,7 +827,7 @@
                             id: 'pl-default-1',
                             name: 'Nhạc Yêu Thích 2026',
                             coverImage: '',
-                            trackKeys: ['kY3j_j4Q0k4', '34Na4j8AVgA']
+                            trackKeys: ['hit-archive-1', 'kY3j_j4Q0k4', '34Na4j8AVgA']
                         }
                     ];
                 }
@@ -831,6 +860,9 @@
         let progressInterval = null;
         let lyricOffset = 0.0; // Global lyric sync offset in seconds
 
+        let isTranslationActive = false; // Live lyric translation toggle state
+        let translationCache = new Map(); // Fast translation cache
+
         let streamCache = new Map(); // Blazing fast Audio Stream URL Cache
 
         function getSavedTrackLyricOffset(trackKey) {
@@ -845,6 +877,44 @@
             try {
                 localStorage.setItem(`aether_lyric_offset_${trackKey}`, offsetVal.toString());
             } catch(e) {}
+        }
+
+        // LIVE TRANSLATION ENGINE (TRANSLATES ENGLISH TO VIETNAMESE REAL-TIME)
+        async function translateTextToVietnamese(text) {
+            if (!text || text.startsWith('🎵') || text.startsWith('🎤') || text.startsWith('✨') || text.startsWith('🎶') || text.startsWith('🔥')) return text;
+            const cacheKey = `vi_${text}`;
+            if (translationCache.has(cacheKey)) return translationCache.get(cacheKey);
+
+            try {
+                const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|vi`;
+                const res = await fetch(url, { signal: AbortSignal.timeout(1800) });
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data && data.responseData && data.responseData.translatedText) {
+                        const translated = data.responseData.translatedText;
+                        translationCache.set(cacheKey, translated);
+                        return translated;
+                    }
+                }
+            } catch(e) {}
+
+            return text;
+        }
+
+        async function toggleLyricsTranslation() {
+            isTranslationActive = !isTranslationActive;
+            const btn = document.getElementById('btn-translate-lyrics');
+            if (btn) {
+                if (isTranslationActive) {
+                    btn.className = "px-2 py-0.5 rounded-md bg-purple-500/30 border border-purple-400 text-purple-200 font-semibold text-[10px] flex items-center gap-1 shrink-0 transition shadow-sm";
+                    btn.innerHTML = `<i class="fa-solid fa-language text-purple-300"></i> Dịch: ON (🇻🇳)`;
+                } else {
+                    btn.className = "px-2 py-0.5 rounded-md bg-white/10 hover:bg-white/20 text-slate-300 text-[10px] flex items-center gap-1 shrink-0 transition";
+                    btn.innerHTML = `<i class="fa-solid fa-language text-cyan-400"></i> Dịch Lời`;
+                }
+            }
+
+            renderLyricsContainer();
         }
 
         // ULTRA-FAST 0.05S PARALLEL INSTANCE STREAM RESOLVER
@@ -1009,6 +1079,7 @@
 
         function getTrackKey(track) {
             if (!track) return '';
+            if (track.audioUrl) return track.audioUrl;
             if (track.videoId) return track.videoId;
             if (track.youtubeUrl) return track.youtubeUrl;
             if (track.rawUrl) return track.rawUrl;
@@ -1032,10 +1103,10 @@
                 artist: item.artist,
                 thumbnail: thumbUrl || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=400&auto=format&fit=crop',
                 duration: item.duration || 180,
-                plays: item.plays || '0.1s Stream',
+                plays: item.plays || (item.audioUrl ? 'Direct Audio Stream' : '0.1s Stream'),
                 audioUrl: item.audioUrl || item.rawUrl,
                 isYoutube: !!(item.youtubeUrl || item.rawUrl || videoId),
-                isDirectUrl: item.isDirectUrl || false,
+                isDirectUrl: item.isDirectUrl || !!item.audioUrl,
                 rawUrl: item.youtubeUrl || item.rawUrl || item.audioUrl
             };
             trackObj.key = getTrackKey(trackObj);
@@ -1069,7 +1140,7 @@
                 isPlaying = true;
                 iconPlayPause.className = 'fa-solid fa-pause';
                 const badgeText = document.getElementById('status-badge-text');
-                if (badgeText) badgeText.textContent = "⚡ 0.05s Instant Stream Connected 🔥";
+                if (badgeText) badgeText.textContent = "⚡ Direct Stream Active 🔥";
                 if (audio.duration) updateTrackDuration(audio.duration);
                 startProgressTimer();
                 prefetchNextTrackStream();
@@ -1566,7 +1637,7 @@
             renderLyricsContainer();
         }
 
-        function renderLyricsContainer() {
+        async function renderLyricsContainer() {
             const container = document.getElementById('lyrics-scroll-container');
             if (!container) return;
 
@@ -1576,11 +1647,27 @@
             }
 
             container.innerHTML = '';
-            currentLyricsList.forEach((lyric, idx) => {
-                const p = document.createElement('p');
+            
+            for (let idx = 0; idx < currentLyricsList.length; idx++) {
+                const lyric = currentLyricsList[idx];
+                const p = document.createElement('div');
                 p.id = `lyric-line-${idx}`;
-                p.className = `lyric-line text-sm sm:text-base font-semibold py-1.5 px-3 cursor-pointer rounded-xl hover:text-cyan-300 hover:bg-white/5 transition-all`;
-                p.textContent = lyric.text;
+                p.className = `lyric-line text-sm sm:text-base font-semibold py-1.5 px-3 cursor-pointer rounded-xl hover:text-cyan-300 hover:bg-white/5 transition-all flex flex-col items-center justify-center text-center gap-0.5`;
+                
+                let origTextHtml = `<span class="lyric-orig-text">${lyric.text}</span>`;
+                p.innerHTML = origTextHtml;
+
+                if (isTranslationActive) {
+                    translateTextToVietnamese(lyric.text).then(transText => {
+                        if (transText && transText !== lyric.text && !transText.startsWith('🎵')) {
+                            const subSpan = document.createElement('span');
+                            subSpan.className = 'lyric-trans-text text-xs sm:text-sm text-amber-300/90 font-normal italic mt-0.5';
+                            subSpan.textContent = transText;
+                            p.appendChild(subSpan);
+                        }
+                    });
+                }
+
                 p.onclick = () => {
                     if (activePlayerMode === 'yt_iframe' && ytPlayerReady && ytPlayer && ytPlayer.seekTo) {
                         ytPlayer.seekTo(lyric.time, true);
@@ -1589,7 +1676,7 @@
                     }
                 };
                 container.appendChild(p);
-            });
+            }
         }
 
         function updateSyncedLyrics(currentTime) {
@@ -1752,7 +1839,7 @@
             playAudio();
         }
 
-        // GUARANTEED 0.05S INSTANT PARALLEL RACING STREAM ENGINE
+        // GUARANTEED DIRECT FLAC / MP3 & 0.05S INSTANT PARALLEL STREAM ENGINE
         async function loadTrack(index) {
             if (index < 0 || index >= queue.length) return;
             currentTrackIndex = index;
@@ -1766,15 +1853,19 @@
             const badgeText = document.getElementById('status-badge-text');
             if (badgeText) badgeText.textContent = "⚡ Instant Connecting...";
 
-            // 1. Direct Local MP3 or Blob
-            if (track.audioUrl && track.audioUrl.startsWith('blob:')) {
+            // 1. Direct Audio URL Stream (FLAC, MP3, Archive.org, GitHub Release, Blob)
+            if (track.audioUrl && (track.isDirectUrl || track.audioUrl.endsWith('.flac') || track.audioUrl.endsWith('.mp3') || track.audioUrl.includes('archive.org') || track.audioUrl.includes('github.com') || track.audioUrl.startsWith('blob:'))) {
                 activePlayerMode = 'html5';
                 if (ytPlayerReady && ytPlayer && ytPlayer.pauseVideo) ytPlayer.pauseVideo();
                 audio.src = track.audioUrl;
                 audio.load();
-                if (badgeText) badgeText.textContent = "⚡ Local File Stream";
+                if (badgeText) badgeText.textContent = "⚡ Direct FLAC / Audio Stream Active";
                 startProgressTimer();
                 if (isPlaying) playAudio();
+
+                fetchTrackLyrics(track);
+                updateCurrentFavIcon();
+                renderTrendingTracks();
                 return;
             }
 
@@ -1793,7 +1884,7 @@
                         timeTotal.textContent = formatTime(track.duration);
                     }
 
-                    if (badgeText) badgeText.textContent = `⚡ 0.05s Instant Racing Stream (${formatTime(track.duration)}) 🔥`;
+                    if (badgeText) badgeText.textContent = `⚡ 0.05s Instant Stream (${formatTime(track.duration)}) 🔥`;
                     startProgressTimer();
                     if (isPlaying) playAudio();
                 } else {
@@ -1843,14 +1934,14 @@
             playAudio();
         }
 
-        // UNIVERSAL YOUTUBE LINK STREAM INPUT RESOLVER
+        // UNIVERSAL LINK STREAM INPUT RESOLVER (DIRECT MP3/FLAC & YOUTUBE)
         async function streamFromYoutubeInput(customQuery = null) {
             const mainInputVal = document.getElementById('yt-url-input')?.value.trim() || '';
             const modalInputVal = document.getElementById('modal-yt-input')?.value.trim() || '';
             const rawQuery = (customQuery || mainInputVal || modalInputVal).trim();
 
             if (!rawQuery) {
-                alert("Vui lòng nhập Link hoặc Tên bài hát YouTube!");
+                alert("Vui lòng nhập Link hoặc Tên bài hát!");
                 return;
             }
 
@@ -1858,6 +1949,36 @@
             if (btnAdd) {
                 btnAdd.disabled = true;
                 btnAdd.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Đang tải...`;
+            }
+
+            // Direct FLAC / MP3 URL detection
+            if (rawQuery.endsWith('.flac') || rawQuery.endsWith('.mp3') || rawQuery.endsWith('.wav') || rawQuery.includes('archive.org') || rawQuery.includes('github.com/releases')) {
+                const urlParts = rawQuery.split('/');
+                const fileName = decodeURIComponent(urlParts[urlParts.length - 1] || 'Direct Audio Stream');
+                const directTrack = {
+                    id: 'direct-' + Date.now(),
+                    rank: '00',
+                    title: fileName.replace(/\.[^/.]+$/, ""),
+                    artist: 'Direct Stream',
+                    thumbnail: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=400&auto=format&fit=crop',
+                    duration: 210,
+                    plays: 'Direct FLAC/MP3',
+                    audioUrl: rawQuery,
+                    isDirectUrl: true
+                };
+                const trackObj = buildTrackObject(directTrack, 0);
+                queue.unshift(trackObj);
+                currentTrackIndex = 0;
+
+                setFilterView('all');
+                loadTrack(0);
+                playAudio();
+
+                if (btnAdd) {
+                    btnAdd.disabled = false;
+                    btnAdd.innerHTML = `Thêm Nhạc`;
+                }
+                return;
             }
 
             let title = 'YouTube Track';
@@ -1928,15 +2049,33 @@
                 }
             } else if (type === 'mp3-url') {
                 const url = document.getElementById('modal-mp3url-input').value.trim();
+                const customTitle = document.getElementById('modal-mp3title-input')?.value.trim();
+
                 if (url) {
+                    let title = 'Direct Audio Track';
+                    let artist = 'Online Stream';
+
+                    if (customTitle) {
+                        const parts = customTitle.split('-');
+                        if (parts.length > 1) {
+                            title = parts[0].trim();
+                            artist = parts.slice(1).join('-').trim();
+                        } else {
+                            title = customTitle;
+                        }
+                    } else {
+                        const urlParts = url.split('/');
+                        title = decodeURIComponent(urlParts[urlParts.length - 1] || 'Direct Audio Stream').replace(/\.[^/.]+$/, "");
+                    }
+
                     const directTrack = {
                         id: 'direct-' + Date.now(),
                         rank: '00',
-                        title: 'Direct MP3 Track',
-                        artist: 'Online MP3 Stream',
-                        thumbnail: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=400&auto=format&fit=crop',
-                        duration: 0,
-                        plays: 'Direct MP3',
+                        title: title,
+                        artist: artist,
+                        thumbnail: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=400&auto=format&fit=crop',
+                        duration: 210,
+                        plays: 'Direct FLAC/MP3',
                         audioUrl: url,
                         isDirectUrl: true
                     };
@@ -1972,7 +2111,7 @@
                     playPromise.then(() => {
                         isPlaying = true;
                         iconPlayPause.className = 'fa-solid fa-pause';
-                        if (badgeText) badgeText.textContent = "⚡ 0.05s Instant Stream Connected 🔥";
+                        if (badgeText) badgeText.textContent = "⚡ Direct Stream Connected 🔥";
                     }).catch(err => {
                         console.warn("Audio play notice:", err);
                         const currentTrack = queue[currentTrackIndex];
@@ -2260,7 +2399,7 @@
             });
         }
 
-        function openMusicManagerModal(initialTab = 'tab-yt') {
+        function openMusicManagerModal(initialTab = 'tab-mp3-url') {
             switchModalTab(initialTab);
             document.getElementById('input-backend-url').value = backendUrl;
             document.getElementById('music-manager-modal').classList.remove('hidden');
