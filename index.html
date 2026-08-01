@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aether | Web Music Player (0.1s Instant Playback Edition)</title>
+    <title>Aether | Glassmorphic Web Music Player (Liquid Glass & Synced Lyrics Edition)</title>
     <!-- Tailwind CSS v3 CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons CDN -->
@@ -15,6 +15,9 @@
     
     <!-- YouTube Official IFrame API -->
     <script src="https://www.youtube.com/iframe_api"></script>
+    
+    <!-- Frontend Smooth Effects Engine -->
+    <script src="effects.js" defer></script>
 
     <script>
         tailwind.config = {
@@ -78,6 +81,49 @@
             color: #0f172a;
             border-radius: 32px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        /* Liquid Glass Tab Morphing Indicator */
+        .liquid-glass-tab-container {
+            position: relative;
+            background: rgba(241, 245, 249, 0.8);
+            backdrop-filter: blur(12px);
+            border-radius: 9999px;
+            padding: 4px;
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+
+        .liquid-glass-pill {
+            position: absolute;
+            top: 4px;
+            bottom: 4px;
+            left: 4px;
+            background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
+            border-radius: 9999px;
+            box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .tab-btn-item {
+            position: relative;
+            z-index: 2;
+            transition: color 0.3s ease;
+        }
+
+        /* Synced Karaoke Lyric Active Highlight */
+        .lyric-line {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0.4;
+            transform: scale(0.96);
+        }
+        .lyric-line.active {
+            opacity: 1;
+            transform: scale(1.05);
+            color: #a855f7;
+            font-weight: 800;
+            text-shadow: 0 0 12px rgba(168, 85, 247, 0.4);
         }
 
         ::-webkit-scrollbar {
@@ -170,6 +216,9 @@
                         <i class="fa-solid fa-heart text-lg text-pink-400"></i>
                         <span id="fav-badge-count" class="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-pink-500 text-white text-[9px] font-bold flex items-center justify-center">0</span>
                     </button>
+                    <button onclick="toggleLyricsView()" id="side-nav-lyrics" class="hover:text-cyan-400 transition" title="Lời Bài Hát (Lyrics Karaoke)">
+                        <i class="fa-solid fa-quote-left text-lg text-cyan-400"></i>
+                    </button>
                     <button onclick="openMusicManagerModal()" id="side-nav-playlist" class="hover:text-purple-400 transition" title="Quản Lý Playlist & Thêm Nhạc">
                         <i class="fa-solid fa-layer-group text-lg text-purple-400"></i>
                     </button>
@@ -223,14 +272,18 @@
                             <span id="status-badge-dot" class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
                             <span id="status-badge-text">⚡ 0.1s Instant Stream</span>
                         </span>
-                        <div class="flex items-center gap-1.5">
+                        <div class="flex items-center gap-2">
+                            <button onclick="toggleLyricsView()" id="btn-lyrics-toggle" class="text-slate-400 hover:text-cyan-300 text-xs transition px-2 py-0.5 rounded-full bg-white/5 border border-white/10" title="Hiện/Ẩn Lời Bài Hát">
+                                <i class="fa-solid fa-microphone mr-1"></i> Lyrics
+                            </button>
                             <button onclick="toggleFavoriteCurrent()" id="btn-fav" class="text-slate-400 hover:text-pink-400 text-base transition">
                                 <i class="fa-regular fa-heart" id="icon-fav"></i>
                             </button>
                         </div>
                     </div>
 
-                    <div class="my-auto py-2 flex flex-col items-center justify-center relative">
+                    <!-- Album Cover / Visualizer View -->
+                    <div id="player-view-artwork" class="my-auto py-2 flex flex-col items-center justify-center relative">
                         <div class="relative w-44 h-44 rounded-2xl overflow-hidden shadow-2xl border border-white/15 group-hover:scale-[1.02] transition-transform duration-300">
                             <img id="album-cover-img" 
                                  src="https://i.ytimg.com/vi/34Na4j8AVgA/hqdefault.jpg" 
@@ -240,6 +293,13 @@
 
                         <div class="w-full h-10 mt-3 flex items-center justify-center">
                             <canvas id="visualizer" class="w-full h-full rounded-xl"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Synced Karaoke Lyrics Overlay Container -->
+                    <div id="player-view-lyrics" class="my-auto py-2 h-52 w-full flex flex-col items-center justify-center relative hidden overflow-hidden">
+                        <div id="lyrics-scroll-container" class="w-full h-full overflow-y-auto px-4 py-6 text-center space-y-3 scroll-smooth">
+                            <p class="text-xs text-slate-400 italic">Đang tải lời bài hát...</p>
                         </div>
                     </div>
 
@@ -287,7 +347,7 @@
                 <div class="flex-1 max-w-md flex items-center gap-2 bg-slate-100 border border-slate-200 rounded-full px-4 py-2 focus-within:border-purple-500 focus-within:ring-2 focus-within:ring-purple-200 transition">
                     <i class="fa-brands fa-youtube text-red-500 text-base"></i>
                     <input type="text" id="yt-url-input" 
-                           placeholder="Dán link YouTube (Phát tức thì 0.1s)..." 
+                           placeholder="Dán link YouTube (Tự động lấy Lời Karaoke & Ảnh Bìa)..." 
                            class="w-full bg-transparent text-xs text-slate-800 placeholder-slate-400 focus:outline-none"
                            onkeydown="if(event.key==='Enter') streamFromYoutubeInput()">
                     <button onclick="streamFromYoutubeInput()" id="btn-add-stream" class="px-3.5 py-1.5 rounded-full bg-purple-600 hover:bg-purple-700 text-white font-bold text-[11px] shrink-0 transition shadow-sm">
@@ -308,21 +368,24 @@
             <!-- Hero Banner Card -->
             <div class="relative w-full h-40 rounded-3xl overflow-hidden mb-4 bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-950 p-6 flex items-center justify-between text-white shadow-xl">
                 <div class="z-10 max-w-[60%]">
-                    <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold uppercase tracking-wider backdrop-blur-md">⚡ 0.1s Zero-Wait Engine</span>
+                    <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold uppercase tracking-wider backdrop-blur-md">✨ Liquid Glass & Synced Lyrics</span>
                     <h2 class="text-2xl sm:text-3xl font-black tracking-tighter mt-1 text-gradient">R&B NOW</h2>
-                    <p class="text-xs text-slate-300 mt-1 line-clamp-2">Phát nhạc tức thì **0.1 giây (0 phút chờ đợi)** trực tiếp từ CDN toàn cầu!</p>
+                    <p class="text-xs text-slate-300 mt-1 line-clamp-2">Chuyển tab mượt mà với **Hiệu ứng Thủy Tinh Lỏng (Liquid Glass)** & Xem Lời Bài Hát Chạy Tự Động theo gian thực!</p>
                 </div>
                 <div class="relative w-40 h-full overflow-hidden shrink-0 flex items-center justify-center">
                     <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=500&auto=format&fit=crop" class="w-full h-full object-cover rounded-2xl opacity-90">
                 </div>
             </div>
 
-            <!-- Filter Tabs & Track Table List -->
+            <!-- Filter Tabs with Liquid Glass Morphing Indicator -->
             <div class="flex-1 overflow-hidden flex flex-col">
                 <div class="flex items-center justify-between mb-3 px-1 border-b border-slate-100 pb-2">
-                    <div class="flex items-center gap-2">
-                        <button onclick="setFilterView('all')" id="tab-btn-all" class="px-3 py-1 rounded-full text-xs font-bold bg-slate-900 text-white transition">Tất Cả Bài Hát</button>
-                        <button onclick="setFilterView('fav')" id="tab-btn-fav" class="px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-600 hover:bg-pink-50 hover:text-pink-600 transition flex items-center gap-1">
+                    
+                    <!-- Liquid Glass Morphing Tab Container -->
+                    <div class="liquid-glass-tab-container flex items-center gap-1">
+                        <div id="liquid-glass-pill" class="liquid-glass-pill"></div>
+                        <button onclick="setFilterView('all', this)" id="tab-btn-all" class="tab-btn-item px-4 py-1.5 rounded-full text-xs font-bold text-white">Tất Cả Bài Hát</button>
+                        <button onclick="setFilterView('fav', this)" id="tab-btn-fav" class="tab-btn-item px-4 py-1.5 rounded-full text-xs font-bold text-slate-600 hover:text-slate-900 flex items-center gap-1">
                             <i class="fa-solid fa-heart text-pink-500"></i> Yêu Thích ❤️ (<span id="fav-count-text">0</span>)
                         </button>
                     </div>
@@ -576,7 +639,12 @@
         let isRepeat = false;
         let isMuted = false;
         let previousVolume = 0.8;
-        let activePlayerEngine = 'yt_native'; // 'yt_native' | 'html5_audio'
+        let activePlayerEngine = 'yt_native'; 
+        let isLyricsViewActive = false;
+
+        // Lyrics Engine Data
+        let currentLyricsList = [];
+        let activeLyricIndex = -1;
 
         // YouTube Iframe Engine Instance
         let ytPlayer = null;
@@ -645,14 +713,21 @@
         function startProgressTimer() {
             stopProgressTimer();
             progressInterval = setInterval(() => {
+                let cur = 0;
+                let dur = 180;
                 if (activePlayerEngine === 'yt_native' && ytPlayerReady && ytPlayer && ytPlayer.getCurrentTime) {
-                    const cur = ytPlayer.getCurrentTime() || 0;
-                    const dur = ytPlayer.getDuration() || 180;
-                    if (dur > 0) {
-                        progressBar.value = (cur / dur) * 100;
-                        timeCurrent.textContent = formatTime(cur);
-                        timeTotal.textContent = formatTime(dur);
-                    }
+                    cur = ytPlayer.getCurrentTime() || 0;
+                    dur = ytPlayer.getDuration() || 180;
+                } else if (audio.duration) {
+                    cur = audio.currentTime || 0;
+                    dur = audio.duration;
+                }
+
+                if (dur > 0) {
+                    progressBar.value = (cur / dur) * 100;
+                    timeCurrent.textContent = formatTime(cur);
+                    timeTotal.textContent = formatTime(dur);
+                    updateSyncedLyrics(cur);
                 }
             }, 300);
         }
@@ -727,14 +802,206 @@
             renderTrendingTracks();
             loadTrack(0);
 
+            // Initialize Liquid Glass Tab Position
+            setTimeout(() => {
+                const initialBtn = document.getElementById('tab-btn-all');
+                if (initialBtn) positionLiquidGlassPill(initialBtn);
+            }, 100);
+
             fetchGlobalPlaylistFromServer();
 
             audio.addEventListener('timeupdate', updateProgress);
             audio.addEventListener('loadedmetadata', onMetadataLoaded);
             audio.addEventListener('ended', onTrackEnded);
 
-            window.addEventListener('resize', setupCanvas);
+            window.addEventListener('resize', () => {
+                setupCanvas();
+                const activeBtn = activeFilterView === 'fav' ? document.getElementById('tab-btn-fav') : document.getElementById('tab-btn-all');
+                if (activeBtn) positionLiquidGlassPill(activeBtn);
+            });
         });
+
+        // LIQUID GLASS MORPHING TAB POSITION ENGINE
+        function positionLiquidGlassPill(targetBtn) {
+            const pill = document.getElementById('liquid-glass-pill');
+            if (!pill || !targetBtn) return;
+
+            const container = targetBtn.parentElement;
+            const containerRect = container.getBoundingClientRect();
+            const btnRect = targetBtn.getBoundingClientRect();
+
+            const leftOffset = btnRect.left - containerRect.left;
+            const width = btnRect.width;
+
+            pill.style.left = `${leftOffset}px`;
+            pill.style.width = `${width}px`;
+        }
+
+        function setFilterView(viewMode, element) {
+            activeFilterView = viewMode;
+            const targetBtn = element || (viewMode === 'fav' ? document.getElementById('tab-btn-fav') : document.getElementById('tab-btn-all'));
+
+            if (targetBtn) positionLiquidGlassPill(targetBtn);
+
+            const tabAll = document.getElementById('tab-btn-all');
+            const tabFav = document.getElementById('tab-btn-fav');
+            const stageTitle = document.getElementById('stage-main-title');
+
+            if (viewMode === 'fav') {
+                if (tabAll) tabAll.className = "tab-btn-item px-4 py-1.5 rounded-full text-xs font-bold text-slate-600 hover:text-slate-900";
+                if (tabFav) tabFav.className = "tab-btn-item px-4 py-1.5 rounded-full text-xs font-bold text-white flex items-center gap-1";
+                if (stageTitle) stageTitle.textContent = "Bài Hát Yêu Thích ❤️";
+            } else {
+                if (tabAll) tabAll.className = "tab-btn-item px-4 py-1.5 rounded-full text-xs font-bold text-white";
+                if (tabFav) tabFav.className = "tab-btn-item px-4 py-1.5 rounded-full text-xs font-bold text-slate-600 hover:text-slate-900 flex items-center gap-1";
+                if (stageTitle) stageTitle.textContent = "Home";
+            }
+
+            renderTrendingTracks();
+        }
+
+        // SYNCED KARAOKE LYRICS ENGINE
+        function toggleLyricsView() {
+            isLyricsViewActive = !isLyricsViewActive;
+            const viewArtwork = document.getElementById('player-view-artwork');
+            const viewLyrics = document.getElementById('player-view-lyrics');
+            const btnToggle = document.getElementById('btn-lyrics-toggle');
+
+            if (isLyricsViewActive) {
+                if (viewArtwork) viewArtwork.classList.add('hidden');
+                if (viewLyrics) viewLyrics.classList.remove('hidden');
+                if (btnToggle) btnToggle.className = "text-cyan-300 font-bold text-xs transition px-2 py-0.5 rounded-full bg-cyan-500/20 border border-cyan-500/40 shadow-sm";
+            } else {
+                if (viewArtwork) viewArtwork.classList.remove('hidden');
+                if (viewLyrics) viewLyrics.classList.add('hidden');
+                if (btnToggle) btnToggle.className = "text-slate-400 hover:text-cyan-300 text-xs transition px-2 py-0.5 rounded-full bg-white/5 border border-white/10";
+            }
+        }
+
+        async function fetchTrackLyrics(track) {
+            const container = document.getElementById('lyrics-scroll-container');
+            if (!container) return;
+
+            container.innerHTML = `<p class="text-xs text-slate-400 italic animate-pulse">Đang tìm lời bài hát cho "${track.title}"...</p>`;
+            currentLyricsList = [];
+            activeLyricIndex = -1;
+
+            try {
+                // Query LrcLib open lyrics API
+                const url = `https://lrclib.net/api/get?artist_name=${encodeURIComponent(track.artist)}&track_name=${encodeURIComponent(track.title)}`;
+                const res = await fetch(url);
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.syncedLyrics) {
+                        parseSyncedLrc(data.syncedLyrics);
+                        return;
+                    } else if (data.plainLyrics) {
+                        parsePlainLyrics(data.plainLyrics);
+                        return;
+                    }
+                }
+            } catch (e) {}
+
+            // Fallback generated lyrics for custom beats / remixes
+            generateFallbackLyrics(track);
+        }
+
+        function parseSyncedLrc(lrcText) {
+            const lines = lrcText.split('\n');
+            currentLyricsList = [];
+
+            lines.forEach(line => {
+                const match = line.match(/\[(\d+):(\d+\.\d+)\](.*)/);
+                if (match) {
+                    const min = parseInt(match[1]);
+                    const sec = parseFloat(match[2]);
+                    const time = min * 60 + sec;
+                    const text = match[3].trim();
+                    if (text) {
+                        currentLyricsList.push({ time, text });
+                    }
+                }
+            });
+
+            renderLyricsContainer();
+        }
+
+        function parsePlainLyrics(plainText) {
+            const lines = plainText.split('\n').filter(l => l.trim() !== '');
+            currentLyricsList = lines.map((text, idx) => ({
+                time: idx * 5,
+                text: text.trim()
+            }));
+            renderLyricsContainer();
+        }
+
+        function generateFallbackLyrics(track) {
+            currentLyricsList = [
+                { time: 0, text: `🎵 ${track.title}` },
+                { time: 4, text: `🎤 Ca sĩ: ${track.artist}` },
+                { time: 8, text: "✨ [Music Instrumental Beat & Melody] ✨" },
+                { time: 14, text: "🎶 Đang phát giai điệu tuyệt vời..." },
+                { time: 22, text: "🔥 Năng lượng âm nhạc tràn đầy 🎵" },
+                { time: 32, text: "✨ Enjoying the vibe with Synx Music Player ✨" }
+            ];
+            renderLyricsContainer();
+        }
+
+        function renderLyricsContainer() {
+            const container = document.getElementById('lyrics-scroll-container');
+            if (!container) return;
+
+            if (currentLyricsList.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-400 italic">Không tìm thấy lời bài hát.</p>`;
+                return;
+            }
+
+            container.innerHTML = '';
+            currentLyricsList.forEach((lyric, idx) => {
+                const p = document.createElement('p');
+                p.id = `lyric-line-${idx}`;
+                p.className = `lyric-line text-xs font-semibold py-1 px-2 cursor-pointer rounded-lg hover:text-purple-300`;
+                p.textContent = lyric.text;
+                p.onclick = () => {
+                    if (activePlayerEngine === 'yt_native' && ytPlayerReady && ytPlayer && ytPlayer.seekTo) {
+                        ytPlayer.seekTo(lyric.time, true);
+                    } else {
+                        audio.currentTime = lyric.time;
+                    }
+                };
+                container.appendChild(p);
+            });
+        }
+
+        function updateSyncedLyrics(currentTime) {
+            if (currentLyricsList.length === 0) return;
+
+            let idx = -1;
+            for (let i = 0; i < currentLyricsList.length; i++) {
+                if (currentTime >= currentLyricsList[i].time) {
+                    idx = i;
+                } else {
+                    break;
+                }
+            }
+
+            if (idx !== activeLyricIndex) {
+                if (activeLyricIndex >= 0) {
+                    const prevLine = document.getElementById(`lyric-line-${activeLyricIndex}`);
+                    if (prevLine) prevLine.classList.remove('active');
+                }
+
+                activeLyricIndex = idx;
+
+                if (idx >= 0) {
+                    const activeLine = document.getElementById(`lyric-line-${idx}`);
+                    if (activeLine) {
+                        activeLine.classList.add('active');
+                        activeLine.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                }
+            }
+        }
 
         function updateUserBadgeUI() {
             const nameEl = document.getElementById('user-name-badge');
@@ -835,26 +1102,6 @@
             }
         }
 
-        function setFilterView(viewMode) {
-            activeFilterView = viewMode;
-
-            const tabAll = document.getElementById('tab-btn-all');
-            const tabFav = document.getElementById('tab-btn-fav');
-            const stageTitle = document.getElementById('stage-main-title');
-
-            if (viewMode === 'fav') {
-                if (tabAll) tabAll.className = "px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-600 transition";
-                if (tabFav) tabFav.className = "px-3 py-1 rounded-full text-xs font-bold bg-pink-500 text-white transition flex items-center gap-1 shadow-md";
-                if (stageTitle) stageTitle.textContent = "Bài Hát Yêu Thích ❤️";
-            } else {
-                if (tabAll) tabAll.className = "px-3 py-1 rounded-full text-xs font-bold bg-slate-900 text-white transition";
-                if (tabFav) tabFav.className = "px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-600 hover:bg-pink-50 hover:text-pink-600 transition flex items-center gap-1";
-                if (stageTitle) stageTitle.textContent = "Home";
-            }
-
-            renderTrendingTracks();
-        }
-
         function updateNextCompositionCards() {
             if (queue.length > 1) {
                 const track1 = queue[1];
@@ -884,7 +1131,7 @@
             playAudio();
         }
 
-        // 0.1s Zero-Wait Load Track
+        // 0.1s Instant Load Track & Fetch Lyrics
         function loadTrack(index) {
             if (index < 0 || index >= queue.length) return;
             currentTrackIndex = index;
@@ -899,7 +1146,7 @@
             if (track.videoId) {
                 activePlayerEngine = 'yt_native';
                 audio.pause();
-                if (badgeText) badgeText.textContent = "⚡ Phát nhạc siêu tốc 0.1s...";
+                if (badgeText) badgeText.textContent = "⚡ 0.1s Instant Stream 🔥";
                 
                 if (ytPlayerReady && ytPlayer && ytPlayer.loadVideoById) {
                     ytPlayer.loadVideoById(track.videoId);
@@ -912,6 +1159,7 @@
                 if (badgeText) badgeText.textContent = "Đang phát qua HTML5 Audio";
             }
 
+            fetchTrackLyrics(track);
             updateCurrentFavIcon();
             renderTrendingTracks();
 
@@ -1128,6 +1376,7 @@
                 progressBar.value = pct;
                 timeCurrent.textContent = formatTime(audio.currentTime);
                 timeTotal.textContent = formatTime(audio.duration);
+                updateSyncedLyrics(audio.currentTime);
             }
         }
 
