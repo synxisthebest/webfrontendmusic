@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aether | Glassmorphic Web Music Player</title>
+    <title>Aether | Glassmorphic Web Music Player (Instant YouTube Engine)</title>
     <!-- Tailwind CSS v3 CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons CDN -->
@@ -136,7 +136,7 @@
 </head>
 <body class="p-4 sm:p-6 w-screen h-screen flex items-center justify-center">
 
-    <!-- HTML5 Audio Element (CORS friendly) -->
+    <!-- HTML5 Audio Element -->
     <audio id="audio-player" preload="metadata"></audio>
     <input type="file" id="local-file-input" accept="audio/*" class="hidden" onchange="handleLocalFileUpload(event)">
 
@@ -213,7 +213,7 @@
                     <div class="flex items-center justify-between z-10 mb-2">
                         <span id="stream-type-badge" class="px-2.5 py-0.5 rounded-full bg-purple-500/20 border border-purple-500/40 text-purple-300 text-[10px] font-semibold backdrop-blur-md flex items-center gap-1.5">
                             <span class="w-1.5 h-1.5 rounded-full bg-purple-400 animate-ping"></span>
-                            Ad-Free Audio Engine
+                            <span id="status-badge-text">Instant Auto Metadata</span>
                         </span>
                         <div class="flex items-center gap-1.5">
                             <button onclick="toggleFavoriteCurrent()" id="btn-fav" class="text-slate-400 hover:text-pink-400 text-base transition">
@@ -275,15 +275,15 @@
             <div class="flex items-center justify-between gap-4 mb-4">
                 <h1 id="stage-main-title" class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Home</h1>
 
-                <!-- Search & Auto YouTube Fetch Bar -->
+                <!-- Search & Instant YouTube Metadata Fetch Bar -->
                 <div class="flex-1 max-w-md flex items-center gap-2 bg-slate-100 border border-slate-200 rounded-full px-4 py-2 focus-within:border-purple-500 focus-within:ring-2 focus-within:ring-purple-200 transition">
                     <i class="fa-brands fa-youtube text-red-500 text-base"></i>
                     <input type="text" id="yt-url-input" 
-                           placeholder="Nhập tên bài hát (VD: Sơn Tùng Chạy Ngay Đi)..." 
+                           placeholder="Dán link YouTube (Tự động lấy Tên & Ảnh Bìa)..." 
                            class="w-full bg-transparent text-xs text-slate-800 placeholder-slate-400 focus:outline-none"
                            onkeydown="if(event.key==='Enter') streamFromYoutubeInput()">
                     <button onclick="streamFromYoutubeInput()" id="btn-add-stream" class="px-3.5 py-1.5 rounded-full bg-purple-600 hover:bg-purple-700 text-white font-bold text-[11px] shrink-0 transition shadow-sm">
-                        Tìm & Phát
+                        Thêm Nhạc
                     </button>
                 </div>
 
@@ -300,9 +300,9 @@
             <!-- Hero Banner Card -->
             <div class="relative w-full h-40 rounded-3xl overflow-hidden mb-4 bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-950 p-6 flex items-center justify-between text-white shadow-xl">
                 <div class="z-10 max-w-[60%]">
-                    <span class="px-3 py-1 rounded-full bg-white/10 text-cyan-300 text-[10px] font-bold uppercase tracking-wider backdrop-blur-md">Auto YouTube Metadata Engine</span>
+                    <span class="px-3 py-1 rounded-full bg-white/10 text-cyan-300 text-[10px] font-bold uppercase tracking-wider backdrop-blur-md">Instant YouTube Engine</span>
                     <h2 class="text-2xl sm:text-3xl font-black tracking-tighter mt-1 text-gradient">R&B NOW</h2>
-                    <p class="text-xs text-slate-300 mt-1 line-clamp-2">Nhập bất kỳ tên bài hát hoặc link YouTube nào để tự động bóc tách tên ca sĩ và ảnh bìa HD!</p>
+                    <p class="text-xs text-slate-300 mt-1 line-clamp-2">Tự động lấy **Tên Bài Hát, Ca Sĩ, và Ảnh Bìa Gốc HD (`hqdefault.jpg`)** của bất kỳ link YouTube nào!</p>
                 </div>
                 <div class="relative w-40 h-full overflow-hidden shrink-0 flex items-center justify-center">
                     <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=500&auto=format&fit=crop" class="w-full h-full object-cover rounded-2xl opacity-90">
@@ -342,7 +342,7 @@
                            class="w-24 h-1.5 cursor-pointer">
                 </div>
                 <div class="flex items-center gap-1.5 text-[11px] text-slate-400">
-                    <span>Render Backend Server:</span>
+                    <span>Render Backend:</span>
                     <code id="active-render-endpoint" class="text-purple-600 font-mono font-semibold">https://webservicebackend-zm90.onrender.com</code>
                 </div>
             </div>
@@ -372,7 +372,7 @@
 
             <div class="flex items-center gap-2 py-3 border-b border-white/5 shrink-0 overflow-x-auto">
                 <button onclick="switchModalTab('tab-yt')" id="nav-tab-yt" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-purple-500/20 border border-purple-500/40 text-purple-300 transition shrink-0 flex items-center gap-1.5">
-                    <i class="fa-brands fa-youtube text-red-500"></i> YouTube Link / Tên Nhạc
+                    <i class="fa-brands fa-youtube text-red-500"></i> YouTube Link
                 </button>
                 <button onclick="switchModalTab('tab-mp3-url')" id="nav-tab-mp3-url" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-white/5 border border-white/10 text-slate-400 transition shrink-0 flex items-center gap-1.5">
                     <i class="fa-solid fa-link text-cyan-400"></i> Direct MP3 URL
@@ -394,14 +394,14 @@
                     </div>
 
                     <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">Nhập Tên Bài Hát hoặc Link YouTube</label>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">Nhập Link YouTube</label>
                         <input type="text" id="modal-yt-input" 
-                               placeholder="VD: Attention Charlie Puth hoặc https://www.youtube.com/watch?v=..." 
+                               placeholder="https://www.youtube.com/watch?v=..." 
                                class="w-full glass-input rounded-xl px-3.5 py-2.5 text-xs text-slate-100 focus:outline-none">
                     </div>
 
                     <button onclick="addTrackFromModal('yt')" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold text-xs shadow-lg shadow-pink-500/25 flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-plus"></i> Thêm Vào Playlist & Lưu Server
+                        <i class="fa-solid fa-plus"></i> Thêm Vào Playlist
                     </button>
                 </div>
 
@@ -439,7 +439,6 @@
 
     <!-- JavaScript Application Logic -->
     <script>
-        // Default Tracks
         const DEFAULT_POPULAR_PLAYLIST = [
             {
                 id: 'hit-1',
@@ -488,7 +487,6 @@
             }
         ];
 
-        // State Management
         let backendUrl = localStorage.getItem('aether_render_backend_url') || 'https://webservicebackend-zm90.onrender.com';
         
         let favoritesSet = new Set();
@@ -503,7 +501,7 @@
 
         let rawQueueData = [...DEFAULT_POPULAR_PLAYLIST];
         let queue = rawQueueData.map((track, idx) => buildTrackObject(track, idx));
-        let activeFilterView = 'all'; // 'all' | 'fav'
+        let activeFilterView = 'all';
 
         let currentTrackIndex = 0;
         let isPlaying = false;
@@ -512,7 +510,6 @@
         let isMuted = false;
         let previousVolume = 0.8;
 
-        // DOM Elements
         const audio = document.getElementById('audio-player');
         const btnPlayPause = document.getElementById('btn-play-pause');
         const iconPlayPause = document.getElementById('icon-play-pause');
@@ -529,18 +526,30 @@
         const trendingTracksContainer = document.getElementById('trending-tracks-container');
         const ytUrlInput = document.getElementById('yt-url-input');
 
-        // Web Audio Canvas
         let audioCtx = null;
         let analyser = null;
         let sourceNode = null;
         let canvas = document.getElementById('visualizer');
         let canvasCtx = canvas.getContext('2d');
 
+        function getYouTubeVideoId(urlStr) {
+            if (!urlStr) return null;
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            const match = urlStr.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : null;
+        }
+
         function buildTrackObject(item, idx = 0) {
             let proxyStreamUrl = item.audioUrl;
             if (item.youtubeUrl || item.rawUrl) {
                 const encodedUrl = encodeURIComponent(item.youtubeUrl || item.rawUrl);
                 proxyStreamUrl = `${backendUrl.replace(/\/$/, '')}/play-audio?url=${encodedUrl}`;
+            }
+
+            const videoId = getYouTubeVideoId(item.youtubeUrl || item.rawUrl);
+            let thumbUrl = item.thumbnail;
+            if (videoId && (!thumbUrl || thumbUrl.includes('unsplash'))) {
+                thumbUrl = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
             }
 
             const formattedRank = idx + 1 < 10 ? '0' + (idx + 1) : '' + (idx + 1);
@@ -550,9 +559,9 @@
                 rank: item.rank || formattedRank,
                 title: item.title,
                 artist: item.artist,
-                thumbnail: item.thumbnail || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=400&auto=format&fit=crop',
+                thumbnail: thumbUrl || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=400&auto=format&fit=crop',
                 duration: item.duration || 180,
-                plays: item.plays || 'Global Sync',
+                plays: item.plays || 'YouTube Stream',
                 audioUrl: proxyStreamUrl,
                 isYoutube: !!(item.youtubeUrl || item.rawUrl),
                 isDirectUrl: item.isDirectUrl || false,
@@ -684,62 +693,12 @@
             }
         }
 
-        function initWebAudio() {
-            if (audioCtx) return;
-            try {
-                const AudioContext = window.AudioContext || window.webkitAudioContext;
-                audioCtx = new AudioContext();
-                analyser = audioCtx.createAnalyser();
-                analyser.fftSize = 128;
-                sourceNode = audioCtx.createMediaElementSource(audio);
-                sourceNode.connect(analyser);
-                analyser.connect(audioCtx.destination);
-                drawVisualizer();
-            } catch (err) {
-                console.warn('Web Audio setup notice:', err);
-            }
-        }
-
         function setupCanvas() {
             const dpr = window.devicePixelRatio || 1;
             const rect = canvas.getBoundingClientRect();
             canvas.width = rect.width * dpr;
             canvas.height = rect.height * dpr;
             canvasCtx.scale(dpr, dpr);
-        }
-
-        function drawVisualizer() {
-            requestAnimationFrame(drawVisualizer);
-            if (!analyser) return;
-
-            const rect = canvas.getBoundingClientRect();
-            const width = rect.width;
-            const height = rect.height;
-            canvasCtx.clearRect(0, 0, width, height);
-
-            const bufferLength = analyser.frequencyBinCount;
-            const dataArray = new Uint8Array(bufferLength);
-
-            analyser.getByteTimeDomainData(dataArray);
-            canvasCtx.lineWidth = 2.5;
-            const gradient = canvasCtx.createLinearGradient(0, 0, width, 0);
-            gradient.addColorStop(0, '#ec4899');
-            gradient.addColorStop(0.5, '#a855f7');
-            gradient.addColorStop(1, '#06b6d4');
-            canvasCtx.strokeStyle = gradient;
-
-            canvasCtx.beginPath();
-            const sliceWidth = width / bufferLength;
-            let x = 0;
-            for (let i = 0; i < bufferLength; i++) {
-                const v = dataArray[i] / 128.0;
-                const y = (v * height) / 2;
-                if (i === 0) canvasCtx.moveTo(x, y);
-                else canvasCtx.lineTo(x, y);
-                x += sliceWidth;
-            }
-            canvasCtx.lineTo(width, height / 2);
-            canvasCtx.stroke();
         }
 
         function playNextInQueue(offsetIndex) {
@@ -795,6 +754,7 @@
             playAudio();
         }
 
+        // Instant YouTube oEmbed & Video ID Artwork Extractor
         async function streamFromYoutubeInput() {
             const rawQuery = ytUrlInput.value.trim();
             if (!rawQuery) return;
@@ -803,49 +763,64 @@
             btnAdd.disabled = true;
             btnAdd.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Đang tải...`;
 
+            let title = 'YouTube Track';
+            let artist = 'YouTube Artist';
+            let videoId = getYouTubeVideoId(rawQuery);
+            let thumbnail = videoId ? `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg` : 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=400&auto=format&fit=crop';
+            let youtubeUrl = rawQuery;
+
+            // Instant Client-Side oEmbed Metadata Fetch (No API Key Required!)
+            if (rawQuery.startsWith('http://') || rawQuery.startsWith('https://')) {
+                try {
+                    const oembedUrl = `https://www.youtube.com/oembed?url=${encodeURIComponent(rawQuery)}&format=json`;
+                    const ores = await fetch(oembedUrl);
+                    if (ores.ok) {
+                        const odata = await ores.json();
+                        title = odata.title || title;
+                        artist = odata.author_name || artist;
+                    }
+                } catch(e) {
+                    console.warn("oEmbed notice:", e);
+                }
+            } else {
+                title = rawQuery;
+                artist = 'YouTube Search';
+            }
+
+            const encodedUrl = encodeURIComponent(youtubeUrl);
+            const proxyAudioUrl = `${backendUrl.replace(/\/$/, '')}/play-audio?url=${encodedUrl}`;
+
+            const newTrackItem = {
+                id: 'yt-' + Date.now(),
+                title: title,
+                artist: artist,
+                thumbnail: thumbnail,
+                youtubeUrl: youtubeUrl,
+                duration: 180,
+                audioUrl: proxyAudioUrl
+            };
+
+            // Post to Server in background if server is online
             try {
-                const addApiUrl = `${backendUrl.replace(/\/$/, '')}/add-track`;
-                const response = await fetch(addApiUrl, {
+                fetch(`${backendUrl.replace(/\/$/, '')}/add-track`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ youtubeUrl: rawQuery })
-                });
+                    body: JSON.stringify({ youtubeUrl: youtubeUrl, title: title, artist: artist, thumbnail: thumbnail })
+                }).catch(e => {});
+            } catch(e){}
 
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data.playlist) {
-                        rawQueueData = data.playlist;
-                        queue = rawQueueData.map((track, idx) => buildTrackObject(track, idx));
-                    }
-                    ytUrlInput.value = '';
-                    renderTrendingTracks();
-                    updateNextCompositionCards();
-                    loadTrack(0);
-                    playAudio();
-                } else {
-                    throw new Error("Lỗi bóc tách nhạc");
-                }
-            } catch (err) {
-                const encodedUrl = encodeURIComponent(rawQuery);
-                const proxyAudioUrl = `${backendUrl.replace(/\/$/, '')}/play-audio?url=${encodedUrl}`;
-                const newTrackItem = {
-                    id: 'yt-' + Date.now(),
-                    title: rawQuery,
-                    artist: 'YouTube Stream',
-                    thumbnail: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=400&auto=format&fit=crop',
-                    youtubeUrl: rawQuery,
-                    duration: 180,
-                    audioUrl: proxyAudioUrl
-                };
-                queue.unshift(buildTrackObject(newTrackItem, 0));
-                ytUrlInput.value = '';
-                renderTrendingTracks();
-                loadTrack(0);
-                playAudio();
-            } finally {
-                btnAdd.disabled = false;
-                btnAdd.innerHTML = `Tìm & Phát`;
-            }
+            const trackObj = buildTrackObject(newTrackItem, 0);
+            queue.unshift(trackObj);
+            currentTrackIndex = 0;
+            ytUrlInput.value = '';
+
+            renderTrendingTracks();
+            updateNextCompositionCards();
+            loadTrack(0);
+            playAudio();
+
+            btnAdd.disabled = false;
+            btnAdd.innerHTML = `Thêm Nhạc`;
         }
 
         async function addTrackFromModal(type) {
@@ -886,18 +861,31 @@
         }
 
         function playAudio() {
-            audio.play().then(() => {
-                isPlaying = true;
-                iconPlayPause.className = 'fa-solid fa-pause';
-                try { initWebAudio(); } catch(e){}
-                if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
-            }).catch(err => {
-                console.warn("Play audio notice:", err);
-                // Fallback attempt
-                audio.play();
-                isPlaying = true;
-                iconPlayPause.className = 'fa-solid fa-pause';
-            });
+            const badgeText = document.getElementById('status-badge-text');
+            if (badgeText) badgeText.textContent = "Đang tải audio từ Render proxy...";
+
+            const playPromise = audio.play();
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    isPlaying = true;
+                    iconPlayPause.className = 'fa-solid fa-pause';
+                    if (badgeText) badgeText.textContent = "Đang phát nhạc mượt mà";
+                }).catch(err => {
+                    console.warn("Audio play notice:", err);
+                    isPlaying = false;
+                    iconPlayPause.className = 'fa-solid fa-play ml-0.5';
+                    if (badgeText) badgeText.textContent = "Đang khởi động Server Proxy (Chờ ~15s)...";
+                    
+                    // Auto Retry after server wakes up
+                    setTimeout(() => {
+                        audio.play().then(() => {
+                            isPlaying = true;
+                            iconPlayPause.className = 'fa-solid fa-pause';
+                            if (badgeText) badgeText.textContent = "Đang phát nhạc mượt mà";
+                        }).catch(e => {});
+                    }, 4000);
+                });
+            }
         }
 
         function pauseAudio() {
@@ -1037,7 +1025,7 @@
                         </div>
                     </div>
                     <div class="flex items-center gap-6 shrink-0">
-                        <span class="text-[11px] text-slate-400 font-mono hidden sm:inline">${track.plays || 'Global Sync'}</span>
+                        <span class="text-[11px] text-slate-400 font-mono hidden sm:inline">${track.plays || 'YouTube Stream'}</span>
                         <span class="text-[11px] text-slate-500 font-mono font-medium">${formatTime(track.duration || 180)}</span>
                         <button onclick="event.stopPropagation(); toggleFavorite('${track.id}');" class="text-xs transition ${isFav ? 'text-pink-500' : 'text-slate-300 hover:text-pink-500'}" title="Thêm/Xóa Yêu Thích">
                             <i class="${isFav ? 'fa-solid text-pink-500' : 'fa-regular'} fa-heart"></i>
