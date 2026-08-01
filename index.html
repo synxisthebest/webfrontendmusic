@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aether | Glassmorphic Web Music Player (Render Edition)</title>
+    <title>Aether | Glassmorphic Web Music Player (Global Shared Edition)</title>
     <!-- Tailwind CSS v3 CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons CDN -->
@@ -22,23 +22,12 @@
                         sans: ['"Plus Jakarta Sans"', 'sans-serif'],
                     },
                     colors: {
-                        glass: {
-                            bg: 'rgba(15, 23, 42, 0.55)',
-                            card: 'rgba(255, 255, 255, 0.04)',
-                            border: 'rgba(255, 255, 255, 0.12)',
-                            hover: 'rgba(255, 255, 255, 0.08)',
-                        },
-                        neon: {
-                            pink: '#ec4899',
-                            purple: '#a855f7',
-                            cyan: '#06b6d4',
-                            blue: '#3b82f6',
-                        }
-                    },
-                    animation: {
-                        'spin-slow': 'spin 18s linear infinite',
-                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'float': 'float 6s ease-in-out infinite',
+                        darkpanel: '#151722',
+                        darkcard: '#1e2230',
+                        lightcard: '#f4f5f9',
+                        neonpink: '#ec4899',
+                        neonpurple: '#a855f7',
+                        neoncyan: '#06b6d4'
                     }
                 }
             }
@@ -47,43 +36,62 @@
 
     <style>
         body {
-            background-color: #09090e;
-            color: #f8fafc;
-            overflow-x: hidden;
+            background: linear-gradient(135deg, #a5b4fc 0%, #6366f1 50%, #4338ca 100%);
+            min-height: 100vh;
+            color: #0f172a;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-center: center;
             user-select: none;
+            overflow: hidden;
         }
 
-        .glass-panel {
-            background: rgba(18, 22, 38, 0.55);
-            backdrop-filter: blur(24px) saturate(180%);
-            -webkit-backdrop-filter: blur(24px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.09);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+        .app-shell {
+            background: rgba(18, 22, 34, 0.92);
+            backdrop-filter: blur(40px) saturate(200%);
+            -webkit-backdrop-filter: blur(40px) saturate(200%);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 35px 80px rgba(0, 0, 0, 0.5), 0 0 50px rgba(168, 85, 247, 0.25);
+            border-radius: 36px;
         }
 
-        .glass-panel-interactive {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        .dark-card {
+            background: rgba(30, 35, 52, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(16px);
         }
-        .glass-panel-interactive:hover {
-            background: rgba(30, 38, 64, 0.65);
-            border-color: rgba(255, 255, 255, 0.2);
+        .dark-card-interactive {
+            transition: all 0.25s ease;
+        }
+        .dark-card-interactive:hover {
+            background: rgba(45, 52, 75, 0.85);
+            border-color: rgba(168, 85, 247, 0.4);
             transform: translateY(-2px);
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.2);
         }
 
-        .glass-input {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(12px);
-        }
-        .glass-input:focus {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(168, 85, 247, 0.6);
-            box-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
-            outline: none;
+        .white-stage {
+            background: #ffffff;
+            color: #0f172a;
+            border-radius: 32px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
         }
 
-        /* Custom Range Slider */
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(100, 116, 139, 0.3);
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(168, 85, 247, 0.6);
+        }
+
         input[type=range] {
             -webkit-appearance: none;
             appearance: none;
@@ -94,44 +102,27 @@
         }
         input[type=range]::-webkit-slider-runnable-track {
             width: 100%;
-            height: 6px;
+            height: 5px;
             cursor: pointer;
             border-radius: 9999px;
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(148, 163, 184, 0.25);
         }
         input[type=range]::-webkit-slider-thumb {
-            height: 14px;
-            width: 14px;
+            height: 12px;
+            width: 12px;
             border-radius: 50%;
             background: #ffffff;
-            box-shadow: 0 0 10px rgba(236, 72, 153, 0.8), 0 0 20px rgba(168, 85, 247, 0.6);
+            box-shadow: 0 0 10px rgba(168, 85, 247, 0.8);
             cursor: pointer;
             -webkit-appearance: none;
-            margin-top: -4px;
-            transition: transform 0.15s ease, background-color 0.15s ease;
+            margin-top: -3.5px;
+            transition: transform 0.15s ease;
         }
         input[type=range]:hover::-webkit-slider-thumb {
             transform: scale(1.3);
-            background: #ec4899;
+            background: #a855f7;
         }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.2);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 9999px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(168, 85, 247, 0.5);
-        }
-
-        /* Vinyl Disc Animation */
         .spinning {
             animation: spin 14s linear infinite;
         }
@@ -139,257 +130,134 @@
             animation-play-state: paused;
         }
 
-        /* Gradient Text */
+        canvas#visualizer {
+            filter: drop-shadow(0 0 8px rgba(168, 85, 247, 0.4));
+        }
+
         .text-gradient {
             background: linear-gradient(135deg, #ec4899 0%, #a855f7 50%, #06b6d4 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-
-        canvas#visualizer {
-            filter: drop-shadow(0 0 12px rgba(168, 85, 247, 0.5));
-        }
-
-        /* Glowing background blobs */
-        .ambient-blob-1 {
-            position: fixed;
-            top: -10%;
-            left: -10%;
-            width: 50vw;
-            height: 50vw;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(168, 85, 247, 0.22) 0%, rgba(0, 0, 0, 0) 70%);
-            filter: blur(80px);
-            z-index: -1;
-            pointer-events: none;
-        }
-        .ambient-blob-2 {
-            position: fixed;
-            bottom: -15%;
-            right: -10%;
-            width: 55vw;
-            height: 55vw;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(236, 72, 153, 0.18) 0%, rgba(0, 0, 0, 0) 70%);
-            filter: blur(90px);
-            z-index: -1;
-            pointer-events: none;
-        }
-        .ambient-blob-3 {
-            position: fixed;
-            top: 40%;
-            right: 25%;
-            width: 35vw;
-            height: 35vw;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(6, 182, 212, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
-            filter: blur(85px);
-            z-index: -1;
-            pointer-events: none;
-        }
     </style>
 </head>
-<body class="h-screen w-screen flex flex-col font-sans antialiased selection:bg-purple-500/30 selection:text-purple-200">
+<body class="p-4 sm:p-6 w-screen h-screen flex items-center justify-center">
 
-    <!-- Ambient Background Orbs -->
-    <div class="ambient-blob-1 animate-pulse-slow"></div>
-    <div class="ambient-blob-2"></div>
-    <div class="ambient-blob-3 animate-float"></div>
-
-    <!-- Hidden HTML5 Audio Element -->
+    <!-- Hidden HTML5 Audio Element & File Input -->
     <audio id="audio-player" crossorigin="anonymous" preload="metadata"></audio>
     <input type="file" id="local-file-input" accept="audio/*" class="hidden" onchange="handleLocalFileUpload(event)">
 
-    <!-- Main Container -->
-    <div class="flex flex-1 h-[calc(100vh-90px)] overflow-hidden p-3 gap-3">
+    <!-- Main Outer Glass Shell -->
+    <div class="app-shell w-full max-w-[1280px] h-[92vh] max-h-[850px] flex overflow-hidden p-3 gap-3 relative">
         
-        <!-- Sidebar Navigation & Hardcoded Popular Playlist -->
-        <aside class="w-72 glass-panel rounded-3xl flex flex-col shrink-0 p-4 relative z-10 transition-all duration-300 hidden md:flex">
-            <!-- Brand Logo -->
-            <div class="flex items-center gap-3 px-3 py-2 mb-4">
-                <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-pink-500 via-purple-500 to-cyan-400 flex items-center justify-center shadow-[0_0_20px_rgba(168,85,247,0.5)]">
-                    <i class="fa-solid fa-compact-disc text-white text-xl animate-spin-slow"></i>
-                </div>
-                <div>
-                    <h1 class="text-xl font-bold tracking-tight text-gradient">AETHER</h1>
-                    <p class="text-[10px] text-slate-400 tracking-wider font-semibold uppercase">Music Player</p>
-                </div>
-            </div>
-
-            <!-- Navigation Links -->
-            <nav class="space-y-1 mb-4">
-                <a href="#" class="flex items-center gap-3 px-3.5 py-2.5 rounded-2xl bg-white/10 text-white text-sm font-medium shadow-inner transition-all">
-                    <i class="fa-solid fa-house text-purple-400"></i>
-                    <span>Home</span>
-                </a>
-                <a href="#" class="flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-slate-400 hover:text-white hover:bg-white/5 text-sm transition-all">
-                    <i class="fa-solid fa-fire text-pink-400"></i>
-                    <span>Top Hits 2026</span>
-                </a>
-            </nav>
-
-            <div class="h-px bg-white/10 my-1"></div>
-
-            <!-- Hardcoded Popular Playlist Section -->
-            <div class="flex-1 overflow-hidden flex flex-col my-2">
-                <div class="px-2 py-1 flex items-center justify-between text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">
-                    <span class="flex items-center gap-1.5"><i class="fa-solid fa-list-ol text-cyan-400"></i> Popular Playlist (5 Hits)</span>
-                    <span class="text-[10px] text-slate-400 font-mono">5 Tracks</span>
-                </div>
-
-                <!-- Hardcoded Track List -->
-                <div id="sidebar-playlist-container" class="flex-1 overflow-y-auto pr-1 space-y-1.5">
-                    <!-- Dynamically populated from POPULAR_PLAYLIST -->
-                </div>
-            </div>
-
-            <!-- Backend Proxy Status Card -->
-            <div class="p-3 rounded-2xl bg-white/5 border border-white/10 flex flex-col gap-1.5 mt-auto shrink-0">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-2">
-                        <div id="proxy-status-indicator" class="w-2.5 h-2.5 rounded-full bg-amber-400"></div>
-                        <span class="text-xs font-semibold text-slate-200">Render Proxy</span>
-                    </div>
-                    <button onclick="openBackendModal()" title="Configure Backend URL" class="text-xs text-purple-300 hover:text-purple-100 underline">
-                        <i class="fa-solid fa-gear"></i>
-                    </button>
-                </div>
-                <p id="proxy-status-text" class="text-[10px] text-slate-400 truncate">https://webservicebackend-zm90.onrender.com</p>
-            </div>
-        </aside>
-
-        <!-- Main Display Area -->
-        <main class="flex-1 flex flex-col space-y-3 overflow-hidden">
+        <!-- LEFT PANE: DARK NAVIGATION & NOW PLAYING PLAYER -->
+        <div class="w-[450px] shrink-0 flex gap-3 text-slate-100 overflow-hidden">
             
-            <!-- Top Search Bar & YouTube Proxy Input -->
-            <header class="glass-panel rounded-3xl p-3.5 flex items-center justify-between gap-2.5">
+            <!-- Slim Icon Navigation Sidebar -->
+            <div class="w-14 shrink-0 flex flex-col items-center justify-between py-4 bg-white/5 rounded-3xl border border-white/5">
                 
-                <!-- YouTube URL Input Container -->
-                <div class="flex-1 flex items-center gap-2 bg-white/5 border border-white/10 rounded-2xl px-3.5 py-2 focus-within:border-purple-500/60 focus-within:shadow-[0_0_20px_rgba(168,85,247,0.25)] transition-all">
-                    <i class="fa-brands fa-youtube text-red-500 text-xl"></i>
-                    <input type="text" id="yt-url-input" 
-                        placeholder="Paste YouTube Video URL (e.g. https://www.youtube.com/watch?v=...)" 
-                        class="w-full bg-transparent text-sm text-slate-100 placeholder-slate-400 focus:outline-none"
-                        onkeydown="if(event.key==='Enter') streamFromYoutubeInput()">
-                    <button onclick="streamFromYoutubeInput()" id="btn-add-stream" class="shrink-0 px-3.5 py-2 rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-400 hover:to-purple-500 text-white font-medium text-xs shadow-lg shadow-pink-500/25 flex items-center gap-1.5 transition-all active:scale-95">
-                        <i class="fa-solid fa-play"></i>
-                        <span class="hidden sm:inline">Stream YouTube</span>
-                    </button>
+                <div class="w-9 h-9 rounded-2xl bg-gradient-to-tr from-pink-500 to-purple-600 flex items-center justify-center shadow-[0_0_15px_rgba(236,72,153,0.5)] cursor-pointer" onclick="openMusicManagerModal()">
+                    <i class="fa-solid fa-compact-disc text-white text-base animate-spin-slow"></i>
                 </div>
 
-                <!-- Upload MP3 File Button -->
-                <button onclick="document.getElementById('local-file-input').click()" 
-                        class="px-3.5 py-2.5 rounded-2xl bg-white/10 border border-white/15 hover:bg-white/15 text-purple-300 hover:text-white font-semibold text-xs flex items-center gap-2 transition shrink-0" 
-                        title="Upload MP3 file from your computer">
-                    <i class="fa-solid fa-file-audio text-pink-400 text-sm"></i>
-                    <span class="hidden sm:inline">Upload MP3</span>
+                <div class="flex flex-col gap-6 text-slate-400">
+                    <button class="text-white hover:text-purple-400 transition" title="Home"><i class="fa-solid fa-house text-lg"></i></button>
+                    <button class="hover:text-purple-400 transition" title="Music"><i class="fa-solid fa-music text-lg"></i></button>
+                    <button class="hover:text-purple-400 transition" title="Queue"><i class="fa-solid fa-layer-group text-lg"></i></button>
+                    <button class="hover:text-purple-400 transition" title="Favorites"><i class="fa-solid fa-heart text-lg"></i></button>
+                    <button onclick="openMusicManagerModal()" class="hover:text-purple-400 transition" title="Thêm Nhạc Lên Server"><i class="fa-solid fa-circle-plus text-lg text-pink-400"></i></button>
+                </div>
+
+                <button onclick="openMusicManagerModal('backend')" class="text-slate-400 hover:text-white transition" title="Settings">
+                    <i class="fa-solid fa-gear text-lg"></i>
                 </button>
 
-                <!-- Backend Config Button -->
-                <button onclick="openBackendModal()" class="p-2.5 rounded-2xl bg-white/5 border border-white/10 text-slate-300 hover:text-white hover:bg-white/10 transition shrink-0" title="Render Server Settings">
-                    <i class="fa-solid fa-cloud text-purple-400"></i>
-                </button>
+            </div>
 
-                <!-- Visualizer Selector -->
-                <select id="visualizer-style" onchange="changeVisualizerStyle()" class="hidden md:block bg-white/10 border border-white/15 text-slate-200 text-xs rounded-xl px-3 py-2 focus:outline-none focus:border-purple-400 shrink-0">
-                    <option value="bars" class="bg-slate-900 text-slate-200">Bars Visualizer</option>
-                    <option value="wave" class="bg-slate-900 text-slate-200">Oscilloscope Wave</option>
-                    <option value="circle" class="bg-slate-900 text-slate-200">Circular Spectrum</option>
-                </select>
-
-            </header>
-
-            <!-- Main Interactive Content Grid -->
-            <div class="flex-1 grid grid-cols-12 gap-3 overflow-hidden">
+            <!-- Left Inner Container -->
+            <div class="flex-1 flex flex-col justify-between overflow-hidden py-1 pr-1 space-y-3">
                 
-                <!-- Hero Track Card & Canvas Spectrum (Left 7 Cols) -->
-                <div class="col-span-12 lg:col-span-7 glass-panel rounded-3xl p-5 sm:p-6 flex flex-col justify-between relative overflow-hidden group">
-                    
-                    <!-- Top Status Badges -->
-                    <div class="flex items-center justify-between z-10">
-                        <span id="stream-type-badge" class="px-3 py-1 rounded-full bg-purple-500/20 border border-purple-500/40 text-purple-300 text-xs font-semibold backdrop-blur-md flex items-center gap-1.5">
-                            <span class="w-1.5 h-1.5 rounded-full bg-purple-400 animate-ping"></span>
-                            Render Proxy Stream
-                        </span>
-                        <div class="flex items-center gap-2 text-slate-400 text-xs">
-                            <span class="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10"><i class="fa-solid fa-cloud text-cyan-400 mr-1"></i> Render Live</span>
-                            <span class="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10"><i class="fa-solid fa-wave-square text-purple-400 mr-1"></i> WebAudio API</span>
-                        </div>
-                    </div>
-
-                    <!-- Vinyl Album Art + Audio Visualizer Center Container -->
-                    <div class="my-auto py-4 flex flex-col items-center justify-center relative z-10">
-                        
-                        <!-- Vinyl Album Cover Disc Container -->
-                        <div class="relative w-48 h-48 sm:w-60 sm:h-60 flex items-center justify-center group-hover:scale-[1.02] transition-transform duration-500">
-                            <!-- Glowing Disc Shadow Aura -->
-                            <div class="absolute inset-0 rounded-full bg-gradient-to-r from-pink-500 via-purple-600 to-cyan-400 blur-2xl opacity-40 group-hover:opacity-75 transition-opacity duration-500"></div>
-
-                            <!-- Vinyl Grooves Disc Outer -->
-                            <div id="vinyl-disc" class="absolute w-full h-full rounded-full bg-slate-950 border-4 border-slate-800 shadow-2xl flex items-center justify-center spinning paused">
-                                <div class="w-[92%] h-[92%] rounded-full border border-white/5 flex items-center justify-center">
-                                    <div class="w-[80%] h-[80%] rounded-full border border-white/5 flex items-center justify-center">
-                                        <div class="w-[65%] h-[65%] rounded-full border border-white/5"></div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Album Thumbnail Image Center -->
-                            <div class="relative w-32 h-32 sm:w-36 sm:h-36 rounded-full overflow-hidden border-4 border-purple-500/40 shadow-xl z-10">
-                                <img id="album-cover-img" 
-                                     src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=600&auto=format&fit=crop" 
-                                     alt="Album Artwork" 
-                                     class="w-full h-full object-cover">
-                                <div class="absolute inset-0 m-auto w-6 h-6 rounded-full bg-slate-950 border-2 border-slate-700 shadow-inner"></div>
-                            </div>
-                        </div>
-
-                        <!-- Web Audio API Canvas Visualizer -->
-                        <div class="w-full h-20 mt-4 relative flex items-center justify-center">
-                            <canvas id="visualizer" class="w-full h-full rounded-2xl"></canvas>
-                        </div>
-                    </div>
-
-                    <!-- Track Details Header -->
-                    <div class="z-10 flex items-end justify-between gap-4 pt-1">
-                        <div class="max-w-[80%]">
-                            <h2 id="current-track-title" class="text-lg sm:text-2xl font-bold text-slate-100 truncate tracking-tight">Starboy</h2>
-                            <p id="current-track-artist" class="text-xs sm:text-sm text-purple-300 font-medium mt-0.5 truncate">The Weeknd ft. Daft Punk</p>
-                        </div>
-                        <button onclick="toggleFavoriteCurrent()" id="btn-fav" class="p-2.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 text-slate-400 hover:text-pink-500 transition-all">
-                            <i class="fa-regular fa-heart text-lg"></i>
+                <!-- Next Composition Section -->
+                <div>
+                    <div class="flex items-center justify-between mb-2 px-1">
+                        <h3 class="text-sm font-bold text-slate-200 tracking-tight">Next composition</h3>
+                        <button onclick="openMusicManagerModal()" class="w-6 h-6 rounded-full bg-white/10 text-slate-300 hover:text-white hover:bg-white/20 flex items-center justify-center transition" title="Thêm bài hát mới">
+                            <i class="fa-solid fa-plus text-xs"></i>
                         </button>
                     </div>
 
+                    <!-- Composition Cards Carousel -->
+                    <div class="flex gap-2.5 overflow-x-auto pb-1">
+                        <div onclick="loadTrack(1)" class="w-40 shrink-0 p-2.5 rounded-2xl dark-card dark-card-interactive cursor-pointer flex items-center gap-2.5">
+                            <img src="https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?q=80&w=300&auto=format&fit=crop" class="w-10 h-10 rounded-xl object-cover">
+                            <div class="overflow-hidden">
+                                <h4 class="text-xs font-bold truncate text-slate-100">Blinding Lights</h4>
+                                <p class="text-[10px] text-slate-400 truncate">The Weeknd</p>
+                            </div>
+                        </div>
+                        <div onclick="loadTrack(2)" class="w-40 shrink-0 p-2.5 rounded-2xl dark-card dark-card-interactive cursor-pointer flex items-center gap-2.5">
+                            <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=300&auto=format&fit=crop" class="w-10 h-10 rounded-xl object-cover">
+                            <div class="overflow-hidden">
+                                <h4 class="text-xs font-bold truncate text-slate-100">As It Was</h4>
+                                <p class="text-[10px] text-slate-400 truncate">Harry Styles</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Playing Queue List (Right 5 Cols) -->
-                <div class="col-span-12 lg:col-span-5 flex flex-col space-y-3 h-full overflow-hidden">
+                <!-- Main Floating Now Playing Card -->
+                <div class="flex-1 dark-card rounded-3xl p-5 flex flex-col justify-between relative overflow-hidden group shadow-2xl border border-white/10">
                     
-                    <div class="glass-panel rounded-3xl p-4 flex-1 flex flex-col overflow-hidden">
-                        <div class="flex items-center justify-between mb-3 px-1">
-                            <div class="flex items-center gap-2">
-                                <i class="fa-solid fa-list-check text-pink-400"></i>
-                                <h3 class="font-bold text-sm text-slate-200">Active Queue</h3>
-                            </div>
-                            <span id="queue-count-label" class="text-xs text-slate-400">5 Tracks</span>
-                        </div>
-
-                        <div id="queue-container" class="flex-1 overflow-y-auto pr-1 space-y-2">
-                            <!-- Dynamically populated queue items -->
+                    <div class="flex items-center justify-between z-10 mb-2">
+                        <span id="stream-type-badge" class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-[10px] font-semibold backdrop-blur-md flex items-center gap-1.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+                            Global Server Database Sync
+                        </span>
+                        <div class="flex items-center gap-1.5">
+                            <button onclick="toggleFavoriteCurrent()" id="btn-fav" class="text-slate-400 hover:text-pink-400 text-sm">
+                                <i class="fa-regular fa-heart"></i>
+                            </button>
                         </div>
                     </div>
 
-                    <!-- Render Endpoint Info Card -->
-                    <div class="glass-panel rounded-3xl p-3.5 shrink-0 bg-gradient-to-br from-purple-900/30 via-slate-900/40 to-pink-900/20">
-                        <div class="flex items-start gap-3">
-                            <div class="p-2 rounded-xl bg-purple-500/20 text-purple-300 border border-purple-500/30 shrink-0">
-                                <i class="fa-solid fa-circle-play text-base"></i>
-                            </div>
-                            <div class="text-xs">
-                                <h4 class="font-bold text-slate-200">Render Backend Connected Live</h4>
-                                <p class="text-slate-400 text-[11px] leading-relaxed mt-0.5">Streaming audio directly through your backend: <code id="active-render-endpoint" class="text-pink-300 font-mono">https://webservicebackend-zm90.onrender.com/play-audio?url=...</code></p>
-                            </div>
+                    <div class="my-auto py-2 flex flex-col items-center justify-center relative">
+                        <div class="relative w-44 h-44 rounded-2xl overflow-hidden shadow-2xl border border-white/15 group-hover:scale-[1.02] transition-transform duration-300">
+                            <img id="album-cover-img" 
+                                 src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=600&auto=format&fit=crop" 
+                                 alt="Cover Artwork" 
+                                 class="w-full h-full object-cover">
+                        </div>
+
+                        <div class="w-full h-10 mt-3 flex items-center justify-center">
+                            <canvas id="visualizer" class="w-full h-full rounded-xl"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-1 z-10">
+                        <h2 id="current-track-title" class="text-lg font-bold text-slate-100 truncate">Starboy</h2>
+                        <p id="current-track-artist" class="text-xs text-purple-300 font-medium mt-0.5 truncate">The Weeknd ft. Daft Punk</p>
+                    </div>
+
+                    <div class="flex flex-col items-center gap-2 mt-3 z-10">
+                        <div class="flex items-center gap-5">
+                            <button onclick="toggleShuffle()" id="btn-shuffle" class="text-slate-400 hover:text-purple-400 text-xs"><i class="fa-solid fa-shuffle"></i></button>
+                            <button onclick="playPrevTrack()" class="text-slate-200 hover:text-white text-base"><i class="fa-solid fa-backward-step"></i></button>
+                            
+                            <button onclick="togglePlayPause()" id="btn-play-pause" class="w-12 h-12 rounded-full bg-white text-slate-950 flex items-center justify-center text-lg shadow-[0_0_20px_rgba(255,255,255,0.4)] hover:scale-105 active:scale-95 transition-all">
+                                <i class="fa-solid fa-play ml-0.5" id="icon-play-pause"></i>
+                            </button>
+
+                            <button onclick="playNextTrack()" class="text-slate-200 hover:text-white text-base"><i class="fa-solid fa-forward-step"></i></button>
+                            <button onclick="toggleRepeat()" id="btn-repeat" class="text-slate-400 hover:text-purple-400 text-xs"><i class="fa-solid fa-repeat"></i></button>
+                        </div>
+
+                        <div class="w-full flex items-center gap-2 px-1 mt-1">
+                            <span id="time-current" class="text-[10px] font-mono text-slate-400 w-8 text-right">0:00</span>
+                            <input type="range" id="progress-bar" min="0" max="100" value="0" step="0.1" 
+                                   oninput="onScrubInput(this.value)" 
+                                   onchange="onScrubChange(this.value)"
+                                   class="w-full h-1 cursor-pointer">
+                            <span id="time-total" class="text-[10px] font-mono text-slate-400 w-8 text-left">0:00</span>
                         </div>
                     </div>
 
@@ -397,176 +265,264 @@
 
             </div>
 
-        </main>
+        </div>
+
+        <!-- RIGHT PANE: WHITE STAGE & GLOBAL TRENDING TRACKS -->
+        <div class="flex-1 white-stage p-6 sm:p-7 flex flex-col justify-between overflow-hidden relative">
+            
+            <div class="flex items-center justify-between gap-4 mb-5">
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Home</h1>
+
+                <!-- Search & Add YouTube link directly to Global Server Database -->
+                <div class="flex-1 max-w-md flex items-center gap-2 bg-slate-100 border border-slate-200 rounded-full px-4 py-2 focus-within:border-purple-500 focus-within:ring-2 focus-within:ring-purple-200 transition">
+                    <i class="fa-brands fa-youtube text-red-500 text-base"></i>
+                    <input type="text" id="yt-url-input" 
+                           placeholder="Dán link YouTube (Lưu lên Server cho MỌI NGƯỜI)..." 
+                           class="w-full bg-transparent text-xs text-slate-800 placeholder-slate-400 focus:outline-none"
+                           onkeydown="if(event.key==='Enter') streamFromYoutubeInput()">
+                    <button onclick="streamFromYoutubeInput()" id="btn-add-stream" class="px-3.5 py-1.5 rounded-full bg-purple-600 hover:bg-purple-700 text-white font-bold text-[11px] shrink-0 transition shadow-sm">
+                        Lưu Lên Server
+                    </button>
+                </div>
+
+                <div class="flex items-center gap-2 shrink-0">
+                    <button onclick="fetchGlobalPlaylistFromServer()" class="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition" title="Tải lại playlist từ Server">
+                        <i class="fa-solid fa-rotate text-sm"></i>
+                    </button>
+                    <button onclick="openMusicManagerModal()" class="w-9 h-9 rounded-full bg-slate-900 hover:bg-purple-600 text-white flex items-center justify-center transition" title="Thêm Link & Cài Đặt">
+                        <i class="fa-solid fa-sliders text-sm"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Hero Banner Card -->
+            <div class="relative w-full h-44 rounded-3xl overflow-hidden mb-5 bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-950 p-6 flex items-center justify-between text-white shadow-xl">
+                <div class="z-10 max-w-[60%]">
+                    <span class="px-3 py-1 rounded-full bg-white/10 text-cyan-300 text-[10px] font-bold uppercase tracking-wider backdrop-blur-md">Global Shared Playlist</span>
+                    <h2 class="text-3xl font-black tracking-tighter mt-1 text-gradient">R&B NOW</h2>
+                    <p class="text-xs text-slate-300 mt-1 line-clamp-2">Bài hát bạn thêm sẽ tự động LƯU LÊN MÁY CHỦ RENDER. Tất cả mọi người mở trang web đều sẽ thấy bài hát của bạn!</p>
+                </div>
+                <div class="relative w-40 h-full overflow-hidden shrink-0 flex items-center justify-center">
+                    <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=500&auto=format&fit=crop" class="w-full h-full object-cover rounded-2xl opacity-90">
+                </div>
+            </div>
+
+            <!-- Trending Right Now Section -->
+            <div class="flex-1 overflow-hidden flex flex-col">
+                <div class="flex items-center justify-between mb-3 px-1">
+                    <div class="flex items-center gap-2">
+                        <h3 class="text-base font-bold text-slate-900 tracking-tight">Trending right now</h3>
+                        <span id="saved-badge" class="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold">Global Sync Online</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <button onclick="fetchGlobalPlaylistFromServer()" class="text-[11px] font-semibold text-purple-600 hover:text-purple-800 transition"><i class="fa-solid fa-rotate mr-1"></i> Làm Mới Danh Sách</button>
+                    </div>
+                </div>
+
+                <!-- Trending Tracks List -->
+                <div id="trending-tracks-container" class="flex-1 overflow-y-auto pr-1 space-y-2">
+                    <!-- Dynamically populated from Server Database / POPULAR_PLAYLIST -->
+                </div>
+            </div>
+
+            <!-- Bottom Volume Control -->
+            <div class="pt-3 border-t border-slate-100 flex items-center justify-between shrink-0 text-slate-600 text-xs">
+                <div class="flex items-center gap-2">
+                    <span class="font-semibold text-slate-800">Volume</span>
+                    <button onclick="toggleMute()" id="btn-mute" class="text-slate-500 hover:text-slate-800">
+                        <i class="fa-solid fa-volume-high" id="icon-volume"></i>
+                    </button>
+                    <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.8" 
+                           oninput="changeVolume(this.value)" 
+                           class="w-24 h-1.5 cursor-pointer">
+                </div>
+                <div class="flex items-center gap-1.5 text-[11px] text-slate-400">
+                    <span>Render Shared Database:</span>
+                    <code id="active-render-endpoint" class="text-purple-600 font-mono font-semibold">https://webservicebackend-zm90.onrender.com</code>
+                </div>
+            </div>
+
+        </div>
+
     </div>
 
-    <!-- Bottom Persistent Player Control Bar -->
-    <footer class="h-[90px] glass-panel border-t border-white/10 px-4 sm:px-6 flex items-center justify-between gap-4 fixed bottom-0 left-0 right-0 z-50">
-        
-        <!-- Left: Track Metadata -->
-        <div class="flex items-center gap-3.5 w-1/4 min-w-[180px]">
-            <div class="relative w-12 h-12 sm:w-14 sm:h-14 rounded-2xl overflow-hidden shrink-0 border border-white/15 shadow-md">
-                <img id="bar-thumb" src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=600&auto=format&fit=crop" class="w-full h-full object-cover">
-            </div>
-            <div class="overflow-hidden">
-                <h4 id="bar-title" class="text-xs sm:text-sm font-bold text-slate-100 truncate">Starboy</h4>
-                <p id="bar-artist" class="text-[11px] text-purple-300 truncate mt-0.5">The Weeknd ft. Daft Punk</p>
-            </div>
-        </div>
-
-        <!-- Center: Playback Controls & Scrubber -->
-        <div class="flex-1 max-w-2xl flex flex-col items-center gap-1">
+    <!-- Music Manager & Settings Modal -->
+    <div id="music-manager-modal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-xl z-50 flex items-center justify-center p-4 hidden">
+        <div class="glass-panel w-full max-w-xl rounded-3xl p-6 relative border border-white/15 shadow-2xl max-h-[90vh] flex flex-col overflow-hidden text-white">
             
-            <div class="flex items-center gap-4 sm:gap-6">
-                <!-- Shuffle Button -->
-                <button onclick="toggleShuffle()" id="btn-shuffle" class="text-slate-400 hover:text-purple-400 text-sm transition" title="Shuffle Playlist">
-                    <i class="fa-solid fa-shuffle"></i>
-                </button>
-
-                <!-- Previous Track Button -->
-                <button onclick="playPrevTrack()" class="text-slate-300 hover:text-white text-lg transition active:scale-90" title="Previous Track">
-                    <i class="fa-solid fa-backward-step"></i>
-                </button>
-
-                <!-- Play/Pause Main Button -->
-                <button onclick="togglePlayPause()" id="btn-play-pause" class="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-gradient-to-tr from-pink-500 via-purple-600 to-cyan-400 text-white flex items-center justify-center text-lg shadow-[0_0_20px_rgba(236,72,153,0.5)] hover:scale-105 active:scale-95 transition-all">
-                    <i class="fa-solid fa-play ml-0.5" id="icon-play-pause"></i>
-                </button>
-
-                <!-- Next Track Button -->
-                <button onclick="playNextTrack()" class="text-slate-300 hover:text-white text-lg transition active:scale-90" title="Next Track">
-                    <i class="fa-solid fa-forward-step"></i>
-                </button>
-
-                <!-- Repeat Button -->
-                <button onclick="toggleRepeat()" id="btn-repeat" class="text-slate-400 hover:text-purple-400 text-sm transition" title="Repeat Track">
-                    <i class="fa-solid fa-repeat"></i>
+            <div class="flex items-center justify-between pb-4 border-b border-white/10 shrink-0">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-pink-500 to-purple-600 text-white flex items-center justify-center shadow-lg shadow-purple-500/30">
+                        <i class="fa-solid fa-cloud-arrow-up text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-100 text-base">Thêm Nhạc Lên Server Đám Mây</h3>
+                        <p class="text-xs text-slate-400">Mọi bài hát thêm tại đây sẽ lưu lên Máy Chủ cho MỌI NGƯỜI cùng nghe</p>
+                    </div>
+                </div>
+                <button onclick="closeMusicManagerModal()" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white flex items-center justify-center">
+                    <i class="fa-solid fa-xmark text-base"></i>
                 </button>
             </div>
 
-            <!-- Scrubber / Progress Bar -->
-            <div class="w-full flex items-center gap-3 px-2">
-                <span id="time-current" class="text-[11px] font-medium text-slate-400 w-9 text-right">0:00</span>
+            <div class="flex items-center gap-2 py-3 border-b border-white/5 shrink-0 overflow-x-auto">
+                <button onclick="switchModalTab('tab-yt')" id="nav-tab-yt" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-purple-500/20 border border-purple-500/40 text-purple-300 transition shrink-0 flex items-center gap-1.5">
+                    <i class="fa-brands fa-youtube text-red-500"></i> YouTube Link
+                </button>
+                <button onclick="switchModalTab('tab-mp3-url')" id="nav-tab-mp3-url" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-white/5 border border-white/10 text-slate-400 transition shrink-0 flex items-center gap-1.5">
+                    <i class="fa-solid fa-link text-cyan-400"></i> Direct MP3 URL
+                </button>
+                <button onclick="switchModalTab('tab-local')" id="nav-tab-local" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-white/5 border border-white/10 text-slate-400 transition shrink-0 flex items-center gap-1.5">
+                    <i class="fa-solid fa-folder-open text-amber-400"></i> File MP3 Máy Tính
+                </button>
+                <button onclick="switchModalTab('tab-backend')" id="nav-tab-backend" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-white/5 border border-white/10 text-slate-400 transition shrink-0 flex items-center gap-1.5">
+                    <i class="fa-solid fa-gear text-slate-400"></i> Render Server
+                </button>
+            </div>
+
+            <div class="flex-1 overflow-y-auto py-4 space-y-4 pr-1">
                 
-                <div class="relative flex-1 flex items-center">
-                    <input type="range" id="progress-bar" min="0" max="100" value="0" step="0.1" 
-                           oninput="onScrubInput(this.value)" 
-                           onchange="onScrubChange(this.value)"
-                           class="w-full h-1.5 cursor-pointer z-10">
+                <div id="content-tab-yt" class="space-y-3">
+                    <div class="p-3 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-xs text-emerald-200">
+                        <i class="fa-solid fa-globe text-base mr-1.5"></i>
+                        <span><b>Lưu Lên Máy Chủ Đám Mây (Global Sync):</b> Dán link YouTube vào đây, hệ thống sẽ lưu bài hát lên Server Render để bất kỳ ai trên thế giới truy cập vào trang web của bạn đều nghe thấy bài này!</span>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">Nhập Đường Link YouTube (URL)</label>
+                        <input type="text" id="modal-yt-input" 
+                               placeholder="https://www.youtube.com/watch?v=..." 
+                               class="w-full glass-input rounded-xl px-3.5 py-2.5 text-xs text-slate-100 focus:outline-none">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-[11px] font-semibold text-slate-400 mb-1">Tên Bài Hát (Tùy chọn)</label>
+                            <input type="text" id="modal-yt-title" placeholder="VD: Starboy" class="w-full glass-input rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold text-slate-400 mb-1">Ca Sĩ (Tùy chọn)</label>
+                            <input type="text" id="modal-yt-artist" placeholder="VD: The Weeknd" class="w-full glass-input rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none">
+                        </div>
+                    </div>
+
+                    <button onclick="addTrackFromModal('yt')" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold text-xs shadow-lg shadow-pink-500/25 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-cloud-arrow-up"></i> Lưu Lên Server Cho Mọi Người Cùng Nghe
+                    </button>
                 </div>
 
-                <span id="time-total" class="text-[11px] font-medium text-slate-400 w-9 text-left">0:00</span>
-            </div>
-
-        </div>
-
-        <!-- Right: Volume Control -->
-        <div class="flex items-center justify-end gap-3 w-1/4 min-w-[140px]">
-            <div class="flex items-center gap-2">
-                <button onclick="toggleMute()" id="btn-mute" class="text-slate-400 hover:text-slate-200 text-sm">
-                    <i class="fa-solid fa-volume-high" id="icon-volume"></i>
-                </button>
-                <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.8" 
-                       oninput="changeVolume(this.value)" 
-                       class="w-16 sm:w-24 h-1.5 cursor-pointer">
-            </div>
-        </div>
-
-    </footer>
-
-    <!-- Render Backend Configuration Modal -->
-    <div id="backend-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
-        <div class="glass-panel w-full max-w-md rounded-3xl p-6 relative border border-white/15 shadow-2xl">
-            <button onclick="closeBackendModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white">
-                <i class="fa-solid fa-xmark text-lg"></i>
-            </button>
-            
-            <div class="flex items-center gap-3 mb-4">
-                <div class="w-10 h-10 rounded-2xl bg-purple-500/20 text-purple-400 border border-purple-500/30 flex items-center justify-center">
-                    <i class="fa-solid fa-cloud text-xl"></i>
+                <div id="content-tab-mp3-url" class="space-y-3 hidden">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">Đường Link File Audio MP3 Online</label>
+                        <input type="text" id="modal-mp3url-input" 
+                               placeholder="https://domain.com/filename.mp3" 
+                               class="w-full glass-input rounded-xl px-3.5 py-2.5 text-xs text-slate-100 focus:outline-none">
+                    </div>
+                    <button onclick="addTrackFromModal('mp3-url')" class="w-full py-2.5 rounded-xl bg-cyan-600 text-white font-bold text-xs shadow-lg">Thêm Link MP3 Online</button>
                 </div>
-                <div>
-                    <h3 class="font-bold text-slate-100 text-base">Render Backend Proxy Settings</h3>
-                    <p class="text-xs text-slate-400">Configure your live Python backend deployment URL</p>
+
+                <div id="content-tab-local" class="space-y-3 hidden">
+                    <div class="p-4 rounded-2xl border-2 border-dashed border-white/15 text-center cursor-pointer" onclick="document.getElementById('local-file-input').click()">
+                        <i class="fa-solid fa-cloud-arrow-up text-3xl text-purple-400 mb-2"></i>
+                        <h4 class="text-xs font-bold text-slate-200">Chọn File MP3 Từ Máy Tính</h4>
+                    </div>
                 </div>
+
+                <div id="content-tab-backend" class="space-y-3 hidden">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">Render Backend URL</label>
+                        <input type="text" id="input-backend-url" 
+                               placeholder="https://webservicebackend-zm90.onrender.com" 
+                               class="w-full glass-input rounded-xl px-3.5 py-2.5 text-xs text-slate-100 focus:outline-none">
+                    </div>
+                    <button onclick="saveBackendUrl()" class="w-full py-2.5 rounded-xl bg-purple-600 text-white font-bold text-xs shadow-lg">Lưu Server URL</button>
+                </div>
+
             </div>
 
-            <div class="space-y-4 my-4">
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1.5">Render Backend Base URL</label>
-                    <input type="text" id="input-backend-url" 
-                           placeholder="https://webservicebackend-zm90.onrender.com" 
-                           class="w-full glass-input rounded-xl px-3.5 py-2.5 text-xs text-slate-100 focus:outline-none">
-                    <p class="text-[11px] text-slate-400 mt-1.5">Active endpoint: <code class="text-purple-300 font-mono">https://webservicebackend-zm90.onrender.com</code></p>
-                </div>
-            </div>
-
-            <div class="flex items-center justify-end gap-2.5 mt-6">
-                <button onclick="closeBackendModal()" class="px-4 py-2 rounded-xl text-xs text-slate-300 hover:bg-white/5">Cancel</button>
-                <button onclick="saveBackendUrl()" class="px-4 py-2 rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-400 hover:to-purple-500 text-white font-semibold text-xs shadow-lg shadow-pink-500/25">Save & Test Connection</button>
-            </div>
         </div>
     </div>
 
     <!-- JavaScript Application Logic -->
     <script>
-        // HARDCODED POPULAR PLAYLIST (5 Popular Songs with Title, Artist, Cover Image, & YouTube URL)
-        const POPULAR_PLAYLIST = [
+        // Baseline Playlist
+        const DEFAULT_POPULAR_PLAYLIST = [
             {
                 id: 'hit-1',
-                title: 'Starboy',
-                artist: 'The Weeknd ft. Daft Punk',
-                thumbnail: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=600&auto=format&fit=crop',
-                youtubeUrl: 'https://www.youtube.com/watch?v=34Na4j8AVgA',
-                duration: 230
+                rank: '01',
+                title: "I'm Good (Blue)",
+                artist: 'David Guetta & Bebe Rexha',
+                thumbnail: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=400&auto=format&fit=crop',
+                youtubeUrl: 'https://www.youtube.com/watch?v=90RLzVUzu18',
+                duration: 179,
+                plays: '8 078 651'
             },
             {
                 id: 'hit-2',
-                title: 'Blinding Lights',
-                artist: 'The Weeknd',
-                thumbnail: 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?q=80&w=600&auto=format&fit=crop',
-                youtubeUrl: 'https://www.youtube.com/watch?v=4NRXx6U8ABQ',
-                duration: 200
+                rank: '02',
+                title: 'Under the Influence',
+                artist: 'Chris Brown',
+                thumbnail: 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?q=80&w=400&auto=format&fit=crop',
+                youtubeUrl: 'https://www.youtube.com/watch?v=vL-12Vj2GgM',
+                duration: 184,
+                plays: '2 341 221'
             },
             {
                 id: 'hit-3',
-                title: 'As It Was',
-                artist: 'Harry Styles',
-                thumbnail: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=600&auto=format&fit=crop',
-                youtubeUrl: 'https://www.youtube.com/watch?v=H5v3kku4y6Q',
-                duration: 167
+                rank: '03',
+                title: 'Forget Me',
+                artist: 'Lewis Capaldi',
+                thumbnail: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=400&auto=format&fit=crop',
+                youtubeUrl: 'https://www.youtube.com/watch?v=n_eX6lVb-kI',
+                duration: 204,
+                plays: '2 212 883'
             },
             {
                 id: 'hit-4',
-                title: 'Shape of You',
-                artist: 'Ed Sheeran',
-                thumbnail: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=600&auto=format&fit=crop',
-                youtubeUrl: 'https://www.youtube.com/watch?v=JGwWNGJdvx8',
-                duration: 233
+                rank: '04',
+                title: 'Bad Habit',
+                artist: 'Steve Lacy',
+                thumbnail: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=400&auto=format&fit=crop',
+                youtubeUrl: 'https://www.youtube.com/watch?v=VF-rug85700',
+                duration: 212,
+                plays: '1 934 291'
             },
             {
                 id: 'hit-5',
-                title: 'Stay',
-                artist: 'The Kid LAROI & Justin Bieber',
-                thumbnail: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=600&auto=format&fit=crop',
-                youtubeUrl: 'https://www.youtube.com/watch?v=kTJczUoc26U',
-                duration: 141
+                rank: '05',
+                title: "DON'T YOU WORRY",
+                artist: 'Black Eyed Peas, Shakira & David Guetta',
+                thumbnail: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=400&auto=format&fit=crop',
+                youtubeUrl: 'https://www.youtube.com/watch?v=nutZ_wX1xT4',
+                duration: 198,
+                plays: '1 556 239'
+            },
+            {
+                id: 'hit-6',
+                rank: '06',
+                title: 'Starboy',
+                artist: 'The Weeknd ft. Daft Punk',
+                thumbnail: 'https://images.unsplash.com/photo-1518609878373-06d740f60d8b?q=80&w=400&auto=format&fit=crop',
+                youtubeUrl: 'https://www.youtube.com/watch?v=34Na4j8AVgA',
+                duration: 230,
+                plays: '3 410 882'
             }
         ];
 
-        // State Management - Connected to live Render Backend
+        // State Management
         let backendUrl = localStorage.getItem('aether_render_backend_url') || 'https://webservicebackend-zm90.onrender.com';
         
-        let queue = POPULAR_PLAYLIST.map(track => buildTrackObject(track));
+        let rawQueueData = [...DEFAULT_POPULAR_PLAYLIST];
+        let queue = rawQueueData.map((track, idx) => buildTrackObject(track, idx));
+
         let currentTrackIndex = 0;
         let isPlaying = false;
         let isShuffle = false;
         let isRepeat = false;
         let isMuted = false;
         let previousVolume = 0.8;
-        let backendOnline = false;
 
-        // DOM Element Cache
+        // DOM Cache
         const audio = document.getElementById('audio-player');
         const btnPlayPause = document.getElementById('btn-play-pause');
         const iconPlayPause = document.getElementById('icon-play-pause');
@@ -576,87 +532,86 @@
         const volumeSlider = document.getElementById('volume-slider');
         const iconVolume = document.getElementById('icon-volume');
 
-        const vinylDisc = document.getElementById('vinyl-disc');
         const albumCoverImg = document.getElementById('album-cover-img');
         const currentTrackTitle = document.getElementById('current-track-title');
         const currentTrackArtist = document.getElementById('current-track-artist');
 
-        const barThumb = document.getElementById('bar-thumb');
-        const barTitle = document.getElementById('bar-title');
-        const barArtist = document.getElementById('bar-artist');
-
-        const queueContainer = document.getElementById('queue-container');
-        const sidebarPlaylistContainer = document.getElementById('sidebar-playlist-container');
-        const queueCountLabel = document.getElementById('queue-count-label');
+        const trendingTracksContainer = document.getElementById('trending-tracks-container');
         const ytUrlInput = document.getElementById('yt-url-input');
-        const streamTypeBadge = document.getElementById('stream-type-badge');
 
-        // Helper function to build track object with Render endpoint
-        function buildTrackObject(item) {
-            const encodedUrl = encodeURIComponent(item.youtubeUrl || item.rawUrl);
-            const proxyStreamUrl = `${backendUrl.replace(/\/$/, '')}/play-audio?url=${encodedUrl}`;
+        // Web Audio Canvas Visualizer
+        let audioCtx = null;
+        let analyser = null;
+        let sourceNode = null;
+        let canvas = document.getElementById('visualizer');
+        let canvasCtx = canvas.getContext('2d');
+        let visualizerStyle = 'wave';
+
+        function buildTrackObject(item, idx = 0) {
+            let proxyStreamUrl = item.audioUrl;
+            if (item.youtubeUrl || item.rawUrl) {
+                const encodedUrl = encodeURIComponent(item.youtubeUrl || item.rawUrl);
+                proxyStreamUrl = `${backendUrl.replace(/\/$/, '')}/play-audio?url=${encodedUrl}`;
+            }
+
+            const formattedRank = idx + 1 < 10 ? '0' + (idx + 1) : '' + (idx + 1);
+
             return {
                 id: item.id || ('yt-' + Date.now()),
+                rank: item.rank || formattedRank,
                 title: item.title,
                 artist: item.artist,
                 thumbnail: item.thumbnail,
                 duration: item.duration || 180,
+                plays: item.plays || 'Global Track',
                 audioUrl: proxyStreamUrl,
-                isYoutube: true,
-                rawUrl: item.youtubeUrl || item.rawUrl
+                isYoutube: !!(item.youtubeUrl || item.rawUrl),
+                isDirectUrl: item.isDirectUrl || false,
+                rawUrl: item.youtubeUrl || item.rawUrl || item.audioUrl
             };
         }
 
-        // App Initialization
+        // Fetch Global Playlist from Render Server Database so everyone sees added tracks
+        async function fetchGlobalPlaylistFromServer() {
+            try {
+                const res = await fetch(`${backendUrl.replace(/\/$/, '')}/playlist`);
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.playlist && data.playlist.length > 0) {
+                        rawQueueData = data.playlist;
+                        queue = rawQueueData.map((track, idx) => buildTrackObject(track, idx));
+                        renderTrendingTracks();
+                        console.log("Global playlist loaded from Render server!");
+                    }
+                }
+            } catch (e) {
+                console.warn("Global playlist fetch notice:", e);
+            }
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
             updateBackendUI();
             setupCanvas();
-            renderSidebarPlaylist();
-            renderQueue();
+            renderTrendingTracks();
             loadTrack(0);
-            checkBackendStatus();
 
-            // Audio Events
+            // Synchronize global playlist from server
+            fetchGlobalPlaylistFromServer();
+
             audio.addEventListener('timeupdate', updateProgress);
             audio.addEventListener('loadedmetadata', onMetadataLoaded);
             audio.addEventListener('ended', onTrackEnded);
-            audio.addEventListener('error', onAudioError);
 
             window.addEventListener('resize', setupCanvas);
         });
 
         function updateBackendUI() {
             const displayEl = document.getElementById('active-render-endpoint');
-            const statusTextEl = document.getElementById('proxy-status-text');
             const inputEl = document.getElementById('input-backend-url');
-
-            if (displayEl) displayEl.textContent = `${backendUrl}/play-audio?url=...`;
-            if (statusTextEl) statusTextEl.textContent = backendUrl;
+            if (displayEl) displayEl.textContent = backendUrl;
             if (inputEl) inputEl.value = backendUrl;
         }
 
-        async function checkBackendStatus() {
-            const statusInd = document.getElementById('proxy-status-indicator');
-            const statusText = document.getElementById('proxy-status-text');
-            try {
-                const res = await fetch(`${backendUrl}/`, { method: 'GET' });
-                if (res.ok) {
-                    backendOnline = true;
-                    statusInd.className = "w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_10px_#34d399]";
-                    statusText.textContent = "Render Backend: Live Online";
-                    statusText.className = "text-[10px] text-emerald-300 font-semibold truncate";
-                } else {
-                    throw new Error("Offline");
-                }
-            } catch (err) {
-                backendOnline = false;
-                statusInd.className = "w-2.5 h-2.5 rounded-full bg-amber-400";
-                statusText.textContent = "Render Proxy: Connecting...";
-                statusText.className = "text-[10px] text-amber-300 truncate";
-            }
-        }
-
-        // Web Audio Context Setup
         function initWebAudio() {
             if (audioCtx) return;
             try {
@@ -681,11 +636,6 @@
             canvasCtx.scale(dpr, dpr);
         }
 
-        function changeVisualizerStyle() {
-            visualizerStyle = document.getElementById('visualizer-style').value;
-        }
-
-        // Spectrum Visualizer Render Loop
         function drawVisualizer() {
             requestAnimationFrame(drawVisualizer);
             if (!analyser) return;
@@ -698,71 +648,28 @@
             const bufferLength = analyser.frequencyBinCount;
             const dataArray = new Uint8Array(bufferLength);
 
-            if (visualizerStyle === 'bars') {
-                analyser.getByteFrequencyData(dataArray);
-                const barWidth = (width / bufferLength) * 2.2;
-                let x = 0;
+            analyser.getByteTimeDomainData(dataArray);
+            canvasCtx.lineWidth = 2.5;
+            const gradient = canvasCtx.createLinearGradient(0, 0, width, 0);
+            gradient.addColorStop(0, '#ec4899');
+            gradient.addColorStop(0.5, '#a855f7');
+            gradient.addColorStop(1, '#06b6d4');
+            canvasCtx.strokeStyle = gradient;
 
-                for (let i = 0; i < bufferLength; i++) {
-                    const barHeight = (dataArray[i] / 255) * height;
-                    const gradient = canvasCtx.createLinearGradient(0, height, 0, 0);
-                    gradient.addColorStop(0, '#a855f7');
-                    gradient.addColorStop(0.5, '#ec4899');
-                    gradient.addColorStop(1, '#06b6d4');
-
-                    canvasCtx.fillStyle = gradient;
-                    canvasCtx.beginPath();
-                    canvasCtx.roundRect(x, height - barHeight, barWidth - 3, barHeight, [4, 4, 0, 0]);
-                    canvasCtx.fill();
-                    x += barWidth;
-                }
-            } else if (visualizerStyle === 'wave') {
-                analyser.getByteTimeDomainData(dataArray);
-                canvasCtx.lineWidth = 3;
-                const gradient = canvasCtx.createLinearGradient(0, 0, width, 0);
-                gradient.addColorStop(0, '#ec4899');
-                gradient.addColorStop(0.5, '#a855f7');
-                gradient.addColorStop(1, '#06b6d4');
-                canvasCtx.strokeStyle = gradient;
-
-                canvasCtx.beginPath();
-                const sliceWidth = width / bufferLength;
-                let x = 0;
-                for (let i = 0; i < bufferLength; i++) {
-                    const v = dataArray[i] / 128.0;
-                    const y = (v * height) / 2;
-                    if (i === 0) canvasCtx.moveTo(x, y);
-                    else canvasCtx.lineTo(x, y);
-                    x += sliceWidth;
-                }
-                canvasCtx.lineTo(width, height / 2);
-                canvasCtx.stroke();
-            } else if (visualizerStyle === 'circle') {
-                analyser.getByteFrequencyData(dataArray);
-                const centerX = width / 2;
-                const centerY = height / 2;
-                const radius = Math.min(width, height) / 4;
-
-                for (let i = 0; i < bufferLength; i++) {
-                    const angle = (i * 2 * Math.PI) / bufferLength;
-                    const barHeight = (dataArray[i] / 255) * 30;
-
-                    const x1 = centerX + Math.cos(angle) * radius;
-                    const y1 = centerY + Math.sin(angle) * radius;
-                    const x2 = centerX + Math.cos(angle) * (radius + barHeight);
-                    const y2 = centerY + Math.sin(angle) * (radius + barHeight);
-
-                    canvasCtx.strokeStyle = `hsl(${i * 6}, 90%, 65%)`;
-                    canvasCtx.lineWidth = 3;
-                    canvasCtx.beginPath();
-                    canvasCtx.moveTo(x1, y1);
-                    canvasCtx.lineTo(x2, y2);
-                    canvasCtx.stroke();
-                }
+            canvasCtx.beginPath();
+            const sliceWidth = width / bufferLength;
+            let x = 0;
+            for (let i = 0; i < bufferLength; i++) {
+                const v = dataArray[i] / 128.0;
+                const y = (v * height) / 2;
+                if (i === 0) canvasCtx.moveTo(x, y);
+                else canvasCtx.lineTo(x, y);
+                x += sliceWidth;
             }
+            canvasCtx.lineTo(width, height / 2);
+            canvasCtx.stroke();
         }
 
-        // Track Loader
         function loadTrack(index) {
             if (index < 0 || index >= queue.length) return;
             currentTrackIndex = index;
@@ -772,23 +679,10 @@
             currentTrackArtist.textContent = track.artist;
             albumCoverImg.src = track.thumbnail;
 
-            barTitle.textContent = track.title;
-            barArtist.textContent = track.artist;
-            barThumb.src = track.thumbnail;
-
-            if (track.isLocal) {
-                streamTypeBadge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping"></span> Local MP3 File`;
-                streamTypeBadge.className = "px-3 py-1 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-300 text-xs font-semibold backdrop-blur-md flex items-center gap-1.5";
-            } else {
-                streamTypeBadge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-red-400 animate-ping"></span> Render Proxy Stream`;
-                streamTypeBadge.className = "px-3 py-1 rounded-full bg-red-500/20 border border-red-500/40 text-red-300 text-xs font-semibold backdrop-blur-md flex items-center gap-1.5";
-            }
-
             audio.src = track.audioUrl;
             audio.load();
 
-            renderQueue();
-            renderSidebarPlaylist();
+            renderTrendingTracks();
 
             if (isPlaying) {
                 audio.play().then(() => {
@@ -798,21 +692,21 @@
             }
         }
 
-        // Handle Local MP3 Uploads
         function handleLocalFileUpload(event) {
             const files = event.target.files;
             if (!files || files.length === 0) return;
-
             const file = files[0];
             const objectUrl = URL.createObjectURL(file);
             const cleanTitle = file.name.replace(/\.[^/.]+$/, "");
 
             const localTrack = {
                 id: 'local-' + Date.now(),
+                rank: '00',
                 title: cleanTitle,
                 artist: 'Local Music File',
-                thumbnail: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=600&auto=format&fit=crop',
+                thumbnail: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=400&auto=format&fit=crop',
                 duration: 0,
+                plays: 'Local',
                 audioUrl: objectUrl,
                 isLocal: true,
                 isYoutube: false
@@ -820,109 +714,143 @@
 
             queue.unshift(localTrack);
             currentTrackIndex = 0;
-            renderQueue();
+            renderTrendingTracks();
             loadTrack(0);
             playAudio();
         }
 
-        // Stream custom YouTube URL from input field
+        // Save track to Server Database via POST /add-track
         async function streamFromYoutubeInput() {
             const rawUrl = ytUrlInput.value.trim();
-            if (!rawUrl) {
-                alert('Please enter a YouTube video URL.');
-                return;
-            }
+            if (!rawUrl) return;
 
             const btnAdd = document.getElementById('btn-add-stream');
             btnAdd.disabled = true;
-            btnAdd.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Connecting...`;
+            btnAdd.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Đang lưu Server...`;
 
             try {
+                const addApiUrl = `${backendUrl.replace(/\/$/, '')}/add-track`;
+                const response = await fetch(addApiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ youtubeUrl: rawUrl })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.playlist) {
+                        rawQueueData = data.playlist;
+                        queue = rawQueueData.map((track, idx) => buildTrackObject(track, idx));
+                    }
+                    ytUrlInput.value = '';
+                    renderTrendingTracks();
+                    loadTrack(0);
+                    playAudio();
+                    alert("Đã lưu bài hát lên Server cho TẤT CẢ MỌI NGƯỜI cùng nghe!");
+                } else {
+                    throw new Error("Lỗi lưu bài hát lên Server");
+                }
+            } catch (err) {
+                // Fallback to local queue if offline
                 const encodedUrl = encodeURIComponent(rawUrl);
                 const proxyAudioUrl = `${backendUrl.replace(/\/$/, '')}/play-audio?url=${encodedUrl}`;
-                const infoApiUrl = `${backendUrl.replace(/\/$/, '')}/track-info?url=${encodedUrl}`;
-
-                let metadata = {
-                    title: 'YouTube Track',
-                    artist: 'Render Cloud Stream',
-                    thumbnail: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=600&auto=format&fit=crop',
-                    duration: 0
-                };
-
-                try {
-                    const infoRes = await fetch(infoApiUrl);
-                    if (infoRes.ok) {
-                        const data = await infoRes.json();
-                        metadata.title = data.title || metadata.title;
-                        metadata.artist = data.artist || metadata.artist;
-                        metadata.thumbnail = data.thumbnail || metadata.thumbnail;
-                        metadata.duration = data.duration || metadata.duration;
-                    }
-                } catch (e) {
-                    console.warn("Track info fetch notice:", e);
-                }
-
-                const newTrack = {
+                const newTrackItem = {
                     id: 'yt-' + Date.now(),
-                    title: metadata.title,
-                    artist: metadata.artist,
-                    thumbnail: metadata.thumbnail,
-                    duration: metadata.duration,
-                    audioUrl: proxyAudioUrl,
-                    isYoutube: true,
-                    rawUrl: rawUrl
+                    title: 'YouTube Track',
+                    artist: 'Global Track',
+                    thumbnail: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=400&auto=format&fit=crop',
+                    youtubeUrl: rawUrl,
+                    duration: 180,
+                    audioUrl: proxyAudioUrl
                 };
-
-                queue.unshift(newTrack);
-                currentTrackIndex = 0;
+                queue.unshift(buildTrackObject(newTrackItem, 0));
                 ytUrlInput.value = '';
-
-                renderQueue();
+                renderTrendingTracks();
                 loadTrack(0);
                 playAudio();
-
-            } catch (err) {
-                alert(`Could not connect to Render backend (${backendUrl}).`);
             } finally {
                 btnAdd.disabled = false;
-                btnAdd.innerHTML = `<i class="fa-solid fa-play"></i> <span class="hidden sm:inline">Stream YouTube</span>`;
+                btnAdd.innerHTML = `Lưu Lên Server`;
             }
         }
 
-        // Playback Controls
-        function togglePlayPause() {
-            if (isPlaying) {
-                pauseAudio();
-            } else {
-                playAudio();
+        async function addTrackFromModal(type) {
+            if (type === 'yt') {
+                const url = document.getElementById('modal-yt-input').value.trim();
+                const customTitle = document.getElementById('modal-yt-title').value.trim();
+                const customArtist = document.getElementById('modal-yt-artist').value.trim();
+                if (url) {
+                    try {
+                        const addApiUrl = `${backendUrl.replace(/\/$/, '')}/add-track`;
+                        const res = await fetch(addApiUrl, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ youtubeUrl: url, title: customTitle, artist: customArtist })
+                        });
+                        if (res.ok) {
+                            const data = await res.json();
+                            if (data.playlist) {
+                                rawQueueData = data.playlist;
+                                queue = rawQueueData.map((track, idx) => buildTrackObject(track, idx));
+                            }
+                            renderTrendingTracks();
+                            loadTrack(0);
+                            playAudio();
+                            alert("Đã lưu bài hát lên Server cho MỌI NGƯỜI cùng nghe!");
+                        }
+                    } catch (e) {
+                        ytUrlInput.value = url;
+                        streamFromYoutubeInput();
+                    }
+                    closeMusicManagerModal();
+                }
+            } else if (type === 'mp3-url') {
+                const url = document.getElementById('modal-mp3url-input').value.trim();
+                if (url) {
+                    const directTrack = {
+                        id: 'direct-' + Date.now(),
+                        rank: '00',
+                        title: 'Direct MP3 Track',
+                        artist: 'Online MP3 Stream',
+                        thumbnail: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=400&auto=format&fit=crop',
+                        duration: 0,
+                        plays: 'Direct MP3',
+                        audioUrl: url,
+                        isDirectUrl: true
+                    };
+                    queue.unshift(directTrack);
+                    currentTrackIndex = 0;
+                    renderTrendingTracks();
+                    loadTrack(0);
+                    playAudio();
+                    closeMusicManagerModal();
+                }
             }
+        }
+
+        function togglePlayPause() {
+            if (isPlaying) pauseAudio();
+            else playAudio();
         }
 
         function playAudio() {
             audio.play().then(() => {
                 isPlaying = true;
                 iconPlayPause.className = 'fa-solid fa-pause';
-                vinylDisc.classList.remove('paused');
                 initWebAudio();
                 if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
-            }).catch(err => {
-                console.error("Audio playback error:", err);
-            });
+            }).catch(err => console.error("Play error:", err));
         }
 
         function pauseAudio() {
             audio.pause();
             isPlaying = false;
             iconPlayPause.className = 'fa-solid fa-play ml-0.5';
-            vinylDisc.classList.add('paused');
         }
 
         function playNextTrack() {
-            if (isShuffle) {
-                currentTrackIndex = Math.floor(Math.random() * queue.length);
-            } else {
-                currentTrackIndex = (currentTrackIndex + 1) % queue.length;
-            }
+            if (isShuffle) currentTrackIndex = Math.floor(Math.random() * queue.length);
+            else currentTrackIndex = (currentTrackIndex + 1) % queue.length;
             loadTrack(currentTrackIndex);
             playAudio();
         }
@@ -939,12 +867,12 @@
 
         function toggleShuffle() {
             isShuffle = !isShuffle;
-            document.getElementById('btn-shuffle').className = isShuffle ? 'text-pink-400 shadow-[0_0_10px_#ec4899] text-sm transition' : 'text-slate-400 hover:text-purple-400 text-sm transition';
+            document.getElementById('btn-shuffle').className = isShuffle ? 'text-purple-400 text-xs' : 'text-slate-400 hover:text-purple-400 text-xs';
         }
 
         function toggleRepeat() {
             isRepeat = !isRepeat;
-            document.getElementById('btn-repeat').className = isRepeat ? 'text-pink-400 shadow-[0_0_10px_#ec4899] text-sm transition' : 'text-slate-400 hover:text-purple-400 text-sm transition';
+            document.getElementById('btn-repeat').className = isRepeat ? 'text-purple-400 text-xs' : 'text-slate-400 hover:text-purple-400 text-xs';
         }
 
         function onTrackEnded() {
@@ -956,11 +884,6 @@
             }
         }
 
-        function onAudioError(e) {
-            console.error("Audio Error:", e);
-        }
-
-        // Progress Scrubber
         function updateProgress() {
             if (!audio.duration) return;
             const pct = (audio.currentTime / audio.duration) * 100;
@@ -975,8 +898,7 @@
 
         function onScrubInput(val) {
             if (!audio.duration) return;
-            const seekTime = (val / 100) * audio.duration;
-            timeCurrent.textContent = formatTime(seekTime);
+            timeCurrent.textContent = formatTime((val / 100) * audio.duration);
         }
 
         function onScrubChange(val) {
@@ -984,19 +906,11 @@
             audio.currentTime = (val / 100) * audio.duration;
         }
 
-        // Volume Controls
         function changeVolume(val) {
             audio.volume = val;
-            if (val == 0) {
-                iconVolume.className = 'fa-solid fa-volume-xmark';
-                isMuted = true;
-            } else if (val < 0.5) {
-                iconVolume.className = 'fa-solid fa-volume-low';
-                isMuted = false;
-            } else {
-                iconVolume.className = 'fa-solid fa-volume-high';
-                isMuted = false;
-            }
+            if (val == 0) iconVolume.className = 'fa-solid fa-volume-xmark';
+            else if (val < 0.5) iconVolume.className = 'fa-solid fa-volume-low';
+            else iconVolume.className = 'fa-solid fa-volume-high';
         }
 
         function toggleMute() {
@@ -1013,109 +927,80 @@
             changeVolume(audio.volume);
         }
 
-        // Render Sidebar Hardcoded Playlist UI
-        function renderSidebarPlaylist() {
-            if (!sidebarPlaylistContainer) return;
-            sidebarPlaylistContainer.innerHTML = '';
-
-            POPULAR_PLAYLIST.forEach((song, idx) => {
-                const queueIdx = queue.findIndex(q => q.title === song.title);
-                const isCurrent = queueIdx === currentTrackIndex;
-
-                const card = document.createElement('div');
-                card.className = `p-2 rounded-2xl flex items-center gap-2.5 cursor-pointer transition-all ${
-                    isCurrent 
-                        ? 'bg-purple-500/20 border border-purple-500/40 shadow-[0_0_12px_rgba(168,85,247,0.2)]' 
-                        : 'bg-white/5 border border-white/5 hover:bg-white/10'
-                }`;
-
-                card.onclick = () => {
-                    let targetIdx = queue.findIndex(q => q.title === song.title);
-                    if (targetIdx === -1) {
-                        queue.push(buildTrackObject(song));
-                        targetIdx = queue.length - 1;
-                    }
-                    loadTrack(targetIdx);
-                    playAudio();
-                };
-
-                card.innerHTML = `
-                    <div class="relative w-9 h-9 rounded-xl overflow-hidden shrink-0 border border-white/10">
-                        <img src="${song.thumbnail}" class="w-full h-full object-cover">
-                        ${isCurrent && isPlaying ? '<div class="absolute inset-0 bg-purple-900/60 flex items-center justify-center"><i class="fa-solid fa-wave-square text-pink-400 text-xs animate-pulse"></i></div>' : ''}
-                    </div>
-                    <div class="overflow-hidden flex-1">
-                        <h4 class="text-xs font-semibold text-slate-100 truncate ${isCurrent ? 'text-purple-300 font-bold' : ''}">${song.title}</h4>
-                        <p class="text-[10px] text-slate-400 truncate">${song.artist}</p>
-                    </div>
-                    <span class="text-[10px] text-slate-400 font-mono pr-1">${formatTime(song.duration)}</span>
-                `;
-                sidebarPlaylistContainer.appendChild(card);
-            });
-        }
-
-        // Render Active Playing Queue UI
-        function renderQueue() {
-            queueContainer.innerHTML = '';
-            queueCountLabel.textContent = `${queue.length} Tracks`;
+        function renderTrendingTracks() {
+            if (!trendingTracksContainer) return;
+            trendingTracksContainer.innerHTML = '';
 
             queue.forEach((track, idx) => {
                 const isCurrent = idx === currentTrackIndex;
-                const item = document.createElement('div');
-                item.className = `p-2.5 rounded-2xl flex items-center justify-between gap-3 cursor-pointer transition-all ${
+                const row = document.createElement('div');
+                row.className = `p-2.5 rounded-2xl flex items-center justify-between gap-4 cursor-pointer transition ${
                     isCurrent 
-                        ? 'bg-purple-500/20 border border-purple-500/40 shadow-[0_0_15px_rgba(168,85,247,0.2)]' 
-                        : 'bg-white/5 border border-white/5 hover:bg-white/10'
+                        ? 'bg-purple-50 border border-purple-200 shadow-sm' 
+                        : 'hover:bg-slate-50 border border-transparent'
                 }`;
 
-                item.onclick = () => {
+                row.onclick = () => {
                     loadTrack(idx);
                     playAudio();
                 };
 
-                item.innerHTML = `
-                    <div class="flex items-center gap-3 overflow-hidden">
-                        <div class="relative w-10 h-10 rounded-xl overflow-hidden shrink-0 border border-white/10">
+                const rankText = idx + 1 < 10 ? '0' + (idx + 1) : '' + (idx + 1);
+
+                row.innerHTML = `
+                    <div class="flex items-center gap-3.5 overflow-hidden">
+                        <span class="text-xs font-bold font-mono text-slate-400 w-5 text-center">${rankText}</span>
+                        <div class="relative w-10 h-10 rounded-xl overflow-hidden shrink-0 shadow-sm border border-slate-200">
                             <img src="${track.thumbnail}" class="w-full h-full object-cover">
-                            ${isCurrent && isPlaying ? '<div class="absolute inset-0 bg-purple-900/60 flex items-center justify-center"><i class="fa-solid fa-wave-square text-pink-400 text-xs animate-pulse"></i></div>' : ''}
+                            ${isCurrent && isPlaying ? '<div class="absolute inset-0 bg-purple-900/60 flex items-center justify-center"><i class="fa-solid fa-wave-square text-white text-xs animate-pulse"></i></div>' : ''}
                         </div>
                         <div class="overflow-hidden">
-                            <h4 class="text-xs font-semibold text-slate-100 truncate ${isCurrent ? 'text-purple-300 font-bold' : ''}">${track.title}</h4>
-                            <p class="text-[10px] text-slate-400 truncate mt-0.5">${track.artist} ${track.isLocal ? '• Local File' : '• Render Proxy'}</p>
+                            <h4 class="text-xs font-bold text-slate-900 truncate ${isCurrent ? 'text-purple-700' : ''}">${track.title}</h4>
+                            <p class="text-[11px] text-slate-400 truncate mt-0.5">${track.artist}</p>
                         </div>
                     </div>
-                    <div class="flex items-center gap-2 shrink-0">
-                        <span class="text-[11px] text-slate-400 font-mono">${formatTime(track.duration || 180)}</span>
-                        ${queue.length > 1 ? `<button onclick="removeFromQueue(event, ${idx})" class="p-1 text-slate-400 hover:text-red-400"><i class="fa-solid fa-xmark text-xs"></i></button>` : ''}
+                    <div class="flex items-center gap-6 shrink-0">
+                        <span class="text-[11px] text-slate-400 font-mono hidden sm:inline">${track.plays || 'Global Track'}</span>
+                        <span class="text-[11px] text-slate-500 font-mono font-medium">${formatTime(track.duration || 180)}</span>
+                        <button onclick="event.stopPropagation(); toggleFavoriteCurrent();" class="text-slate-300 hover:text-pink-500 text-xs"><i class="fa-regular fa-heart"></i></button>
+                        <button onclick="event.stopPropagation();" class="text-slate-400 hover:text-slate-700 text-xs"><i class="fa-solid fa-ellipsis"></i></button>
                     </div>
                 `;
-                queueContainer.appendChild(item);
+                trendingTracksContainer.appendChild(row);
             });
-        }
-
-        function removeFromQueue(e, idx) {
-            e.stopPropagation();
-            if (queue.length <= 1) return;
-            queue.splice(idx, 1);
-            if (currentTrackIndex >= queue.length) currentTrackIndex = queue.length - 1;
-            renderQueue();
-            renderSidebarPlaylist();
         }
 
         function toggleFavoriteCurrent() {
             const btnFav = document.getElementById('btn-fav');
-            btnFav.classList.toggle('text-pink-500');
-            btnFav.classList.toggle('text-slate-400');
+            if (btnFav) {
+                btnFav.classList.toggle('text-pink-500');
+                btnFav.classList.toggle('text-slate-400');
+            }
         }
 
-        // Render Backend Modal Handlers
-        function openBackendModal() {
+        function openMusicManagerModal(initialTab = 'tab-yt') {
+            switchModalTab(initialTab);
             document.getElementById('input-backend-url').value = backendUrl;
-            document.getElementById('backend-modal').classList.remove('hidden');
+            document.getElementById('music-manager-modal').classList.remove('hidden');
         }
 
-        function closeBackendModal() {
-            document.getElementById('backend-modal').classList.add('hidden');
+        function closeMusicManagerModal() {
+            document.getElementById('music-manager-modal').classList.add('hidden');
+        }
+
+        function switchModalTab(tabId) {
+            const tabs = ['tab-yt', 'tab-mp3-url', 'tab-local', 'tab-backend'];
+            tabs.forEach(t => {
+                const nav = document.getElementById(`nav-${t}`);
+                const content = document.getElementById(`content-${t}`);
+                if (t === tabId) {
+                    if (nav) nav.className = "px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-purple-500/20 border border-purple-500/40 text-purple-300 transition shrink-0 flex items-center gap-1.5 shadow-md";
+                    if (content) content.classList.remove('hidden');
+                } else {
+                    if (nav) nav.className = "px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-white/5 border border-white/10 text-slate-400 transition shrink-0 flex items-center gap-1.5";
+                    if (content) content.classList.add('hidden');
+                }
+            });
         }
 
         function saveBackendUrl() {
@@ -1127,18 +1012,9 @@
             backendUrl = val;
             localStorage.setItem('aether_render_backend_url', backendUrl);
 
-            queue = queue.map(t => {
-                if (t.isYoutube) {
-                    const encodedUrl = encodeURIComponent(t.rawUrl);
-                    t.audioUrl = `${backendUrl.replace(/\/$/, '')}/play-audio?url=${encodedUrl}`;
-                }
-                return t;
-            });
-
+            fetchGlobalPlaylistFromServer();
             updateBackendUI();
-            closeBackendModal();
-            checkBackendStatus();
-            loadTrack(currentTrackIndex);
+            closeMusicManagerModal();
         }
 
         function formatTime(seconds) {
