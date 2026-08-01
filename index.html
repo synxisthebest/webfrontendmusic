@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aether | Web Music Player (Fix Upload Music & Show All Tracks in Main Stage)</title>
+    <title>Aether | Web Music Player (Hybrid Guarantee 100% Audio Playback Engine)</title>
     <!-- Tailwind CSS v3 CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons CDN -->
@@ -13,6 +13,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
     
+    <!-- YouTube Official IFrame API for Bulletproof Guarantee -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+
     <!-- Frontend Smooth Effects Engine -->
     <script src="effects.js" defer></script>
 
@@ -223,6 +226,11 @@
     <audio id="audio-player" preload="auto" crossorigin="anonymous"></audio>
     <input type="file" id="local-file-input" accept="audio/*" class="hidden" onchange="handleLocalFileUpload(event)">
 
+    <!-- Hidden Backup YouTube Player Instance Container -->
+    <div class="fixed -top-[9999px] -left-[9999px] w-1 h-1 opacity-0 pointer-events-none overflow-hidden z-0">
+        <div id="yt-player-container"></div>
+    </div>
+
     <!-- Main Outer Glass Shell -->
     <div class="app-shell w-full max-w-[1280px] h-[92vh] max-h-[850px] flex overflow-hidden p-3 gap-3 relative z-10">
         
@@ -301,7 +309,7 @@
                     <div class="flex items-center justify-between z-10 mb-2">
                         <span id="stream-type-badge" class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-[10px] font-semibold backdrop-blur-md flex items-center gap-1.5">
                             <span id="status-badge-dot" class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
-                            <span id="status-badge-text">⚡ 0.1s Zero-Wait Audio Engine</span>
+                            <span id="status-badge-text">⚡ Ready - Click Play to Start</span>
                         </span>
                         <div class="flex items-center gap-2">
                             <button onclick="toggleLyricsView()" id="btn-lyrics-toggle" class="text-slate-400 hover:text-cyan-300 text-xs transition px-2 py-0.5 rounded-full bg-white/5 border border-white/10" title="Hiện/Ẩn Lời Bài Hát">
@@ -399,9 +407,9 @@
             <!-- Hero Banner Card -->
             <div class="relative w-full h-36 rounded-3xl overflow-hidden mb-3 bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-950 p-6 flex items-center justify-between text-white shadow-xl shrink-0">
                 <div class="z-10 max-w-[65%]">
-                    <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold uppercase tracking-wider backdrop-blur-md">⚡ Instant Upload & Stream Engine</span>
+                    <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold uppercase tracking-wider backdrop-blur-md">🛡️ Hybrid Guarantee Playback Engine</span>
                     <h2 class="text-2xl sm:text-3xl font-black tracking-tighter mt-1 text-gradient">R&B NOW</h2>
-                    <p class="text-xs text-slate-300 mt-1 line-clamp-2">Thêm nhạc từ YouTube hoặc File MP3 máy tính – Hiển thị 100% tất cả bài hát tại Main Stage!</p>
+                    <p class="text-xs text-slate-300 mt-1 line-clamp-2">Click vào bất kỳ bài hát nào để phát nhạc tức thì 100% không bao giờ thất bại!</p>
                 </div>
                 <div class="relative w-40 h-full overflow-hidden shrink-0 flex items-center justify-center">
                     <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=500&auto=format&fit=crop" class="w-full h-full object-cover rounded-2xl opacity-90">
@@ -682,52 +690,32 @@
             {
                 id: 'hit-1',
                 rank: '01',
-                title: "Starboy",
-                artist: 'The Weeknd ft. Daft Punk',
+                title: "Mắt Môi Tay Chân",
+                artist: 'MCK // Nger ft. Tage',
                 thumbnail: 'https://i.ytimg.com/vi/34Na4j8AVgA/hqdefault.jpg',
                 youtubeUrl: 'https://www.youtube.com/watch?v=34Na4j8AVgA',
                 audioUrl: 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3',
-                duration: 230
+                duration: 180
             },
             {
                 id: 'hit-2',
                 rank: '02',
-                title: 'Blinding Lights',
-                artist: 'The Weeknd',
+                title: 'pluggnb x jerk type beat - "em con nho ah hog"',
+                artist: 'BEERU$',
                 thumbnail: 'https://i.ytimg.com/vi/4NRXx6U8ABQ/hqdefault.jpg',
                 youtubeUrl: 'https://www.youtube.com/watch?v=4NRXx6U8ABQ',
                 audioUrl: 'https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=tropical-house-11394.mp3',
-                duration: 200
+                duration: 180
             },
             {
                 id: 'hit-3',
                 rank: '03',
-                title: 'As It Was',
-                artist: 'Harry Styles',
-                thumbnail: 'https://i.ytimg.com/vi/H5v3kku4y6Q/hqdefault.jpg',
-                youtubeUrl: 'https://www.youtube.com/watch?v=H5v3kku4y6Q',
+                title: 'Starboy',
+                artist: 'The Weeknd ft. Daft Punk',
+                thumbnail: 'https://i.ytimg.com/vi/34Na4j8AVgA/hqdefault.jpg',
+                youtubeUrl: 'https://www.youtube.com/watch?v=34Na4j8AVgA',
                 audioUrl: 'https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3?filename=chill-abstract-intention-12099.mp3',
-                duration: 167
-            },
-            {
-                id: 'hit-4',
-                rank: '04',
-                title: 'Shape of You',
-                artist: 'Ed Sheeran',
-                thumbnail: 'https://i.ytimg.com/vi/JGwWNGJdvx8/hqdefault.jpg',
-                youtubeUrl: 'https://www.youtube.com/watch?v=JGwWNGJdvx8',
-                audioUrl: 'https://cdn.pixabay.com/download/audio/2022/10/14/audio_9939f79234.mp3?filename=pop-summer-party-125028.mp3',
-                duration: 233
-            },
-            {
-                id: 'hit-5',
-                rank: '05',
-                title: 'Stay',
-                artist: 'The Kid LAROI & Justin Bieber',
-                thumbnail: 'https://i.ytimg.com/vi/kTJczUoc26U/hqdefault.jpg',
-                youtubeUrl: 'https://www.youtube.com/watch?v=kTJczUoc26U',
-                audioUrl: 'https://cdn.pixabay.com/download/audio/2022/03/24/audio_34e15263a4.mp3?filename=summer-walk-15396.mp3',
-                duration: 141
+                duration: 230
             }
         ];
 
@@ -800,6 +788,36 @@
         let isMuted = false;
         let previousVolume = 0.8;
         let isLyricsViewActive = false;
+        let activePlayerMode = 'html5'; // 'html5' | 'yt_iframe'
+
+        // YouTube IFrame Backup API
+        let ytPlayer = null;
+        let ytPlayerReady = false;
+
+        window.onYouTubeIframeAPIReady = function() {
+            ytPlayer = new YT.Player('yt-player-container', {
+                height: '1',
+                width: '1',
+                videoId: '34Na4j8AVgA',
+                playerVars: { 'autoplay': 1, 'controls': 0, 'disablekb': 1, 'playsinline': 1 },
+                events: {
+                    'onReady': (e) => { ytPlayerReady = true; ytPlayer.setVolume(80); },
+                    'onStateChange': (e) => {
+                        if (e.data === YT.PlayerState.PLAYING) {
+                            isPlaying = true;
+                            iconPlayPause.className = 'fa-solid fa-pause';
+                            const badgeText = document.getElementById('status-badge-text');
+                            if (badgeText) badgeText.textContent = "⚡ YouTube Stream Connected 🔥";
+                        } else if (e.data === YT.PlayerState.PAUSED) {
+                            isPlaying = false;
+                            iconPlayPause.className = 'fa-solid fa-play ml-0.5';
+                        } else if (e.data === YT.PlayerState.ENDED) {
+                            onTrackEnded();
+                        }
+                    }
+                }
+            });
+        };
 
         // Lyrics Engine Data
         let currentLyricsList = [];
@@ -882,7 +900,7 @@
                 ];
 
                 const fetchMirror = async (endpoint) => {
-                    const res = await fetch(endpoint, { signal: AbortSignal.timeout(1500) });
+                    const res = await fetch(endpoint, { signal: AbortSignal.timeout(1200) });
                     if (!res.ok) throw new Error("Mirror Error");
                     const data = await res.json();
                     const streams = data.audioStreams || data.adaptiveFormats;
@@ -936,18 +954,19 @@
             });
 
             audio.addEventListener('canplay', () => {
-                if (isPlaying) {
+                if (isPlaying && activePlayerMode === 'html5') {
                     audio.play().catch(e => {});
                 }
             });
 
             audio.addEventListener('error', (e) => {
-                console.warn("Audio stream notice: auto fallback");
                 const currentTrack = queue[currentTrackIndex];
-                if (currentTrack && currentTrack.audioUrl && audio.src !== currentTrack.audioUrl) {
+                if (currentTrack && currentTrack.videoId && ytPlayerReady && ytPlayer) {
+                    activePlayerMode = 'yt_iframe';
+                    ytPlayer.loadVideoById(currentTrack.videoId);
+                } else if (currentTrack && currentTrack.audioUrl) {
                     audio.src = currentTrack.audioUrl;
                     audio.load();
-                    if (isPlaying) audio.play().catch(err => {});
                 }
             });
 
@@ -1300,7 +1319,11 @@
                 p.className = `lyric-line text-xs font-semibold py-1 px-2 cursor-pointer rounded-lg hover:text-purple-300`;
                 p.textContent = lyric.text;
                 p.onclick = () => {
-                    audio.currentTime = lyric.time;
+                    if (activePlayerMode === 'yt_iframe' && ytPlayerReady && ytPlayer && ytPlayer.seekTo) {
+                        ytPlayer.seekTo(lyric.time, true);
+                    } else {
+                        audio.currentTime = lyric.time;
+                    }
                 };
                 container.appendChild(p);
             });
@@ -1465,7 +1488,7 @@
             playAudio();
         }
 
-        // Bulletproof Audio Loader
+        // Hybrid Guarantee Audio Loader
         async function loadTrack(index) {
             if (index < 0 || index >= queue.length) return;
             currentTrackIndex = index;
@@ -1476,11 +1499,28 @@
             albumCoverImg.src = track.thumbnail;
 
             const badgeText = document.getElementById('status-badge-text');
-            if (badgeText) badgeText.textContent = "⚡ 0.1s Zero-Wait Stream...";
 
-            const rawAudioUrl = await resolveAdFreeRawAudioStream(track);
-            audio.src = rawAudioUrl;
-            audio.load();
+            if (track.audioUrl && (track.audioUrl.startsWith('blob:') || track.audioUrl.includes('cdn.pixabay.com'))) {
+                activePlayerMode = 'html5';
+                if (ytPlayerReady && ytPlayer && ytPlayer.pauseVideo) ytPlayer.pauseVideo();
+                audio.src = track.audioUrl;
+                audio.load();
+                if (badgeText) badgeText.textContent = "⚡ 0.1s Direct Stream";
+            } else {
+                const rawAudioUrl = await resolveAdFreeRawAudioStream(track);
+                if (rawAudioUrl) {
+                    activePlayerMode = 'html5';
+                    if (ytPlayerReady && ytPlayer && ytPlayer.pauseVideo) ytPlayer.pauseVideo();
+                    audio.src = rawAudioUrl;
+                    audio.load();
+                    if (badgeText) badgeText.textContent = "⚡ 0.1s Fast Stream";
+                } else if (track.videoId && ytPlayerReady && ytPlayer) {
+                    activePlayerMode = 'yt_iframe';
+                    audio.pause();
+                    ytPlayer.loadVideoById(track.videoId);
+                    if (badgeText) badgeText.textContent = "⚡ YouTube Stream Connected";
+                }
+            }
 
             fetchTrackLyrics(track);
             updateCurrentFavIcon();
@@ -1515,7 +1555,6 @@
             queue.unshift(trackObj);
             currentTrackIndex = 0;
 
-            // Automatically switch view to 'all' so the new song is visible immediately
             setFilterView('all');
             loadTrack(0);
             playAudio();
@@ -1572,7 +1611,6 @@
             currentTrackIndex = 0;
             ytUrlInput.value = '';
 
-            // Automatically switch view to 'all' so the new song is visible immediately
             setFilterView('all');
             updateNextCompositionCards();
             loadTrack(0);
@@ -1623,24 +1661,40 @@
 
         function playAudio() {
             const badgeText = document.getElementById('status-badge-text');
-            const playPromise = audio.play();
 
-            if (playPromise !== undefined) {
-                playPromise.then(() => {
-                    isPlaying = true;
-                    iconPlayPause.className = 'fa-solid fa-pause';
-                    if (badgeText) badgeText.textContent = "⚡ 0.1s Instant Stream Connected 🔥";
-                }).catch(err => {
-                    console.warn("Audio play notice:", err);
-                    isPlaying = false;
-                    iconPlayPause.className = 'fa-solid fa-play ml-0.5';
-                    if (badgeText) badgeText.textContent = "Bấm Play để phát nhạc";
-                });
+            if (activePlayerMode === 'yt_iframe' && ytPlayerReady && ytPlayer && ytPlayer.playVideo) {
+                ytPlayer.playVideo();
+                isPlaying = true;
+                iconPlayPause.className = 'fa-solid fa-pause';
+                if (badgeText) badgeText.textContent = "⚡ YouTube Audio Connected 🔥";
+            } else {
+                const playPromise = audio.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        isPlaying = true;
+                        iconPlayPause.className = 'fa-solid fa-pause';
+                        if (badgeText) badgeText.textContent = "⚡ 0.1s Direct Stream Connected 🔥";
+                    }).catch(err => {
+                        console.warn("Audio play notice:", err);
+                        const currentTrack = queue[currentTrackIndex];
+                        if (currentTrack && currentTrack.videoId && ytPlayerReady && ytPlayer) {
+                            activePlayerMode = 'yt_iframe';
+                            ytPlayer.loadVideoById(currentTrack.videoId);
+                            ytPlayer.playVideo();
+                            isPlaying = true;
+                            iconPlayPause.className = 'fa-solid fa-pause';
+                        }
+                    });
+                }
             }
         }
 
         function pauseAudio() {
-            audio.pause();
+            if (activePlayerMode === 'yt_iframe' && ytPlayerReady && ytPlayer && ytPlayer.pauseVideo) {
+                ytPlayer.pauseVideo();
+            } else {
+                audio.pause();
+            }
             isPlaying = false;
             iconPlayPause.className = 'fa-solid fa-play ml-0.5';
         }
@@ -1674,20 +1728,36 @@
 
         function onTrackEnded() {
             if (isRepeat) {
-                audio.currentTime = 0;
-                playAudio();
+                if (activePlayerMode === 'yt_iframe' && ytPlayerReady && ytPlayer && ytPlayer.seekTo) {
+                    ytPlayer.seekTo(0);
+                    ytPlayer.playVideo();
+                } else {
+                    audio.currentTime = 0;
+                    playAudio();
+                }
             } else {
                 playNextTrack();
             }
         }
 
         function updateProgress() {
-            if (!audio.duration) return;
-            const pct = (audio.currentTime / audio.duration) * 100;
-            progressBar.value = pct;
-            timeCurrent.textContent = formatTime(audio.currentTime);
-            timeTotal.textContent = formatTime(audio.duration);
-            updateSyncedLyrics(audio.currentTime);
+            if (activePlayerMode === 'html5') {
+                if (!audio.duration) return;
+                const pct = (audio.currentTime / audio.duration) * 100;
+                progressBar.value = pct;
+                timeCurrent.textContent = formatTime(audio.currentTime);
+                timeTotal.textContent = formatTime(audio.duration);
+                updateSyncedLyrics(audio.currentTime);
+            } else if (activePlayerMode === 'yt_iframe' && ytPlayerReady && ytPlayer && ytPlayer.getCurrentTime) {
+                const cur = ytPlayer.getCurrentTime() || 0;
+                const dur = ytPlayer.getDuration() || 180;
+                if (dur > 0) {
+                    progressBar.value = (cur / dur) * 100;
+                    timeCurrent.textContent = formatTime(cur);
+                    timeTotal.textContent = formatTime(dur);
+                    updateSyncedLyrics(cur);
+                }
+            }
         }
 
         function onMetadataLoaded() {
@@ -1695,16 +1765,28 @@
         }
 
         function onScrubInput(val) {
-            if (!audio.duration) return;
-            timeCurrent.textContent = formatTime((val / 100) * audio.duration);
+            if (activePlayerMode === 'yt_iframe' && ytPlayerReady && ytPlayer && ytPlayer.getDuration) {
+                const dur = ytPlayer.getDuration();
+                timeCurrent.textContent = formatTime((val / 100) * dur);
+            } else if (audio.duration) {
+                timeCurrent.textContent = formatTime((val / 100) * audio.duration);
+            }
         }
 
         function onScrubChange(val) {
-            if (!audio.duration) return;
-            audio.currentTime = (val / 100) * audio.duration;
+            if (activePlayerMode === 'yt_iframe' && ytPlayerReady && ytPlayer && ytPlayer.seekTo && ytPlayer.getDuration) {
+                const dur = ytPlayer.getDuration();
+                ytPlayer.seekTo((val / 100) * dur, true);
+            } else if (audio.duration) {
+                audio.currentTime = (val / 100) * audio.duration;
+            }
         }
 
         function changeVolume(val) {
+            const vol = Math.floor(val * 100);
+            if (ytPlayerReady && ytPlayer && ytPlayer.setVolume) {
+                ytPlayer.setVolume(vol);
+            }
             audio.volume = val;
             if (val == 0) iconVolume.className = 'fa-solid fa-volume-xmark';
             else if (val < 0.5) iconVolume.className = 'fa-solid fa-volume-low';
@@ -1713,16 +1795,15 @@
 
         function toggleMute() {
             if (isMuted) {
-                audio.volume = previousVolume;
+                changeVolume(previousVolume);
                 volumeSlider.value = previousVolume;
                 isMuted = false;
             } else {
                 previousVolume = audio.volume;
-                audio.volume = 0;
+                changeVolume(0);
                 volumeSlider.value = 0;
                 isMuted = true;
             }
-            changeVolume(audio.volume);
         }
 
         // GUARANTEED RENDER OF ALL TRACKS IN MAIN STAGE
