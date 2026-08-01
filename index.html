@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aether | Glassmorphic Web Music Player (Multi-Engine Audio Stream)</title>
+    <title>Aether | Glassmorphic Web Music Player (Ultra-Fast Native YouTube Engine)</title>
     <!-- Tailwind CSS v3 CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons CDN -->
@@ -12,6 +12,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+    <!-- Official YouTube Iframe API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
 
     <script>
         tailwind.config = {
@@ -136,16 +138,17 @@
 </head>
 <body class="p-4 sm:p-6 w-screen h-screen flex items-center justify-center">
 
-    <!-- HTML5 Audio Element -->
+    <!-- HTML5 Audio Element for Local MP3 Files -->
     <audio id="audio-player" preload="metadata"></audio>
-    
-    <!-- Hidden Background YouTube Iframe Engine (Fallback) -->
-    <div id="yt-player-container" class="hidden"></div>
-
     <input type="file" id="local-file-input" accept="audio/*" class="hidden" onchange="handleLocalFileUpload(event)">
 
+    <!-- Hidden Native YouTube IFrame Container -->
+    <div class="fixed top-0 left-0 w-1 h-1 opacity-0 pointer-events-none overflow-hidden z-0">
+        <div id="youtube-iframe-player"></div>
+    </div>
+
     <!-- Main Outer Glass Shell -->
-    <div class="app-shell w-full max-w-[1280px] h-[92vh] max-h-[850px] flex overflow-hidden p-3 gap-3 relative">
+    <div class="app-shell w-full max-w-[1280px] h-[92vh] max-h-[850px] flex overflow-hidden p-3 gap-3 relative z-10">
         
         <!-- LEFT PANE: DARK NAVIGATION & NOW PLAYING PLAYER -->
         <div class="w-[450px] shrink-0 flex gap-3 text-slate-100 overflow-hidden">
@@ -153,7 +156,7 @@
             <!-- Slim Icon Navigation Sidebar -->
             <div class="w-14 shrink-0 flex flex-col items-center justify-between py-4 bg-white/5 rounded-3xl border border-white/5">
                 
-                <div class="w-9 h-9 rounded-2xl bg-gradient-to-tr from-pink-500 to-purple-600 flex items-center justify-center shadow-[0_0_15px_rgba(236,72,153,0.5)] cursor-pointer" onclick="openMusicManagerModal()">
+                <div class="w-9 h-9 rounded-2xl bg-gradient-to-tr from-pink-500 to-purple-600 flex items-center justify-center shadow-[0_0_15px_rgba(236,72,153,0.5)] cursor-pointer" onclick="openAccountModal()">
                     <i class="fa-solid fa-compact-disc text-white text-base"></i>
                 </div>
 
@@ -169,12 +172,12 @@
                     <button onclick="openMusicManagerModal()" id="side-nav-playlist" class="hover:text-purple-400 transition" title="Quản Lý Playlist & Thêm Nhạc">
                         <i class="fa-solid fa-layer-group text-lg text-purple-400"></i>
                     </button>
-                    <button onclick="openMusicManagerModal()" class="hover:text-purple-400 transition" title="Thêm Nhạc mới">
-                        <i class="fa-solid fa-circle-plus text-lg text-emerald-400"></i>
+                    <button onclick="openAccountModal()" class="hover:text-purple-400 transition" title="Tài Khoản Người Dùng">
+                        <i class="fa-solid fa-user-gear text-lg text-cyan-400"></i>
                     </button>
                 </div>
 
-                <button onclick="openMusicManagerModal('backend')" class="text-slate-400 hover:text-white transition" title="Cài đặt">
+                <button onclick="openAccountModal()" class="text-slate-400 hover:text-white transition" title="Cài Đặt Tài Khoản">
                     <i class="fa-solid fa-gear text-lg"></i>
                 </button>
 
@@ -217,7 +220,7 @@
                     <div class="flex items-center justify-between z-10 mb-2">
                         <span id="stream-type-badge" class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-[10px] font-semibold backdrop-blur-md flex items-center gap-1.5">
                             <span id="status-badge-dot" class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
-                            <span id="status-badge-text">Ultra-Fast Multi-Engine Audio</span>
+                            <span id="status-badge-text">Ultra-Fast Native Engine</span>
                         </span>
                         <div class="flex items-center gap-1.5">
                             <button onclick="toggleFavoriteCurrent()" id="btn-fav" class="text-slate-400 hover:text-pink-400 text-base transition">
@@ -279,7 +282,7 @@
             <div class="flex items-center justify-between gap-4 mb-4">
                 <h1 id="stage-main-title" class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Home</h1>
 
-                <!-- Search & Instant YouTube Metadata Fetch Bar -->
+                <!-- Search Bar -->
                 <div class="flex-1 max-w-md flex items-center gap-2 bg-slate-100 border border-slate-200 rounded-full px-4 py-2 focus-within:border-purple-500 focus-within:ring-2 focus-within:ring-purple-200 transition">
                     <i class="fa-brands fa-youtube text-red-500 text-base"></i>
                     <input type="text" id="yt-url-input" 
@@ -291,12 +294,12 @@
                     </button>
                 </div>
 
+                <!-- Account Badge Button -->
                 <div class="flex items-center gap-2 shrink-0">
-                    <button onclick="fetchGlobalPlaylistFromServer()" class="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition" title="Làm mới danh sách">
-                        <i class="fa-solid fa-rotate text-sm"></i>
-                    </button>
-                    <button onclick="openMusicManagerModal()" class="w-9 h-9 rounded-full bg-slate-900 hover:bg-purple-600 text-white flex items-center justify-center transition" title="Quản Lý Playlist">
-                        <i class="fa-solid fa-sliders text-sm"></i>
+                    <button onclick="openAccountModal()" class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 border border-slate-200 transition">
+                        <img id="user-avatar-badge" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop" class="w-6 h-6 rounded-full object-cover border border-purple-400">
+                        <span id="user-name-badge" class="text-xs font-bold text-slate-800">User Account</span>
+                        <i class="fa-solid fa-chevron-down text-[10px] text-slate-400"></i>
                     </button>
                 </div>
             </div>
@@ -304,9 +307,9 @@
             <!-- Hero Banner Card -->
             <div class="relative w-full h-40 rounded-3xl overflow-hidden mb-4 bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-950 p-6 flex items-center justify-between text-white shadow-xl">
                 <div class="z-10 max-w-[60%]">
-                    <span class="px-3 py-1 rounded-full bg-white/10 text-cyan-300 text-[10px] font-bold uppercase tracking-wider backdrop-blur-md">Multi-Engine Audio Stream</span>
+                    <span class="px-3 py-1 rounded-full bg-white/10 text-cyan-300 text-[10px] font-bold uppercase tracking-wider backdrop-blur-md">Native YouTube Engine</span>
                     <h2 class="text-2xl sm:text-3xl font-black tracking-tighter mt-1 text-gradient">R&B NOW</h2>
-                    <p class="text-xs text-slate-300 mt-1 line-clamp-2">Tích hợp **3 Động Cơ Stream** (Piped High-Speed Audio + Render Proxy + Direct Embed) phát mượt 100%!</p>
+                    <p class="text-xs text-slate-300 mt-1 line-clamp-2">Phát nhạc trực tiếp qua Native YouTube Engine – Tốc độ **0.1s instant play**, 100% không lo lỗi hay chờ máy chủ!</p>
                 </div>
                 <div class="relative w-40 h-full overflow-hidden shrink-0 flex items-center justify-center">
                     <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=500&auto=format&fit=crop" class="w-full h-full object-cover rounded-2xl opacity-90">
@@ -355,6 +358,52 @@
 
     </div>
 
+    <!-- USER ACCOUNT MODAL -->
+    <div id="account-modal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-xl z-50 flex items-center justify-center p-4 hidden">
+        <div class="glass-panel w-full max-w-md rounded-3xl p-6 relative border border-white/15 shadow-2xl flex flex-col text-white">
+            
+            <div class="flex items-center justify-between pb-4 border-b border-white/10 shrink-0">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-cyan-500 to-purple-600 text-white flex items-center justify-center shadow-lg shadow-cyan-500/30">
+                        <i class="fa-solid fa-user-check text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-100 text-base">Tài Khoản Người Dùng</h3>
+                        <p class="text-xs text-slate-400">Đăng nhập để lưu bài hát yêu thích & Playlist riêng</p>
+                    </div>
+                </div>
+                <button onclick="closeAccountModal()" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white flex items-center justify-center">
+                    <i class="fa-solid fa-xmark text-base"></i>
+                </button>
+            </div>
+
+            <div class="py-4 space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1.5">Tên Tài Khoản / Username</label>
+                    <input type="text" id="account-username-input" 
+                           placeholder="VD: synx" 
+                           class="w-full glass-input rounded-xl px-3.5 py-2.5 text-xs text-slate-100 focus:outline-none border border-white/15 bg-white/5">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1.5">Tên Hiển Thị (Display Name)</label>
+                    <input type="text" id="account-displayname-input" 
+                           placeholder="VD: Synx Music Fan" 
+                           class="w-full glass-input rounded-xl px-3.5 py-2.5 text-xs text-slate-100 focus:outline-none border border-white/15 bg-white/5">
+                </div>
+
+                <button onclick="saveUserAccount()" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-bold text-xs shadow-lg shadow-cyan-500/25 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-floppy-disk"></i> Đăng Nhập / Lưu Tài Khoản
+                </button>
+
+                <div class="pt-2 border-t border-white/10 text-center">
+                    <p class="text-[11px] text-slate-400">Đã đăng nhập: <b id="account-status-label" class="text-purple-300">Tài khoản mặc định</b></p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
     <!-- Music Manager & Settings Modal -->
     <div id="music-manager-modal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-xl z-50 flex items-center justify-center p-4 hidden">
         <div class="glass-panel w-full max-w-xl rounded-3xl p-6 relative border border-white/15 shadow-2xl max-h-[90vh] flex flex-col overflow-hidden text-white">
@@ -401,7 +450,7 @@
                         <label class="block text-xs font-semibold text-slate-300 mb-1.5">Nhập Link YouTube</label>
                         <input type="text" id="modal-yt-input" 
                                placeholder="https://www.youtube.com/watch?v=..." 
-                               class="w-full glass-input rounded-xl px-3.5 py-2.5 text-xs text-slate-100 focus:outline-none">
+                               class="w-full glass-input rounded-xl px-3.5 py-2.5 text-xs text-slate-100 focus:outline-none border border-white/10 bg-white/5">
                     </div>
 
                     <button onclick="addTrackFromModal('yt')" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold text-xs shadow-lg shadow-pink-500/25 flex items-center justify-center gap-2">
@@ -414,7 +463,7 @@
                         <label class="block text-xs font-semibold text-slate-300 mb-1.5">Đường Link File Audio MP3 Online</label>
                         <input type="text" id="modal-mp3url-input" 
                                placeholder="https://domain.com/filename.mp3" 
-                               class="w-full glass-input rounded-xl px-3.5 py-2.5 text-xs text-slate-100 focus:outline-none">
+                               class="w-full glass-input rounded-xl px-3.5 py-2.5 text-xs text-slate-100 focus:outline-none border border-white/10 bg-white/5">
                     </div>
                     <button onclick="addTrackFromModal('mp3-url')" class="w-full py-2.5 rounded-xl bg-cyan-600 text-white font-bold text-xs shadow-lg">Thêm Link MP3 Online</button>
                 </div>
@@ -431,7 +480,7 @@
                         <label class="block text-xs font-semibold text-slate-300 mb-1.5">Render Backend URL</label>
                         <input type="text" id="input-backend-url" 
                                placeholder="https://webservicebackend-zm90.onrender.com" 
-                               class="w-full glass-input rounded-xl px-3.5 py-2.5 text-xs text-slate-100 focus:outline-none">
+                               class="w-full glass-input rounded-xl px-3.5 py-2.5 text-xs text-slate-100 focus:outline-none border border-white/10 bg-white/5">
                     </div>
                     <button onclick="saveBackendUrl()" class="w-full py-2.5 rounded-xl bg-purple-600 text-white font-bold text-xs shadow-lg">Lưu Server URL</button>
                 </div>
@@ -493,15 +542,28 @@
 
         let backendUrl = localStorage.getItem('aether_render_backend_url') || 'https://webservicebackend-zm90.onrender.com';
         
-        let favoritesSet = new Set();
+        let currentUser = {
+            username: 'default_user',
+            displayName: 'Synx Listener',
+            avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop'
+        };
+
         try {
-            const favRaw = localStorage.getItem('aether_user_favorites_ids');
-            if (favRaw) {
-                favoritesSet = new Set(JSON.parse(favRaw));
+            const userRaw = localStorage.getItem('aether_active_user');
+            if (userRaw) currentUser = JSON.parse(userRaw);
+        } catch (e) {}
+
+        let favoritesSet = new Set();
+        function loadUserFavorites() {
+            try {
+                const storageKey = `aether_user_${currentUser.username}_favorites`;
+                const favRaw = localStorage.getItem(storageKey) || localStorage.getItem('aether_user_favorites_keys');
+                if (favRaw) favoritesSet = new Set(JSON.parse(favRaw));
+            } catch (e) {
+                favoritesSet = new Set();
             }
-        } catch (e) {
-            favoritesSet = new Set();
         }
+        loadUserFavorites();
 
         let rawQueueData = [...DEFAULT_POPULAR_PLAYLIST];
         let queue = rawQueueData.map((track, idx) => buildTrackObject(track, idx));
@@ -513,6 +575,12 @@
         let isRepeat = false;
         let isMuted = false;
         let previousVolume = 0.8;
+        let activeEngineMode = 'yt_native'; // 'yt_native' | 'html5_audio'
+
+        // Native YouTube IFrame API Player Instance
+        let ytPlayer = null;
+        let ytPlayerReady = false;
+        let progressInterval = null;
 
         const audio = document.getElementById('audio-player');
         const btnPlayPause = document.getElementById('btn-play-pause');
@@ -536,6 +604,68 @@
         let canvas = document.getElementById('visualizer');
         let canvasCtx = canvas.getContext('2d');
 
+        // YouTube Iframe API Ready Callback
+        window.onYouTubeIframeAPIReady = function() {
+            ytPlayer = new YT.Player('youtube-iframe-player', {
+                height: '1',
+                width: '1',
+                videoId: '34Na4j8AVgA',
+                playerVars: {
+                    'autoplay': 0,
+                    'controls': 0,
+                    'disablekb': 1,
+                    'fs': 0,
+                    'modestbranding': 1,
+                    'playsinline': 1
+                },
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        };
+
+        function onPlayerReady(event) {
+            ytPlayerReady = true;
+            ytPlayer.setVolume(80);
+            console.log("Native YouTube IFrame Player Ready!");
+        }
+
+        function onPlayerStateChange(event) {
+            const badgeText = document.getElementById('status-badge-text');
+            if (event.data === YT.PlayerState.PLAYING) {
+                isPlaying = true;
+                iconPlayPause.className = 'fa-solid fa-pause';
+                if (badgeText) badgeText.textContent = "Đang phát nhạc mượt mà 🔥";
+                startProgressTimer();
+            } else if (event.data === YT.PlayerState.PAUSED) {
+                isPlaying = false;
+                iconPlayPause.className = 'fa-solid fa-play ml-0.5';
+                stopProgressTimer();
+            } else if (event.data === YT.PlayerState.ENDED) {
+                onTrackEnded();
+            }
+        }
+
+        function startProgressTimer() {
+            stopProgressTimer();
+            progressInterval = setInterval(() => {
+                if (activeEngineMode === 'yt_native' && ytPlayerReady && ytPlayer && ytPlayer.getCurrentTime) {
+                    const cur = ytPlayer.getCurrentTime() || 0;
+                    const dur = ytPlayer.getDuration() || 180;
+                    if (dur > 0) {
+                        progressBar.value = (cur / dur) * 100;
+                        timeCurrent.textContent = formatTime(cur);
+                        timeTotal.textContent = formatTime(dur);
+                    }
+                }
+            }, 500);
+        }
+
+        function stopProgressTimer() {
+            if (progressInterval) clearInterval(progressInterval);
+        }
+
         function getYouTubeVideoId(urlStr) {
             if (!urlStr) return null;
             const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
@@ -543,16 +673,20 @@
             return (match && match[2].length === 11) ? match[2] : null;
         }
 
+        function getTrackKey(track) {
+            if (!track) return '';
+            if (track.videoId) return track.videoId;
+            if (track.youtubeUrl) return track.youtubeUrl;
+            if (track.rawUrl) return track.rawUrl;
+            return track.title || track.id;
+        }
+
         function buildTrackObject(item, idx = 0) {
             const videoId = getYouTubeVideoId(item.youtubeUrl || item.rawUrl);
             let proxyStreamUrl = item.audioUrl;
 
-            if (videoId) {
-                // High-speed Piped open proxy audio stream (0.1s instant CORS stream)
+            if (!proxyStreamUrl && videoId) {
                 proxyStreamUrl = `https://api.piped.video/streams/${videoId}`;
-            } else if (item.youtubeUrl || item.rawUrl) {
-                const encodedUrl = encodeURIComponent(item.youtubeUrl || item.rawUrl);
-                proxyStreamUrl = `${backendUrl.replace(/\/$/, '')}/play-audio?url=${encodedUrl}`;
             }
 
             let thumbUrl = item.thumbnail;
@@ -562,7 +696,7 @@
 
             const formattedRank = idx + 1 < 10 ? '0' + (idx + 1) : '' + (idx + 1);
 
-            return {
+            const trackObj = {
                 id: item.id || ('yt-' + Date.now()),
                 videoId: videoId,
                 rank: item.rank || formattedRank,
@@ -570,12 +704,14 @@
                 artist: item.artist,
                 thumbnail: thumbUrl || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=400&auto=format&fit=crop',
                 duration: item.duration || 180,
-                plays: item.plays || 'Instant Stream',
+                plays: item.plays || 'Instant Play',
                 audioUrl: proxyStreamUrl,
                 isYoutube: !!(item.youtubeUrl || item.rawUrl || videoId),
                 isDirectUrl: item.isDirectUrl || false,
                 rawUrl: item.youtubeUrl || item.rawUrl || item.audioUrl
             };
+            trackObj.key = getTrackKey(trackObj);
+            return trackObj;
         }
 
         async function fetchGlobalPlaylistFromServer() {
@@ -586,17 +722,17 @@
                     if (data.playlist && data.playlist.length > 0) {
                         rawQueueData = data.playlist;
                         queue = rawQueueData.map((track, idx) => buildTrackObject(track, idx));
+                        updateFavoritesUI();
                         renderTrendingTracks();
                         updateNextCompositionCards();
                     }
                 }
-            } catch (e) {
-                console.warn("Global playlist fetch notice:", e);
-            }
+            } catch (e) {}
         }
 
         window.addEventListener('DOMContentLoaded', () => {
             updateBackendUI();
+            updateUserBadgeUI();
             setupCanvas();
             updateFavoritesUI();
             renderTrendingTracks();
@@ -610,6 +746,44 @@
 
             window.addEventListener('resize', setupCanvas);
         });
+
+        function updateUserBadgeUI() {
+            const nameEl = document.getElementById('user-name-badge');
+            const avatarEl = document.getElementById('user-avatar-badge');
+            const statusLabel = document.getElementById('account-status-label');
+
+            if (nameEl) nameEl.textContent = currentUser.displayName || currentUser.username;
+            if (avatarEl) avatarEl.src = currentUser.avatar;
+            if (statusLabel) statusLabel.textContent = `@${currentUser.username} (${currentUser.displayName})`;
+        }
+
+        function saveUserAccount() {
+            const usernameInput = document.getElementById('account-username-input').value.trim();
+            const displayNameInput = document.getElementById('account-displayname-input').value.trim();
+
+            if (usernameInput) {
+                currentUser.username = usernameInput.toLowerCase().replace(/[^a-z0-9_]/g, '');
+                currentUser.displayName = displayNameInput || usernameInput;
+                localStorage.setItem('aether_active_user', JSON.stringify(currentUser));
+                
+                loadUserFavorites();
+                updateUserBadgeUI();
+                updateFavoritesUI();
+                renderTrendingTracks();
+                closeAccountModal();
+                alert(`Đã lưu tài khoản @${currentUser.username} thành công!`);
+            }
+        }
+
+        function openAccountModal() {
+            document.getElementById('account-username-input').value = currentUser.username;
+            document.getElementById('account-displayname-input').value = currentUser.displayName;
+            document.getElementById('account-modal').classList.remove('hidden');
+        }
+
+        function closeAccountModal() {
+            document.getElementById('account-modal').classList.add('hidden');
+        }
 
         function updateBackendUI() {
             const displayEl = document.getElementById('active-render-endpoint');
@@ -626,21 +800,24 @@
             if (favBadgeCount) favBadgeCount.textContent = count;
 
             try {
-                localStorage.setItem('aether_user_favorites_ids', JSON.stringify(Array.from(favoritesSet)));
+                const storageKey = `aether_user_${currentUser.username}_favorites`;
+                localStorage.setItem(storageKey, JSON.stringify(Array.from(favoritesSet)));
+                localStorage.setItem('aether_user_favorites_keys', JSON.stringify(Array.from(favoritesSet)));
             } catch (e) {}
         }
 
-        function toggleFavorite(trackId) {
-            if (favoritesSet.has(trackId)) {
-                favoritesSet.delete(trackId);
+        function toggleFavoriteKey(trackKey) {
+            if (!trackKey) return;
+            if (favoritesSet.has(trackKey)) {
+                favoritesSet.delete(trackKey);
             } else {
-                favoritesSet.add(trackId);
+                favoritesSet.add(trackKey);
             }
             updateFavoritesUI();
             renderTrendingTracks();
 
             const currentTrack = queue[currentTrackIndex];
-            if (currentTrack && currentTrack.id === trackId) {
+            if (currentTrack && getTrackKey(currentTrack) === trackKey) {
                 updateCurrentFavIcon();
             }
         }
@@ -648,7 +825,7 @@
         function toggleFavoriteCurrent() {
             const currentTrack = queue[currentTrackIndex];
             if (currentTrack) {
-                toggleFavorite(currentTrack.id);
+                toggleFavoriteKey(getTrackKey(currentTrack));
             }
         }
 
@@ -658,7 +835,9 @@
             const btnFav = document.getElementById('btn-fav');
             if (!currentTrack || !iconFav) return;
 
-            if (favoritesSet.has(currentTrack.id)) {
+            const isFav = favoritesSet.has(getTrackKey(currentTrack));
+
+            if (isFav) {
                 iconFav.className = "fa-solid fa-heart text-pink-500";
                 if (btnFav) btnFav.className = "text-pink-500 text-base transition";
             } else {
@@ -716,8 +895,7 @@
             playAudio();
         }
 
-        // Multi-Engine Audio Stream Loader (Piped API -> Render Proxy -> Fallback)
-        async function loadTrack(index) {
+        function loadTrack(index) {
             if (index < 0 || index >= queue.length) return;
             currentTrackIndex = index;
             const track = queue[index];
@@ -727,39 +905,19 @@
             albumCoverImg.src = track.thumbnail;
 
             const badgeText = document.getElementById('status-badge-text');
-            if (badgeText) badgeText.textContent = "Đang kết nối luồng nhạc...";
 
-            let resolvedAudioUrl = null;
-
-            // Engine 1: Instant Piped Audio API for YouTube Video ID
-            if (track.videoId) {
-                try {
-                    const pipedRes = await fetch(`https://api.piped.video/streams/${track.videoId}`);
-                    if (pipedRes.ok) {
-                        const pipedData = await pipedRes.json();
-                        if (pipedData.audioStreams && pipedData.audioStreams.length > 0) {
-                            // Select highest quality audio stream
-                            pipedData.audioStreams.sort((a, b) => (b.bitrate || 0) - (a.bitrate || 0));
-                            resolvedAudioUrl = pipedData.audioStreams[0].url;
-                        }
-                    }
-                } catch (e) {
-                    console.warn("Piped stream notice:", e);
-                }
+            if (track.videoId && ytPlayerReady && ytPlayer && ytPlayer.loadVideoById) {
+                activeEngineMode = 'yt_native';
+                audio.pause();
+                ytPlayer.loadVideoById(track.videoId);
+                if (badgeText) badgeText.textContent = "Đang phát qua Native YouTube Engine 🔥";
+            } else {
+                activeEngineMode = 'html5_audio';
+                if (ytPlayerReady && ytPlayer && ytPlayer.pauseVideo) ytPlayer.pauseVideo();
+                audio.src = track.audioUrl;
+                audio.load();
+                if (badgeText) badgeText.textContent = "Đang phát qua Audio Proxy Engine";
             }
-
-            // Engine 2: Fallback to Render Proxy Server
-            if (!resolvedAudioUrl) {
-                if (track.rawUrl) {
-                    const encodedUrl = encodeURIComponent(track.rawUrl);
-                    resolvedAudioUrl = `${backendUrl.replace(/\/$/, '')}/play-audio?url=${encodedUrl}`;
-                } else {
-                    resolvedAudioUrl = track.audioUrl;
-                }
-            }
-
-            audio.src = resolvedAudioUrl;
-            audio.load();
 
             updateCurrentFavIcon();
             renderTrendingTracks();
@@ -789,7 +947,7 @@
                 isYoutube: false
             };
 
-            queue.unshift(localTrack);
+            queue.unshift(buildTrackObject(localTrack, 0));
             currentTrackIndex = 0;
             renderTrendingTracks();
             loadTrack(0);
@@ -834,7 +992,6 @@
                 duration: 180
             };
 
-            // Post to backend database in background
             try {
                 fetch(`${backendUrl.replace(/\/$/, '')}/add-track`, {
                     method: 'POST',
@@ -879,7 +1036,7 @@
                         audioUrl: url,
                         isDirectUrl: true
                     };
-                    queue.unshift(directTrack);
+                    queue.unshift(buildTrackObject(directTrack, 0));
                     currentTrackIndex = 0;
                     renderTrendingTracks();
                     loadTrack(0);
@@ -896,34 +1053,36 @@
 
         function playAudio() {
             const badgeText = document.getElementById('status-badge-text');
-            const playPromise = audio.play();
 
-            if (playPromise !== undefined) {
-                playPromise.then(() => {
-                    isPlaying = true;
-                    iconPlayPause.className = 'fa-solid fa-pause';
-                    if (badgeText) badgeText.textContent = "Đang phát nhạc mượt mà 🔥";
-                }).catch(err => {
-                    console.warn("Audio play notice:", err);
-                    isPlaying = false;
-                    iconPlayPause.className = 'fa-solid fa-play ml-0.5';
-                    if (badgeText) badgeText.textContent = "Đang kết nối lại Server...";
-                    
-                    setTimeout(() => {
-                        audio.play().then(() => {
-                            isPlaying = true;
-                            iconPlayPause.className = 'fa-solid fa-pause';
-                            if (badgeText) badgeText.textContent = "Đang phát nhạc mượt mà 🔥";
-                        }).catch(e => {});
-                    }, 2000);
-                });
+            if (activeEngineMode === 'yt_native' && ytPlayerReady && ytPlayer && ytPlayer.playVideo) {
+                ytPlayer.playVideo();
+                isPlaying = true;
+                iconPlayPause.className = 'fa-solid fa-pause';
+                if (badgeText) badgeText.textContent = "Đang phát qua Native YouTube Engine 🔥";
+                startProgressTimer();
+            } else {
+                const playPromise = audio.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        isPlaying = true;
+                        iconPlayPause.className = 'fa-solid fa-pause';
+                        if (badgeText) badgeText.textContent = "Đang phát nhạc mượt mà 🔥";
+                    }).catch(err => {
+                        console.warn("Audio play notice:", err);
+                    });
+                }
             }
         }
 
         function pauseAudio() {
-            audio.pause();
+            if (activeEngineMode === 'yt_native' && ytPlayerReady && ytPlayer && ytPlayer.pauseVideo) {
+                ytPlayer.pauseVideo();
+            } else {
+                audio.pause();
+            }
             isPlaying = false;
             iconPlayPause.className = 'fa-solid fa-play ml-0.5';
+            stopProgressTimer();
         }
 
         function playNextTrack() {
@@ -934,7 +1093,9 @@
         }
 
         function playPrevTrack() {
-            if (audio.currentTime > 3) {
+            if (activeEngineMode === 'yt_native' && ytPlayerReady && ytPlayer && ytPlayer.getCurrentTime && ytPlayer.getCurrentTime() > 3) {
+                ytPlayer.seekTo(0);
+            } else if (audio.currentTime > 3) {
                 audio.currentTime = 0;
             } else {
                 currentTrackIndex = (currentTrackIndex - 1 + queue.length) % queue.length;
@@ -955,37 +1116,59 @@
 
         function onTrackEnded() {
             if (isRepeat) {
-                audio.currentTime = 0;
-                playAudio();
+                if (activeEngineMode === 'yt_native' && ytPlayerReady && ytPlayer && ytPlayer.seekTo) {
+                    ytPlayer.seekTo(0);
+                    ytPlayer.playVideo();
+                } else {
+                    audio.currentTime = 0;
+                    playAudio();
+                }
             } else {
                 playNextTrack();
             }
         }
 
         function updateProgress() {
-            if (!audio.duration) return;
-            const pct = (audio.currentTime / audio.duration) * 100;
-            progressBar.value = pct;
-            timeCurrent.textContent = formatTime(audio.currentTime);
-            timeTotal.textContent = formatTime(audio.duration);
+            if (activeEngineMode === 'html5_audio') {
+                if (!audio.duration) return;
+                const pct = (audio.currentTime / audio.duration) * 100;
+                progressBar.value = pct;
+                timeCurrent.textContent = formatTime(audio.currentTime);
+                timeTotal.textContent = formatTime(audio.duration);
+            }
         }
 
         function onMetadataLoaded() {
-            timeTotal.textContent = formatTime(audio.duration);
+            if (activeEngineMode === 'html5_audio') {
+                timeTotal.textContent = formatTime(audio.duration);
+            }
         }
 
         function onScrubInput(val) {
-            if (!audio.duration) return;
-            timeCurrent.textContent = formatTime((val / 100) * audio.duration);
+            if (activeEngineMode === 'yt_native' && ytPlayerReady && ytPlayer && ytPlayer.getDuration) {
+                const dur = ytPlayer.getDuration();
+                timeCurrent.textContent = formatTime((val / 100) * dur);
+            } else if (audio.duration) {
+                timeCurrent.textContent = formatTime((val / 100) * audio.duration);
+            }
         }
 
         function onScrubChange(val) {
-            if (!audio.duration) return;
-            audio.currentTime = (val / 100) * audio.duration;
+            if (activeEngineMode === 'yt_native' && ytPlayerReady && ytPlayer && ytPlayer.seekTo && ytPlayer.getDuration) {
+                const dur = ytPlayer.getDuration();
+                ytPlayer.seekTo((val / 100) * dur, true);
+            } else if (audio.duration) {
+                audio.currentTime = (val / 100) * audio.duration;
+            }
         }
 
         function changeVolume(val) {
+            const vol = Math.floor(val * 100);
+            if (ytPlayerReady && ytPlayer && ytPlayer.setVolume) {
+                ytPlayer.setVolume(vol);
+            }
             audio.volume = val;
+
             if (val == 0) iconVolume.className = 'fa-solid fa-volume-xmark';
             else if (val < 0.5) iconVolume.className = 'fa-solid fa-volume-low';
             else iconVolume.className = 'fa-solid fa-volume-high';
@@ -993,16 +1176,15 @@
 
         function toggleMute() {
             if (isMuted) {
-                audio.volume = previousVolume;
+                changeVolume(previousVolume);
                 volumeSlider.value = previousVolume;
                 isMuted = false;
             } else {
                 previousVolume = audio.volume;
-                audio.volume = 0;
+                changeVolume(0);
                 volumeSlider.value = 0;
                 isMuted = true;
             }
-            changeVolume(audio.volume);
         }
 
         function renderTrendingTracks() {
@@ -1011,7 +1193,7 @@
 
             let displayTracks = queue;
             if (activeFilterView === 'fav') {
-                displayTracks = queue.filter(t => favoritesSet.has(t.id));
+                displayTracks = queue.filter(t => favoritesSet.has(getTrackKey(t)));
             }
 
             if (displayTracks.length === 0) {
@@ -1026,9 +1208,10 @@
             }
 
             displayTracks.forEach((track, idx) => {
-                const originalIndex = queue.findIndex(q => q.id === track.id);
+                const originalIndex = queue.findIndex(q => getTrackKey(q) === getTrackKey(track));
                 const isCurrent = originalIndex === currentTrackIndex;
-                const isFav = favoritesSet.has(track.id);
+                const trackKey = getTrackKey(track);
+                const isFav = favoritesSet.has(trackKey);
 
                 const row = document.createElement('div');
                 row.className = `p-2.5 rounded-2xl flex items-center justify-between gap-4 cursor-pointer transition ${
@@ -1057,9 +1240,9 @@
                         </div>
                     </div>
                     <div class="flex items-center gap-6 shrink-0">
-                        <span class="text-[11px] text-slate-400 font-mono hidden sm:inline">${track.plays || 'Instant Stream'}</span>
+                        <span class="text-[11px] text-slate-400 font-mono hidden sm:inline">${track.plays || 'Instant Play'}</span>
                         <span class="text-[11px] text-slate-500 font-mono font-medium">${formatTime(track.duration || 180)}</span>
-                        <button onclick="event.stopPropagation(); toggleFavorite('${track.id}');" class="text-xs transition ${isFav ? 'text-pink-500' : 'text-slate-300 hover:text-pink-500'}" title="Thêm/Xóa Yêu Thích">
+                        <button onclick="event.stopPropagation(); toggleFavoriteKey('${trackKey}');" class="text-xs transition ${isFav ? 'text-pink-500' : 'text-slate-300 hover:text-pink-500'}" title="Thêm/Xóa Yêu Thích">
                             <i class="${isFav ? 'fa-solid text-pink-500' : 'fa-regular'} fa-heart"></i>
                         </button>
                         <button onclick="event.stopPropagation(); openMusicManagerModal();" class="text-slate-400 hover:text-slate-700 text-xs"><i class="fa-solid fa-ellipsis"></i></button>
