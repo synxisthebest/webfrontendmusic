@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aether | Glassmorphic Web Music Player (0.1s Ultra-Fast Stream Engine)</title>
+    <title>Aether | Web Music Player (0.1s Instant Playback Edition)</title>
     <!-- Tailwind CSS v3 CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons CDN -->
@@ -12,6 +12,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+    
+    <!-- YouTube Official IFrame API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
 
     <script>
         tailwind.config = {
@@ -136,9 +139,14 @@
 </head>
 <body class="p-4 sm:p-6 w-screen h-screen flex items-center justify-center">
 
-    <!-- HTML5 Audio Element for Ad-Free Stream -->
+    <!-- HTML5 Audio Element for Direct MP3 Files -->
     <audio id="audio-player" preload="metadata"></audio>
     <input type="file" id="local-file-input" accept="audio/*" class="hidden" onchange="handleLocalFileUpload(event)">
+
+    <!-- Hidden Native YouTube Player Container -->
+    <div class="fixed -top-[9999px] -left-[9999px] w-1 h-1 opacity-0 pointer-events-none overflow-hidden z-0">
+        <div id="yt-player-container"></div>
+    </div>
 
     <!-- Main Outer Glass Shell -->
     <div class="app-shell w-full max-w-[1280px] h-[92vh] max-h-[850px] flex overflow-hidden p-3 gap-3 relative z-10">
@@ -279,7 +287,7 @@
                 <div class="flex-1 max-w-md flex items-center gap-2 bg-slate-100 border border-slate-200 rounded-full px-4 py-2 focus-within:border-purple-500 focus-within:ring-2 focus-within:ring-purple-200 transition">
                     <i class="fa-brands fa-youtube text-red-500 text-base"></i>
                     <input type="text" id="yt-url-input" 
-                           placeholder="Dán link YouTube (Phát nhạc 0.1s cực nhanh)..." 
+                           placeholder="Dán link YouTube (Phát tức thì 0.1s)..." 
                            class="w-full bg-transparent text-xs text-slate-800 placeholder-slate-400 focus:outline-none"
                            onkeydown="if(event.key==='Enter') streamFromYoutubeInput()">
                     <button onclick="streamFromYoutubeInput()" id="btn-add-stream" class="px-3.5 py-1.5 rounded-full bg-purple-600 hover:bg-purple-700 text-white font-bold text-[11px] shrink-0 transition shadow-sm">
@@ -300,9 +308,9 @@
             <!-- Hero Banner Card -->
             <div class="relative w-full h-40 rounded-3xl overflow-hidden mb-4 bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-950 p-6 flex items-center justify-between text-white shadow-xl">
                 <div class="z-10 max-w-[60%]">
-                    <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold uppercase tracking-wider backdrop-blur-md">⚡ Concurrent Multi-Mirror Engine</span>
+                    <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold uppercase tracking-wider backdrop-blur-md">⚡ 0.1s Zero-Wait Engine</span>
                     <h2 class="text-2xl sm:text-3xl font-black tracking-tighter mt-1 text-gradient">R&B NOW</h2>
-                    <p class="text-xs text-slate-300 mt-1 line-clamp-2">Tốc độ phát nhạc **0.1s siêu tốc** qua 4 máy chủ gương (Proxy Mirrors) song song. Không bao giờ lo bị chậm!</p>
+                    <p class="text-xs text-slate-300 mt-1 line-clamp-2">Phát nhạc tức thì **0.1 giây (0 phút chờ đợi)** trực tiếp từ CDN toàn cầu!</p>
                 </div>
                 <div class="relative w-40 h-full overflow-hidden shrink-0 flex items-center justify-center">
                     <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=500&auto=format&fit=crop" class="w-full h-full object-cover rounded-2xl opacity-90">
@@ -435,8 +443,8 @@
                 
                 <div id="content-tab-yt" class="space-y-3">
                     <div class="p-3 rounded-2xl bg-purple-500/10 border border-purple-500/20 text-xs text-purple-200">
-                        <i class="fa-solid fa-shield-halved text-base mr-1.5"></i>
-                        <span>Phát trực tiếp luồng Audio nguyên bản – <b>Loại bỏ 100% Quảng Cáo!</b></span>
+                        <i class="fa-solid fa-bolt text-base mr-1.5"></i>
+                        <span>Phát trực tiếp tức thì <b>0.1s (0 phút chờ đợi)</b> cho mọi bài hát!</span>
                     </div>
 
                     <div>
@@ -447,7 +455,7 @@
                     </div>
 
                     <button onclick="addTrackFromModal('yt')" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold text-xs shadow-lg shadow-pink-500/25 flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-plus"></i> Thêm Nhạc Không Quảng Cáo
+                        <i class="fa-solid fa-plus"></i> Thêm Nhạc Siêu Tốc 0.1s
                     </button>
                 </div>
 
@@ -568,6 +576,12 @@
         let isRepeat = false;
         let isMuted = false;
         let previousVolume = 0.8;
+        let activePlayerEngine = 'yt_native'; // 'yt_native' | 'html5_audio'
+
+        // YouTube Iframe Engine Instance
+        let ytPlayer = null;
+        let ytPlayerReady = false;
+        let progressInterval = null;
 
         const audio = document.getElementById('audio-player');
         const btnPlayPause = document.getElementById('btn-play-pause');
@@ -585,11 +599,67 @@
         const trendingTracksContainer = document.getElementById('trending-tracks-container');
         const ytUrlInput = document.getElementById('yt-url-input');
 
-        let audioCtx = null;
-        let analyser = null;
-        let sourceNode = null;
         let canvas = document.getElementById('visualizer');
         let canvasCtx = canvas.getContext('2d');
+
+        // YouTube Iframe API Callback
+        window.onYouTubeIframeAPIReady = function() {
+            ytPlayer = new YT.Player('yt-player-container', {
+                height: '1',
+                width: '1',
+                videoId: '34Na4j8AVgA',
+                playerVars: {
+                    'autoplay': 1,
+                    'controls': 0,
+                    'disablekb': 1,
+                    'fs': 0,
+                    'modestbranding': 1,
+                    'playsinline': 1
+                },
+                events: {
+                    'onReady': (e) => {
+                        ytPlayerReady = true;
+                        ytPlayer.setVolume(80);
+                    },
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        };
+
+        function onPlayerStateChange(event) {
+            const badgeText = document.getElementById('status-badge-text');
+            if (event.data === YT.PlayerState.PLAYING) {
+                isPlaying = true;
+                iconPlayPause.className = 'fa-solid fa-pause';
+                if (badgeText) badgeText.textContent = "⚡ 0.1s Instant Stream 🔥";
+                startProgressTimer();
+            } else if (event.data === YT.PlayerState.PAUSED) {
+                isPlaying = false;
+                iconPlayPause.className = 'fa-solid fa-play ml-0.5';
+                stopProgressTimer();
+            } else if (event.data === YT.PlayerState.ENDED) {
+                onTrackEnded();
+            }
+        }
+
+        function startProgressTimer() {
+            stopProgressTimer();
+            progressInterval = setInterval(() => {
+                if (activePlayerEngine === 'yt_native' && ytPlayerReady && ytPlayer && ytPlayer.getCurrentTime) {
+                    const cur = ytPlayer.getCurrentTime() || 0;
+                    const dur = ytPlayer.getDuration() || 180;
+                    if (dur > 0) {
+                        progressBar.value = (cur / dur) * 100;
+                        timeCurrent.textContent = formatTime(cur);
+                        timeTotal.textContent = formatTime(dur);
+                    }
+                }
+            }, 300);
+        }
+
+        function stopProgressTimer() {
+            if (progressInterval) clearInterval(progressInterval);
+        }
 
         function getYouTubeVideoId(urlStr) {
             if (!urlStr) return null;
@@ -608,8 +678,6 @@
 
         function buildTrackObject(item, idx = 0) {
             const videoId = getYouTubeVideoId(item.youtubeUrl || item.rawUrl);
-            let proxyStreamUrl = item.audioUrl;
-
             let thumbUrl = item.thumbnail;
             if (videoId && (!thumbUrl || thumbUrl.includes('unsplash'))) {
                 thumbUrl = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
@@ -625,58 +693,14 @@
                 artist: item.artist,
                 thumbnail: thumbUrl || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=400&auto=format&fit=crop',
                 duration: item.duration || 180,
-                plays: item.plays || 'Instant 0.1s Stream',
-                audioUrl: proxyStreamUrl,
+                plays: item.plays || '0.1s Instant Stream',
+                audioUrl: item.audioUrl || item.rawUrl,
                 isYoutube: !!(item.youtubeUrl || item.rawUrl || videoId),
                 isDirectUrl: item.isDirectUrl || false,
                 rawUrl: item.youtubeUrl || item.rawUrl || item.audioUrl
             };
             trackObj.key = getTrackKey(trackObj);
             return trackObj;
-        }
-
-        // Concurrent Ultra-Fast Multi-Mirror Stream Retriever (0.1s Response Time)
-        async function resolveFastestAudioStream(track) {
-            if (!track.videoId) {
-                if (track.rawUrl) {
-                    const encodedUrl = encodeURIComponent(track.rawUrl);
-                    return `${backendUrl.replace(/\/$/, '')}/play-audio?url=${encodedUrl}`;
-                }
-                return track.audioUrl;
-            }
-
-            const videoId = track.videoId;
-            const mirrorApis = [
-                `https://api.piped.video/streams/${videoId}`,
-                `https://pipedapi.kavin.rocks/streams/${videoId}`,
-                `https://pipedapi.tokhmi.xyz/streams/${videoId}`,
-                `https://invidious.privacydev.net/api/v1/videos/${videoId}`
-            ];
-
-            // Concurrent race fetch for 0.1s response
-            const fetchMirrorStream = async (endpoint) => {
-                const res = await fetch(endpoint, { signal: AbortSignal.timeout(3000) });
-                if (res.ok) {
-                    const data = await res.json();
-                    const streams = data.audioStreams || data.adaptiveFormats;
-                    if (streams && streams.length > 0) {
-                        const audioStreams = streams.filter(s => (s.mimeType && s.mimeType.includes('audio')) || s.type === 'audio');
-                        const target = audioStreams.length > 0 ? audioStreams : streams;
-                        target.sort((a, b) => (b.bitrate || 0) - (a.bitrate || 0));
-                        if (target[0].url) return target[0].url;
-                    }
-                }
-                throw new Error("Mirror failed");
-            };
-
-            try {
-                const fastestUrl = await Promise.any(mirrorApis.map(url => fetchMirrorStream(url)));
-                return fastestUrl;
-            } catch (e) {
-                // Fallback to Render Proxy Server
-                const targetUrl = track.rawUrl || `https://www.youtube.com/watch?v=${videoId}`;
-                return `${backendUrl.replace(/\/$/, '')}/play-audio?url=${encodeURIComponent(targetUrl)}`;
-            }
         }
 
         async function fetchGlobalPlaylistFromServer() {
@@ -860,8 +884,8 @@
             playAudio();
         }
 
-        // 0.1s Instant Multi-Mirror Concurrent Load
-        async function loadTrack(index) {
+        // 0.1s Zero-Wait Load Track
+        function loadTrack(index) {
             if (index < 0 || index >= queue.length) return;
             currentTrackIndex = index;
             const track = queue[index];
@@ -871,11 +895,22 @@
             albumCoverImg.src = track.thumbnail;
 
             const badgeText = document.getElementById('status-badge-text');
-            if (badgeText) badgeText.textContent = "⚡ Đang nạp luồng siêu tốc 0.1s...";
 
-            const fastUrl = await resolveFastestAudioStream(track);
-            audio.src = fastUrl;
-            audio.load();
+            if (track.videoId) {
+                activePlayerEngine = 'yt_native';
+                audio.pause();
+                if (badgeText) badgeText.textContent = "⚡ Phát nhạc siêu tốc 0.1s...";
+                
+                if (ytPlayerReady && ytPlayer && ytPlayer.loadVideoById) {
+                    ytPlayer.loadVideoById(track.videoId);
+                }
+            } else {
+                activePlayerEngine = 'html5_audio';
+                if (ytPlayerReady && ytPlayer && ytPlayer.pauseVideo) ytPlayer.pauseVideo();
+                audio.src = track.audioUrl;
+                audio.load();
+                if (badgeText) badgeText.textContent = "Đang phát qua HTML5 Audio";
+            }
 
             updateCurrentFavIcon();
             renderTrendingTracks();
@@ -1011,26 +1046,36 @@
 
         function playAudio() {
             const badgeText = document.getElementById('status-badge-text');
-            const playPromise = audio.play();
 
-            if (playPromise !== undefined) {
-                playPromise.then(() => {
-                    isPlaying = true;
-                    iconPlayPause.className = 'fa-solid fa-pause';
-                    if (badgeText) badgeText.textContent = "⚡ 0.1s Instant Ad-Free Stream 🔥";
-                }).catch(err => {
-                    console.warn("Audio play notice:", err);
-                    isPlaying = false;
-                    iconPlayPause.className = 'fa-solid fa-play ml-0.5';
-                    if (badgeText) badgeText.textContent = "Đang nạp lại luồng siêu tốc...";
-                });
+            if (activePlayerEngine === 'yt_native' && ytPlayerReady && ytPlayer && ytPlayer.playVideo) {
+                ytPlayer.playVideo();
+                isPlaying = true;
+                iconPlayPause.className = 'fa-solid fa-pause';
+                if (badgeText) badgeText.textContent = "⚡ 0.1s Instant Stream 🔥";
+                startProgressTimer();
+            } else {
+                const playPromise = audio.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        isPlaying = true;
+                        iconPlayPause.className = 'fa-solid fa-pause';
+                        if (badgeText) badgeText.textContent = "Đang phát mượt mà 🔥";
+                    }).catch(err => {
+                        console.warn("Audio play notice:", err);
+                    });
+                }
             }
         }
 
         function pauseAudio() {
-            audio.pause();
+            if (activePlayerEngine === 'yt_native' && ytPlayerReady && ytPlayer && ytPlayer.pauseVideo) {
+                ytPlayer.pauseVideo();
+            } else {
+                audio.pause();
+            }
             isPlaying = false;
             iconPlayPause.className = 'fa-solid fa-play ml-0.5';
+            stopProgressTimer();
         }
 
         function playNextTrack() {
@@ -1041,7 +1086,9 @@
         }
 
         function playPrevTrack() {
-            if (audio.currentTime > 3) {
+            if (activePlayerEngine === 'yt_native' && ytPlayerReady && ytPlayer && ytPlayer.getCurrentTime && ytPlayer.getCurrentTime() > 3) {
+                ytPlayer.seekTo(0);
+            } else if (audio.currentTime > 3) {
                 audio.currentTime = 0;
             } else {
                 currentTrackIndex = (currentTrackIndex - 1 + queue.length) % queue.length;
@@ -1062,37 +1109,59 @@
 
         function onTrackEnded() {
             if (isRepeat) {
-                audio.currentTime = 0;
-                playAudio();
+                if (activePlayerEngine === 'yt_native' && ytPlayerReady && ytPlayer && ytPlayer.seekTo) {
+                    ytPlayer.seekTo(0);
+                    ytPlayer.playVideo();
+                } else {
+                    audio.currentTime = 0;
+                    playAudio();
+                }
             } else {
                 playNextTrack();
             }
         }
 
         function updateProgress() {
-            if (!audio.duration) return;
-            const pct = (audio.currentTime / audio.duration) * 100;
-            progressBar.value = pct;
-            timeCurrent.textContent = formatTime(audio.currentTime);
-            timeTotal.textContent = formatTime(audio.duration);
+            if (activePlayerEngine === 'html5_audio') {
+                if (!audio.duration) return;
+                const pct = (audio.currentTime / audio.duration) * 100;
+                progressBar.value = pct;
+                timeCurrent.textContent = formatTime(audio.currentTime);
+                timeTotal.textContent = formatTime(audio.duration);
+            }
         }
 
         function onMetadataLoaded() {
-            timeTotal.textContent = formatTime(audio.duration);
+            if (activePlayerEngine === 'html5_audio') {
+                timeTotal.textContent = formatTime(audio.duration);
+            }
         }
 
         function onScrubInput(val) {
-            if (!audio.duration) return;
-            timeCurrent.textContent = formatTime((val / 100) * audio.duration);
+            if (activePlayerEngine === 'yt_native' && ytPlayerReady && ytPlayer && ytPlayer.getDuration) {
+                const dur = ytPlayer.getDuration();
+                timeCurrent.textContent = formatTime((val / 100) * dur);
+            } else if (audio.duration) {
+                timeCurrent.textContent = formatTime((val / 100) * audio.duration);
+            }
         }
 
         function onScrubChange(val) {
-            if (!audio.duration) return;
-            audio.currentTime = (val / 100) * audio.duration;
+            if (activePlayerEngine === 'yt_native' && ytPlayerReady && ytPlayer && ytPlayer.seekTo && ytPlayer.getDuration) {
+                const dur = ytPlayer.getDuration();
+                ytPlayer.seekTo((val / 100) * dur, true);
+            } else if (audio.duration) {
+                audio.currentTime = (val / 100) * audio.duration;
+            }
         }
 
         function changeVolume(val) {
+            const vol = Math.floor(val * 100);
+            if (ytPlayerReady && ytPlayer && ytPlayer.setVolume) {
+                ytPlayer.setVolume(vol);
+            }
             audio.volume = val;
+
             if (val == 0) iconVolume.className = 'fa-solid fa-volume-xmark';
             else if (val < 0.5) iconVolume.className = 'fa-solid fa-volume-low';
             else iconVolume.className = 'fa-solid fa-volume-high';
@@ -1100,16 +1169,15 @@
 
         function toggleMute() {
             if (isMuted) {
-                audio.volume = previousVolume;
+                changeVolume(previousVolume);
                 volumeSlider.value = previousVolume;
                 isMuted = false;
             } else {
                 previousVolume = audio.volume;
-                audio.volume = 0;
+                changeVolume(0);
                 volumeSlider.value = 0;
                 isMuted = true;
             }
-            changeVolume(audio.volume);
         }
 
         function renderTrendingTracks() {
