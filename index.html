@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aether | Web Music Player (Hybrid Guarantee 100% Audio Playback Engine)</title>
+    <title>Aether | Web Music Player (Fix Add YouTube Song & Universal Links)</title>
     <!-- Tailwind CSS v3 CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons CDN -->
@@ -13,7 +13,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
     
-    <!-- YouTube Official IFrame API for Bulletproof Guarantee -->
+    <!-- YouTube Official IFrame API -->
     <script src="https://www.youtube.com/iframe_api"></script>
 
     <!-- Frontend Smooth Effects Engine -->
@@ -309,7 +309,7 @@
                     <div class="flex items-center justify-between z-10 mb-2">
                         <span id="stream-type-badge" class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-[10px] font-semibold backdrop-blur-md flex items-center gap-1.5">
                             <span id="status-badge-dot" class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
-                            <span id="status-badge-text">⚡ Ready - Click Play to Start</span>
+                            <span id="status-badge-text">⚡ 0.1s Stream Connected 🔥</span>
                         </span>
                         <div class="flex items-center gap-2">
                             <button onclick="toggleLyricsView()" id="btn-lyrics-toggle" class="text-slate-400 hover:text-cyan-300 text-xs transition px-2 py-0.5 rounded-full bg-white/5 border border-white/10" title="Hiện/Ẩn Lời Bài Hát">
@@ -407,9 +407,9 @@
             <!-- Hero Banner Card -->
             <div class="relative w-full h-36 rounded-3xl overflow-hidden mb-3 bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-950 p-6 flex items-center justify-between text-white shadow-xl shrink-0">
                 <div class="z-10 max-w-[65%]">
-                    <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold uppercase tracking-wider backdrop-blur-md">🛡️ Hybrid Guarantee Playback Engine</span>
+                    <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold uppercase tracking-wider backdrop-blur-md">⚡ Universal YouTube Stream Engine</span>
                     <h2 class="text-2xl sm:text-3xl font-black tracking-tighter mt-1 text-gradient">R&B NOW</h2>
-                    <p class="text-xs text-slate-300 mt-1 line-clamp-2">Click vào bất kỳ bài hát nào để phát nhạc tức thì 100% không bao giờ thất bại!</p>
+                    <p class="text-xs text-slate-300 mt-1 line-clamp-2">Dán mọi link YouTube (`watch?v=`, `youtu.be/`, `shorts/`) ➔ Tự động thêm vào danh sách & phát ngay!</p>
                 </div>
                 <div class="relative w-40 h-full overflow-hidden shrink-0 flex items-center justify-center">
                     <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=500&auto=format&fit=crop" class="w-full h-full object-cover rounded-2xl opacity-90">
@@ -637,7 +637,7 @@
                 <div id="content-tab-yt" class="space-y-3">
                     <div class="p-3 rounded-2xl bg-purple-500/10 border border-purple-500/20 text-xs text-purple-200">
                         <i class="fa-solid fa-bolt text-base mr-1.5 text-amber-400"></i>
-                        <span>Cơ chế phát <b>0.1s Tức thì</b> & Chặn 100% Quảng Cáo!</span>
+                        <span>Hỗ trợ mọi link YouTube <b>(watch?v=, youtu.be/, shorts/)</b> & Chặn 100% Quảng Cáo!</span>
                     </div>
 
                     <div>
@@ -788,7 +788,8 @@
         let isMuted = false;
         let previousVolume = 0.8;
         let isLyricsViewActive = false;
-        let activePlayerMode = 'html5'; // 'html5' | 'yt_iframe'
+        let activePlayerMode = 'html5'; 
+        let progressInterval = null;
 
         // YouTube IFrame Backup API
         let ytPlayer = null;
@@ -808,9 +809,11 @@
                             iconPlayPause.className = 'fa-solid fa-pause';
                             const badgeText = document.getElementById('status-badge-text');
                             if (badgeText) badgeText.textContent = "⚡ YouTube Stream Connected 🔥";
+                            startProgressTimer();
                         } else if (e.data === YT.PlayerState.PAUSED) {
                             isPlaying = false;
                             iconPlayPause.className = 'fa-solid fa-play ml-0.5';
+                            stopProgressTimer();
                         } else if (e.data === YT.PlayerState.ENDED) {
                             onTrackEnded();
                         }
@@ -818,6 +821,35 @@
                 }
             });
         };
+
+        // UNIFIED 200MS REAL-TIME PROGRESS BAR TIMER ENGINE
+        function startProgressTimer() {
+            stopProgressTimer();
+            progressInterval = setInterval(() => {
+                let cur = 0;
+                let dur = 180;
+
+                if (activePlayerMode === 'yt_iframe' && ytPlayerReady && ytPlayer && ytPlayer.getCurrentTime) {
+                    cur = ytPlayer.getCurrentTime() || 0;
+                    dur = ytPlayer.getDuration() || (queue[currentTrackIndex]?.duration || 180);
+                } else if (audio && audio.duration && !isNaN(audio.duration)) {
+                    cur = audio.currentTime || 0;
+                    dur = audio.duration;
+                }
+
+                if (dur > 0) {
+                    const pct = (cur / dur) * 100;
+                    progressBar.value = pct;
+                    timeCurrent.textContent = formatTime(cur);
+                    timeTotal.textContent = formatTime(dur);
+                    updateSyncedLyrics(cur);
+                }
+            }, 200);
+        }
+
+        function stopProgressTimer() {
+            if (progressInterval) clearInterval(progressInterval);
+        }
 
         // Lyrics Engine Data
         let currentLyricsList = [];
@@ -842,10 +874,13 @@
         let canvas = document.getElementById('visualizer');
         let canvasCtx = canvas.getContext('2d');
 
+        // UNIVERSAL YOUTUBE VIDEO ID EXTRACTOR
         function getYouTubeVideoId(urlStr) {
             if (!urlStr) return null;
-            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-            const match = urlStr.match(regExp);
+            const str = urlStr.trim();
+            if (str.length === 11 && !str.includes('/') && !str.includes('.')) return str;
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|shorts\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            const match = str.match(regExp);
             return (match && match[2].length === 11) ? match[2] : null;
         }
 
@@ -874,7 +909,7 @@
                 artist: item.artist,
                 thumbnail: thumbUrl || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=400&auto=format&fit=crop',
                 duration: item.duration || 180,
-                plays: item.plays || '0.1s Zero-Wait Stream',
+                plays: item.plays || '0.1s Stream',
                 audioUrl: item.audioUrl || item.rawUrl,
                 isYoutube: !!(item.youtubeUrl || item.rawUrl || videoId),
                 isDirectUrl: item.isDirectUrl || false,
@@ -951,6 +986,13 @@
                 iconPlayPause.className = 'fa-solid fa-pause';
                 const badgeText = document.getElementById('status-badge-text');
                 if (badgeText) badgeText.textContent = "⚡ 0.1s Instant Stream Connected 🔥";
+                startProgressTimer();
+            });
+
+            audio.addEventListener('pause', () => {
+                isPlaying = false;
+                iconPlayPause.className = 'fa-solid fa-play ml-0.5';
+                stopProgressTimer();
             });
 
             audio.addEventListener('canplay', () => {
@@ -964,6 +1006,7 @@
                 if (currentTrack && currentTrack.videoId && ytPlayerReady && ytPlayer) {
                     activePlayerMode = 'yt_iframe';
                     ytPlayer.loadVideoById(currentTrack.videoId);
+                    startProgressTimer();
                 } else if (currentTrack && currentTrack.audioUrl) {
                     audio.src = currentTrack.audioUrl;
                     audio.load();
@@ -984,7 +1027,6 @@
 
             fetchGlobalPlaylistFromServer();
 
-            audio.addEventListener('timeupdate', updateProgress);
             audio.addEventListener('loadedmetadata', onMetadataLoaded);
             audio.addEventListener('ended', onTrackEnded);
 
@@ -1506,6 +1548,7 @@
                 audio.src = track.audioUrl;
                 audio.load();
                 if (badgeText) badgeText.textContent = "⚡ 0.1s Direct Stream";
+                startProgressTimer();
             } else {
                 const rawAudioUrl = await resolveAdFreeRawAudioStream(track);
                 if (rawAudioUrl) {
@@ -1514,11 +1557,13 @@
                     audio.src = rawAudioUrl;
                     audio.load();
                     if (badgeText) badgeText.textContent = "⚡ 0.1s Fast Stream";
+                    startProgressTimer();
                 } else if (track.videoId && ytPlayerReady && ytPlayer) {
                     activePlayerMode = 'yt_iframe';
                     audio.pause();
                     ytPlayer.loadVideoById(track.videoId);
                     if (badgeText) badgeText.textContent = "⚡ YouTube Stream Connected";
+                    startProgressTimer();
                 }
             }
 
@@ -1560,23 +1605,33 @@
             playAudio();
         }
 
-        async function streamFromYoutubeInput() {
-            const rawQuery = ytUrlInput.value.trim();
-            if (!rawQuery) return;
+        // UNIVERSAL YOUTUBE LINK STREAM INPUT RESOLVER
+        async function streamFromYoutubeInput(customQuery = null) {
+            const mainInputVal = document.getElementById('yt-url-input')?.value.trim() || '';
+            const modalInputVal = document.getElementById('modal-yt-input')?.value.trim() || '';
+            const rawQuery = (customQuery || mainInputVal || modalInputVal).trim();
+
+            if (!rawQuery) {
+                alert("Vui lòng nhập Link hoặc Tên bài hát YouTube!");
+                return;
+            }
 
             const btnAdd = document.getElementById('btn-add-stream');
-            btnAdd.disabled = true;
-            btnAdd.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Đang tải...`;
+            if (btnAdd) {
+                btnAdd.disabled = true;
+                btnAdd.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Đang tải...`;
+            }
 
             let title = 'YouTube Track';
             let artist = 'YouTube Artist';
             let videoId = getYouTubeVideoId(rawQuery);
             let thumbnail = videoId ? `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg` : 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=400&auto=format&fit=crop';
-            let youtubeUrl = rawQuery;
+            let youtubeUrl = videoId ? `https://www.youtube.com/watch?v=${videoId}` : rawQuery;
 
-            if (rawQuery.startsWith('http://') || rawQuery.startsWith('https://')) {
+            if (videoId || rawQuery.startsWith('http://') || rawQuery.startsWith('https://')) {
                 try {
-                    const oembedUrl = `https://www.youtube.com/oembed?url=${encodeURIComponent(rawQuery)}&format=json`;
+                    const targetUrl = youtubeUrl;
+                    const oembedUrl = `https://www.youtube.com/oembed?url=${encodeURIComponent(targetUrl)}&format=json`;
                     const ores = await fetch(oembedUrl);
                     if (ores.ok) {
                         const odata = await ores.json();
@@ -1609,24 +1664,29 @@
             const trackObj = buildTrackObject(newTrackItem, 0);
             queue.unshift(trackObj);
             currentTrackIndex = 0;
-            ytUrlInput.value = '';
+
+            if (document.getElementById('yt-url-input')) document.getElementById('yt-url-input').value = '';
+            if (document.getElementById('modal-yt-input')) document.getElementById('modal-yt-input').value = '';
 
             setFilterView('all');
             updateNextCompositionCards();
             loadTrack(0);
             playAudio();
 
-            btnAdd.disabled = false;
-            btnAdd.innerHTML = `Thêm Nhạc`;
+            if (btnAdd) {
+                btnAdd.disabled = false;
+                btnAdd.innerHTML = `Thêm Nhạc`;
+            }
         }
 
         async function addTrackFromModal(type) {
             if (type === 'yt') {
                 const url = document.getElementById('modal-yt-input').value.trim();
                 if (url) {
-                    ytUrlInput.value = url;
-                    streamFromYoutubeInput();
+                    await streamFromYoutubeInput(url);
                     closeMusicManagerModal();
+                } else {
+                    alert("Vui lòng dán Link YouTube!");
                 }
             } else if (type === 'mp3-url') {
                 const url = document.getElementById('modal-mp3url-input').value.trim();
@@ -1661,12 +1721,13 @@
 
         function playAudio() {
             const badgeText = document.getElementById('status-badge-text');
+            startProgressTimer();
 
             if (activePlayerMode === 'yt_iframe' && ytPlayerReady && ytPlayer && ytPlayer.playVideo) {
                 ytPlayer.playVideo();
                 isPlaying = true;
                 iconPlayPause.className = 'fa-solid fa-pause';
-                if (badgeText) badgeText.textContent = "⚡ YouTube Audio Connected 🔥";
+                if (badgeText) badgeText.textContent = "⚡ YouTube Stream Connected 🔥";
             } else {
                 const playPromise = audio.play();
                 if (playPromise !== undefined) {
@@ -1690,6 +1751,7 @@
         }
 
         function pauseAudio() {
+            stopProgressTimer();
             if (activePlayerMode === 'yt_iframe' && ytPlayerReady && ytPlayer && ytPlayer.pauseVideo) {
                 ytPlayer.pauseVideo();
             } else {
@@ -1737,26 +1799,6 @@
                 }
             } else {
                 playNextTrack();
-            }
-        }
-
-        function updateProgress() {
-            if (activePlayerMode === 'html5') {
-                if (!audio.duration) return;
-                const pct = (audio.currentTime / audio.duration) * 100;
-                progressBar.value = pct;
-                timeCurrent.textContent = formatTime(audio.currentTime);
-                timeTotal.textContent = formatTime(audio.duration);
-                updateSyncedLyrics(audio.currentTime);
-            } else if (activePlayerMode === 'yt_iframe' && ytPlayerReady && ytPlayer && ytPlayer.getCurrentTime) {
-                const cur = ytPlayer.getCurrentTime() || 0;
-                const dur = ytPlayer.getDuration() || 180;
-                if (dur > 0) {
-                    progressBar.value = (cur / dur) * 100;
-                    timeCurrent.textContent = formatTime(cur);
-                    timeTotal.textContent = formatTime(dur);
-                    updateSyncedLyrics(cur);
-                }
             }
         }
 
