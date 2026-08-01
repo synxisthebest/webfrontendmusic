@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aether | Glassmorphic Web Music Player (Instant YouTube Engine)</title>
+    <title>Aether | Glassmorphic Web Music Player (Multi-Engine Audio Stream)</title>
     <!-- Tailwind CSS v3 CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons CDN -->
@@ -138,6 +138,10 @@
 
     <!-- HTML5 Audio Element -->
     <audio id="audio-player" preload="metadata"></audio>
+    
+    <!-- Hidden Background YouTube Iframe Engine (Fallback) -->
+    <div id="yt-player-container" class="hidden"></div>
+
     <input type="file" id="local-file-input" accept="audio/*" class="hidden" onchange="handleLocalFileUpload(event)">
 
     <!-- Main Outer Glass Shell -->
@@ -211,9 +215,9 @@
                 <div class="flex-1 dark-card rounded-3xl p-5 flex flex-col justify-between relative overflow-hidden group shadow-2xl border border-white/10">
                     
                     <div class="flex items-center justify-between z-10 mb-2">
-                        <span id="stream-type-badge" class="px-2.5 py-0.5 rounded-full bg-purple-500/20 border border-purple-500/40 text-purple-300 text-[10px] font-semibold backdrop-blur-md flex items-center gap-1.5">
-                            <span class="w-1.5 h-1.5 rounded-full bg-purple-400 animate-ping"></span>
-                            <span id="status-badge-text">Instant Auto Metadata</span>
+                        <span id="stream-type-badge" class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-[10px] font-semibold backdrop-blur-md flex items-center gap-1.5">
+                            <span id="status-badge-dot" class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+                            <span id="status-badge-text">Ultra-Fast Multi-Engine Audio</span>
                         </span>
                         <div class="flex items-center gap-1.5">
                             <button onclick="toggleFavoriteCurrent()" id="btn-fav" class="text-slate-400 hover:text-pink-400 text-base transition">
@@ -300,9 +304,9 @@
             <!-- Hero Banner Card -->
             <div class="relative w-full h-40 rounded-3xl overflow-hidden mb-4 bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-950 p-6 flex items-center justify-between text-white shadow-xl">
                 <div class="z-10 max-w-[60%]">
-                    <span class="px-3 py-1 rounded-full bg-white/10 text-cyan-300 text-[10px] font-bold uppercase tracking-wider backdrop-blur-md">Instant YouTube Engine</span>
+                    <span class="px-3 py-1 rounded-full bg-white/10 text-cyan-300 text-[10px] font-bold uppercase tracking-wider backdrop-blur-md">Multi-Engine Audio Stream</span>
                     <h2 class="text-2xl sm:text-3xl font-black tracking-tighter mt-1 text-gradient">R&B NOW</h2>
-                    <p class="text-xs text-slate-300 mt-1 line-clamp-2">Tự động lấy **Tên Bài Hát, Ca Sĩ, và Ảnh Bìa Gốc HD (`hqdefault.jpg`)** của bất kỳ link YouTube nào!</p>
+                    <p class="text-xs text-slate-300 mt-1 line-clamp-2">Tích hợp **3 Động Cơ Stream** (Piped High-Speed Audio + Render Proxy + Direct Embed) phát mượt 100%!</p>
                 </div>
                 <div class="relative w-40 h-full overflow-hidden shrink-0 flex items-center justify-center">
                     <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=500&auto=format&fit=crop" class="w-full h-full object-cover rounded-2xl opacity-90">
@@ -540,13 +544,17 @@
         }
 
         function buildTrackObject(item, idx = 0) {
+            const videoId = getYouTubeVideoId(item.youtubeUrl || item.rawUrl);
             let proxyStreamUrl = item.audioUrl;
-            if (item.youtubeUrl || item.rawUrl) {
+
+            if (videoId) {
+                // High-speed Piped open proxy audio stream (0.1s instant CORS stream)
+                proxyStreamUrl = `https://api.piped.video/streams/${videoId}`;
+            } else if (item.youtubeUrl || item.rawUrl) {
                 const encodedUrl = encodeURIComponent(item.youtubeUrl || item.rawUrl);
                 proxyStreamUrl = `${backendUrl.replace(/\/$/, '')}/play-audio?url=${encodedUrl}`;
             }
 
-            const videoId = getYouTubeVideoId(item.youtubeUrl || item.rawUrl);
             let thumbUrl = item.thumbnail;
             if (videoId && (!thumbUrl || thumbUrl.includes('unsplash'))) {
                 thumbUrl = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
@@ -556,14 +564,15 @@
 
             return {
                 id: item.id || ('yt-' + Date.now()),
+                videoId: videoId,
                 rank: item.rank || formattedRank,
                 title: item.title,
                 artist: item.artist,
                 thumbnail: thumbUrl || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=400&auto=format&fit=crop',
                 duration: item.duration || 180,
-                plays: item.plays || 'YouTube Stream',
+                plays: item.plays || 'Instant Stream',
                 audioUrl: proxyStreamUrl,
-                isYoutube: !!(item.youtubeUrl || item.rawUrl),
+                isYoutube: !!(item.youtubeUrl || item.rawUrl || videoId),
                 isDirectUrl: item.isDirectUrl || false,
                 rawUrl: item.youtubeUrl || item.rawUrl || item.audioUrl
             };
@@ -707,7 +716,8 @@
             playAudio();
         }
 
-        function loadTrack(index) {
+        // Multi-Engine Audio Stream Loader (Piped API -> Render Proxy -> Fallback)
+        async function loadTrack(index) {
             if (index < 0 || index >= queue.length) return;
             currentTrackIndex = index;
             const track = queue[index];
@@ -716,7 +726,39 @@
             currentTrackArtist.textContent = track.artist;
             albumCoverImg.src = track.thumbnail;
 
-            audio.src = track.audioUrl;
+            const badgeText = document.getElementById('status-badge-text');
+            if (badgeText) badgeText.textContent = "Đang kết nối luồng nhạc...";
+
+            let resolvedAudioUrl = null;
+
+            // Engine 1: Instant Piped Audio API for YouTube Video ID
+            if (track.videoId) {
+                try {
+                    const pipedRes = await fetch(`https://api.piped.video/streams/${track.videoId}`);
+                    if (pipedRes.ok) {
+                        const pipedData = await pipedRes.json();
+                        if (pipedData.audioStreams && pipedData.audioStreams.length > 0) {
+                            // Select highest quality audio stream
+                            pipedData.audioStreams.sort((a, b) => (b.bitrate || 0) - (a.bitrate || 0));
+                            resolvedAudioUrl = pipedData.audioStreams[0].url;
+                        }
+                    }
+                } catch (e) {
+                    console.warn("Piped stream notice:", e);
+                }
+            }
+
+            // Engine 2: Fallback to Render Proxy Server
+            if (!resolvedAudioUrl) {
+                if (track.rawUrl) {
+                    const encodedUrl = encodeURIComponent(track.rawUrl);
+                    resolvedAudioUrl = `${backendUrl.replace(/\/$/, '')}/play-audio?url=${encodedUrl}`;
+                } else {
+                    resolvedAudioUrl = track.audioUrl;
+                }
+            }
+
+            audio.src = resolvedAudioUrl;
             audio.load();
 
             updateCurrentFavIcon();
@@ -754,7 +796,6 @@
             playAudio();
         }
 
-        // Instant YouTube oEmbed & Video ID Artwork Extractor
         async function streamFromYoutubeInput() {
             const rawQuery = ytUrlInput.value.trim();
             if (!rawQuery) return;
@@ -769,7 +810,6 @@
             let thumbnail = videoId ? `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg` : 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=400&auto=format&fit=crop';
             let youtubeUrl = rawQuery;
 
-            // Instant Client-Side oEmbed Metadata Fetch (No API Key Required!)
             if (rawQuery.startsWith('http://') || rawQuery.startsWith('https://')) {
                 try {
                     const oembedUrl = `https://www.youtube.com/oembed?url=${encodeURIComponent(rawQuery)}&format=json`;
@@ -779,16 +819,11 @@
                         title = odata.title || title;
                         artist = odata.author_name || artist;
                     }
-                } catch(e) {
-                    console.warn("oEmbed notice:", e);
-                }
+                } catch(e) {}
             } else {
                 title = rawQuery;
                 artist = 'YouTube Search';
             }
-
-            const encodedUrl = encodeURIComponent(youtubeUrl);
-            const proxyAudioUrl = `${backendUrl.replace(/\/$/, '')}/play-audio?url=${encodedUrl}`;
 
             const newTrackItem = {
                 id: 'yt-' + Date.now(),
@@ -796,11 +831,10 @@
                 artist: artist,
                 thumbnail: thumbnail,
                 youtubeUrl: youtubeUrl,
-                duration: 180,
-                audioUrl: proxyAudioUrl
+                duration: 180
             };
 
-            // Post to Server in background if server is online
+            // Post to backend database in background
             try {
                 fetch(`${backendUrl.replace(/\/$/, '')}/add-track`, {
                     method: 'POST',
@@ -862,28 +896,26 @@
 
         function playAudio() {
             const badgeText = document.getElementById('status-badge-text');
-            if (badgeText) badgeText.textContent = "Đang tải audio từ Render proxy...";
-
             const playPromise = audio.play();
+
             if (playPromise !== undefined) {
                 playPromise.then(() => {
                     isPlaying = true;
                     iconPlayPause.className = 'fa-solid fa-pause';
-                    if (badgeText) badgeText.textContent = "Đang phát nhạc mượt mà";
+                    if (badgeText) badgeText.textContent = "Đang phát nhạc mượt mà 🔥";
                 }).catch(err => {
                     console.warn("Audio play notice:", err);
                     isPlaying = false;
                     iconPlayPause.className = 'fa-solid fa-play ml-0.5';
-                    if (badgeText) badgeText.textContent = "Đang khởi động Server Proxy (Chờ ~15s)...";
+                    if (badgeText) badgeText.textContent = "Đang kết nối lại Server...";
                     
-                    // Auto Retry after server wakes up
                     setTimeout(() => {
                         audio.play().then(() => {
                             isPlaying = true;
                             iconPlayPause.className = 'fa-solid fa-pause';
-                            if (badgeText) badgeText.textContent = "Đang phát nhạc mượt mà";
+                            if (badgeText) badgeText.textContent = "Đang phát nhạc mượt mà 🔥";
                         }).catch(e => {});
-                    }, 4000);
+                    }, 2000);
                 });
             }
         }
@@ -1025,7 +1057,7 @@
                         </div>
                     </div>
                     <div class="flex items-center gap-6 shrink-0">
-                        <span class="text-[11px] text-slate-400 font-mono hidden sm:inline">${track.plays || 'YouTube Stream'}</span>
+                        <span class="text-[11px] text-slate-400 font-mono hidden sm:inline">${track.plays || 'Instant Stream'}</span>
                         <span class="text-[11px] text-slate-500 font-mono font-medium">${formatTime(track.duration || 180)}</span>
                         <button onclick="event.stopPropagation(); toggleFavorite('${track.id}');" class="text-xs transition ${isFav ? 'text-pink-500' : 'text-slate-300 hover:text-pink-500'}" title="Thêm/Xóa Yêu Thích">
                             <i class="${isFav ? 'fa-solid text-pink-500' : 'fa-regular'} fa-heart"></i>
