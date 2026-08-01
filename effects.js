@@ -15,6 +15,14 @@ function setupWebAudioAPI() {
         const audio = document.getElementById('audio-player');
         if (!audio || audioCtx) return;
 
+        // CORS SAFEGUARD: Do not attach createMediaElementSource to cross-origin direct audio streams 
+        // (e.g. Archive.org FLAC, GitHub Releases, external MP3) because WebAudio API CORS isolation mutes audio in Chrome!
+        const currentSrc = audio.src || '';
+        if (currentSrc.includes('archive.org') || currentSrc.includes('github.com') || currentSrc.includes('http') || currentSrc.endsWith('.flac') || currentSrc.endsWith('.mp3')) {
+            // Let HTML5 audio play directly to speakers without WebAudio CORS muting!
+            return;
+        }
+
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         analyserNode = audioCtx.createAnalyser();
         analyserNode.fftSize = 64;
@@ -67,7 +75,7 @@ function initAudioVisualizer() {
                     const val = frequencyData[i] / 255;
                     barHeight = Math.max(4, val * height * 0.9 * currentVol);
                 } else {
-                    // Dynamic Sine Frequency Wave simulation fallback
+                    // Dynamic Sine Frequency Wave simulation fallback (Ensures 100% audio playback without CORS muting)
                     const freq1 = Math.sin(phase + i * 0.28) * 0.5 + 0.5;
                     const freq2 = Math.cos(phase * 1.6 + i * 0.45) * 0.5 + 0.5;
                     const amplitude = (freq1 * 0.65 + freq2 * 0.35) * currentVol;
