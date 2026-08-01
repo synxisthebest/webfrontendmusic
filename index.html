@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aether | Web Music Player (Guaranteed Audio Playback Engine)</title>
+    <title>Aether | Web Music Player (100% Guaranteed Sound Engine)</title>
     <!-- Tailwind CSS v3 CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons CDN -->
@@ -227,13 +227,19 @@
 </head>
 <body class="w-screen h-screen flex items-center justify-center p-2 sm:p-3 overflow-hidden">
 
-    <!-- Pure HTML5 Audio Element -->
+    <!-- Pure HTML5 Audio Element (Native Sound Stream) -->
     <audio id="audio-player" preload="auto"></audio>
     <input type="file" id="local-file-input" accept="audio/*" class="hidden" onchange="handleLocalFileUpload(event)">
 
     <!-- Hidden Backup YouTube Player Instance Container -->
     <div class="fixed -top-[9999px] -left-[9999px] w-1 h-1 opacity-0 pointer-events-none overflow-hidden z-0">
         <div id="yt-player-container"></div>
+    </div>
+
+    <!-- Autoplay Permission Overlay Banner (Disappears on First User Click) -->
+    <div id="autoplay-banner" onclick="dismissAutoplayBanner()" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 px-5 py-2.5 rounded-full bg-gradient-to-r from-purple-600 via-pink-600 to-cyan-500 text-white font-bold text-xs shadow-2xl border border-white/20 flex items-center gap-2 cursor-pointer transition animate-bounce">
+        <i class="fa-solid fa-circle-play text-base animate-pulse"></i>
+        <span>BẤM VÀO ĐÂY ĐỂ BẬT ÂM THANH PHÁT NHẠC! 🎵</span>
     </div>
 
     <!-- Main Outer Glass Shell (FULL SCREEN WIDESCREEN LAYOUT) -->
@@ -311,7 +317,7 @@
                     <div class="flex items-center justify-between z-10 mb-1 shrink-0">
                         <span id="stream-type-badge" class="px-2 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-[10px] font-semibold backdrop-blur-md flex items-center gap-1.5">
                             <span id="status-badge-dot" class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
-                            <span id="status-badge-text">⚡ Official YouTube Audio Stream Connected 🔥</span>
+                            <span id="status-badge-text">⚡ Direct Audio Stream Active 🔥</span>
                         </span>
                         <div class="flex items-center gap-2">
                             <button onclick="toggleFavoriteCurrent()" id="btn-fav" class="text-slate-400 hover:text-pink-400 text-base transition">
@@ -324,7 +330,7 @@
                     <div id="player-view-artwork" class="py-1 flex flex-col items-center justify-center relative shrink-0">
                         <div class="relative w-32 h-32 lg:w-36 lg:h-36 rounded-2xl overflow-hidden shadow-2xl border border-white/15 group-hover:scale-[1.02] transition-transform duration-300">
                             <img id="album-cover-img" 
-                                 src="https://i.ytimg.com/vi/L4dSipbZj8A/hqdefault.jpg" 
+                                 src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=400&auto=format&fit=crop" 
                                  alt="Official Cover Artwork" 
                                  class="w-full h-full object-cover">
                         </div>
@@ -364,8 +370,8 @@
                     </div>
 
                     <div class="text-center mt-0.5 z-10 shrink-0">
-                        <h2 id="current-track-title" class="text-base sm:text-lg font-bold text-slate-100 truncate">Mắt Môi Tay Chân</h2>
-                        <p id="current-track-artist" class="text-xs text-purple-300 font-medium mt-0.5 truncate">MCK ft. TAGE</p>
+                        <h2 id="current-track-title" class="text-base sm:text-lg font-bold text-slate-100 truncate">01. Elegie</h2>
+                        <p id="current-track-artist" class="text-xs text-purple-300 font-medium mt-0.5 truncate">Envy feat. ThanhDraw</p>
                     </div>
 
                     <div class="flex flex-col items-center gap-1.5 mt-2 z-10 shrink-0">
@@ -428,9 +434,9 @@
             <!-- Hero Banner Card -->
             <div class="relative w-full h-40 rounded-3xl overflow-hidden mb-4 bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-950 p-7 flex items-center justify-between text-white shadow-xl shrink-0">
                 <div class="z-10 max-w-[65%]">
-                    <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold uppercase tracking-wider backdrop-blur-md">⚡ Guaranteed Official YouTube Audio Engine Active</span>
+                    <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold uppercase tracking-wider backdrop-blur-md">⚡ Guaranteed Sound & Dual Stream Engine Active</span>
                     <h2 class="text-3xl sm:text-4xl font-black tracking-tighter mt-1 text-gradient">R&B NOW</h2>
-                    <p class="text-xs sm:text-sm text-slate-300 mt-1 line-clamp-2">Đã cập nhật chuẩn 100% YouTube ID cho "Mắt Môi Tay Chân", "November", "mới hôm qua"! Bấm nút Play nghe nhạc tức thì!</p>
+                    <p class="text-xs sm:text-sm text-slate-300 mt-1 line-clamp-2">Hỗ trợ phát mượt 100% mọi bài hát FLAC & YouTube link trên cả Điện thoại & Máy tính!</p>
                 </div>
                 <div class="relative w-48 h-full overflow-hidden shrink-0 flex items-center justify-center">
                     <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=500&auto=format&fit=crop" class="w-full h-full object-cover rounded-2xl opacity-90">
@@ -639,11 +645,11 @@
             </div>
 
             <div class="flex items-center gap-2 py-3 border-b border-white/5 shrink-0 overflow-x-auto">
-                <button onclick="switchModalTab('tab-yt')" id="nav-tab-yt" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-purple-500/20 border border-purple-500/40 text-purple-300 transition shrink-0 flex items-center gap-1.5 shadow-md">
-                    <i class="fa-brands fa-youtube text-red-500"></i> YouTube Link
-                </button>
-                <button onclick="switchModalTab('tab-mp3-url')" id="nav-tab-mp3-url" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-white/5 border border-white/10 text-slate-400 transition shrink-0 flex items-center gap-1.5">
+                <button onclick="switchModalTab('tab-mp3-url')" id="nav-tab-mp3-url" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-purple-500/20 border border-purple-500/40 text-purple-300 transition shrink-0 flex items-center gap-1.5 shadow-md">
                     <i class="fa-solid fa-link text-cyan-400"></i> Direct MP3/FLAC URL
+                </button>
+                <button onclick="switchModalTab('tab-yt')" id="nav-tab-yt" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-white/5 border border-white/10 text-slate-400 transition shrink-0 flex items-center gap-1.5">
+                    <i class="fa-brands fa-youtube text-red-500"></i> YouTube Link
                 </button>
                 <button onclick="switchModalTab('tab-local')" id="nav-tab-local" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-white/5 border border-white/10 text-slate-400 transition shrink-0 flex items-center gap-1.5">
                     <i class="fa-solid fa-folder-open text-amber-400"></i> File MP3 Máy Tính
@@ -655,25 +661,7 @@
 
             <div class="flex-1 overflow-y-auto py-4 space-y-4 pr-1">
                 
-                <div id="content-tab-yt" class="space-y-3">
-                    <div class="p-3 rounded-2xl bg-purple-500/10 border border-purple-500/20 text-xs text-purple-200">
-                        <i class="fa-solid fa-bolt text-base mr-1.5 text-amber-400"></i>
-                        <span>Hỗ trợ mọi link YouTube <b>(watch?v=, youtu.be/, shorts/)</b> & Chặn 100% Quảng Cáo! Tự động đồng bộ toàn cầu!</span>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">Nhập Link YouTube</label>
-                        <input type="text" id="modal-yt-input" 
-                               placeholder="https://www.youtube.com/watch?v=..." 
-                               class="w-full glass-input rounded-xl px-3.5 py-2.5 text-xs text-slate-100 focus:outline-none border border-white/10 bg-white/5">
-                    </div>
-
-                    <button onclick="addTrackFromModal('yt')" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold text-xs shadow-lg shadow-pink-500/25 flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-plus"></i> Thêm Nhạc YouTube Siêu Tốc 0.1s
-                    </button>
-                </div>
-
-                <div id="content-tab-mp3-url" class="space-y-3 hidden">
+                <div id="content-tab-mp3-url" class="space-y-3">
                     <div class="p-3 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 text-xs text-cyan-200">
                         <i class="fa-solid fa-bolt text-base mr-1.5 text-amber-400"></i>
                         <span>Hỗ trợ mọi đường link Direct Audio <b>.mp3, .flac, .wav, GitHub Release, Archive.org</b>! Tự động đồng bộ tới mọi người dùng!</span>
@@ -693,6 +681,24 @@
                     </div>
                     <button onclick="addTrackFromModal('mp3-url')" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-bold text-xs shadow-lg flex items-center justify-center gap-2">
                         <i class="fa-solid fa-plus"></i> Thêm Link Audio Online Tức Thì
+                    </button>
+                </div>
+
+                <div id="content-tab-yt" class="space-y-3 hidden">
+                    <div class="p-3 rounded-2xl bg-purple-500/10 border border-purple-500/20 text-xs text-purple-200">
+                        <i class="fa-solid fa-bolt text-base mr-1.5 text-amber-400"></i>
+                        <span>Hỗ trợ mọi link YouTube <b>(watch?v=, youtu.be/, shorts/)</b> & Chặn 100% Quảng Cáo! Tự động đồng bộ toàn cầu!</span>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">Nhập Link YouTube</label>
+                        <input type="text" id="modal-yt-input" 
+                               placeholder="https://www.youtube.com/watch?v=..." 
+                               class="w-full glass-input rounded-xl px-3.5 py-2.5 text-xs text-slate-100 focus:outline-none border border-white/10 bg-white/5">
+                    </div>
+
+                    <button onclick="addTrackFromModal('yt')" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold text-xs shadow-lg shadow-pink-500/25 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-plus"></i> Thêm Nhạc YouTube Siêu Tốc 0.1s
                     </button>
                 </div>
 
@@ -723,18 +729,8 @@
     <script>
         const DEFAULT_POPULAR_PLAYLIST = [
             {
-                id: 'hit-mck-1',
-                rank: '01',
-                title: "Mắt Môi Tay Chân",
-                artist: 'MCK ft. TAGE',
-                thumbnail: 'https://i.ytimg.com/vi/L4dSipbZj8A/hqdefault.jpg',
-                youtubeUrl: 'https://www.youtube.com/watch?v=L4dSipbZj8A',
-                videoId: 'L4dSipbZj8A',
-                duration: 245
-            },
-            {
                 id: 'hit-archive-1',
-                rank: '02',
+                rank: '01',
                 title: "01. Elegie",
                 artist: 'Envy feat. ThanhDraw',
                 thumbnail: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=400&auto=format&fit=crop',
@@ -742,6 +738,16 @@
                 duration: 210,
                 plays: 'Archive.org FLAC Stream',
                 isDirectUrl: true
+            },
+            {
+                id: 'hit-mck-1',
+                rank: '02',
+                title: "Mắt Môi Tay Chân",
+                artist: 'MCK ft. TAGE',
+                thumbnail: 'https://i.ytimg.com/vi/L4dSipbZj8A/hqdefault.jpg',
+                youtubeUrl: 'https://www.youtube.com/watch?v=L4dSipbZj8A',
+                videoId: 'L4dSipbZj8A',
+                duration: 245
             },
             {
                 id: 'hit-cassette-1',
@@ -810,7 +816,6 @@
         }
         loadUserFavorites();
 
-        // PERSISTENT USER ADDED CUSTOM TRACKS MEMORY ENGINE
         let userCustomTracks = [];
 
         function loadUserCustomTracks() {
@@ -868,7 +873,7 @@
                             id: 'pl-default-1',
                             name: 'Nhạc Yêu Thích 2026',
                             coverImage: '',
-                            trackKeys: ['L4dSipbZj8A', 'hit-archive-1', '34Na4j8AVgA']
+                            trackKeys: ['hit-archive-1', 'L4dSipbZj8A', '34Na4j8AVgA']
                         }
                     ];
                 }
@@ -920,6 +925,12 @@
         let isTranslationActive = false;
         let translationCache = new Map();
         let streamCache = new Map();
+
+        function dismissAutoplayBanner() {
+            const banner = document.getElementById('autoplay-banner');
+            if (banner) banner.classList.add('hidden');
+            playAudio();
+        }
 
         function getSavedTrackLyricOffset(trackKey) {
             try {
@@ -1188,6 +1199,14 @@
             setupCanvas();
             updateFavoritesUI();
 
+            // DISMISS AUTOPLAY BANNER ON ANY FIRST USER CLICK ANYWHERE ON SCREEN
+            document.body.addEventListener('click', () => {
+                const banner = document.getElementById('autoplay-banner');
+                if (banner && !banner.classList.contains('hidden')) {
+                    banner.classList.add('hidden');
+                }
+            }, { once: true });
+
             audio.addEventListener('playing', () => {
                 isPlaying = true;
                 iconPlayPause.className = 'fa-solid fa-pause';
@@ -1210,7 +1229,9 @@
                 }
             });
 
+            // ERROR FALLBACK ENGINE FOR ALL BROWSERS
             audio.addEventListener('error', (e) => {
+                console.warn("Audio stream notice:", e);
                 const currentTrack = queue[currentTrackIndex];
                 if (currentTrack && currentTrack.videoId && ytPlayerReady && ytPlayer) {
                     activePlayerMode = 'yt_iframe';
@@ -1218,6 +1239,7 @@
                     ytPlayer.playVideo();
                     startProgressTimer();
                 } else if (currentTrack && currentTrack.audioUrl) {
+                    // Direct stream fallback
                     audio.src = currentTrack.audioUrl;
                     audio.load();
                 }
@@ -1942,7 +1964,6 @@
                     startProgressTimer();
                     if (isPlaying) playAudio();
                 } else {
-                    // Fallback directly to Official YouTube IFrame API
                     activePlayerMode = 'yt_iframe';
                     audio.pause();
                     if (ytPlayerReady && ytPlayer) {
@@ -2156,6 +2177,11 @@
             const badgeText = document.getElementById('status-badge-text');
             startProgressTimer();
 
+            // RESUME WEBAUDIO CONTEXT ON USER PLAY CLICK
+            if (window.audioCtx && window.audioCtx.state === 'suspended') {
+                window.audioCtx.resume();
+            }
+
             if (activePlayerMode === 'yt_iframe' && ytPlayerReady && ytPlayer && ytPlayer.playVideo) {
                 ytPlayer.playVideo();
                 isPlaying = true;
@@ -2169,7 +2195,10 @@
                         iconPlayPause.className = 'fa-solid fa-pause';
                         if (badgeText) badgeText.textContent = "⚡ Direct Stream Connected 🔥";
                     }).catch(err => {
-                        console.warn("Audio play notice:", err);
+                        console.warn("Audio play blocked by browser policy:", err);
+                        const banner = document.getElementById('autoplay-banner');
+                        if (banner) banner.classList.remove('hidden');
+                        
                         const currentTrack = queue[currentTrackIndex];
                         if (currentTrack && currentTrack.videoId && ytPlayerReady && ytPlayer) {
                             activePlayerMode = 'yt_iframe';
@@ -2281,12 +2310,10 @@
             }
         }
 
-        // GUARANTEED RENDER OF ALL TRACKS IN MAIN STAGE
         function renderTrendingTracks() {
             if (!trendingTracksContainer) return;
             trendingTracksContainer.innerHTML = '';
 
-            // View 1: Playlists View
             if (activeFilterView === 'playlists') {
                 if (userPlaylists.length === 0) {
                     trendingTracksContainer.innerHTML = `
@@ -2346,7 +2373,6 @@
                 return;
             }
 
-            // View 2: Detailed Playlist View
             if (activeFilterView === 'playlist_detail' && selectedPlaylistId) {
                 const pl = userPlaylists.find(p => p.id === selectedPlaylistId);
                 if (pl) {
@@ -2383,7 +2409,6 @@
                 }
             }
 
-            // View 3: Normal All Tracks List / Favorites List
             let displayTracks = queue;
             if (activeFilterView === 'fav') {
                 displayTracks = queue.filter(t => favoritesSet.has(getTrackKey(t)));
@@ -2466,7 +2491,7 @@
         }
 
         function switchModalTab(tabId) {
-            const tabs = ['tab-yt', 'tab-mp3-url', 'tab-local', 'tab-backend'];
+            const tabs = ['tab-mp3-url', 'tab-yt', 'tab-local', 'tab-backend'];
             tabs.forEach(t => {
                 const nav = document.getElementById(`nav-${t}`);
                 const content = document.getElementById(`content-${t}`);
