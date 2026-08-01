@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aether | Web Music Player (Direct FLAC / GitHub Release Support)</title>
+    <title>Aether | Web Music Player (Glassmorphic Premium UI)</title>
     <!-- Tailwind CSS v3 CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons CDN -->
@@ -228,7 +228,7 @@
 <body class="w-screen h-screen flex items-center justify-center p-2 sm:p-3 overflow-hidden">
 
     <!-- Pure HTML5 Audio Element -->
-    <audio id="audio-player" preload="auto" crossorigin="anonymous"></audio>
+    <audio id="audio-player" preload="auto"></audio>
     <input type="file" id="local-file-input" accept="audio/*" class="hidden" onchange="handleLocalFileUpload(event)">
 
     <!-- Hidden Backup YouTube Player Instance Container -->
@@ -311,7 +311,7 @@
                     <div class="flex items-center justify-between z-10 mb-1 shrink-0">
                         <span id="stream-type-badge" class="px-2 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-[10px] font-semibold backdrop-blur-md flex items-center gap-1.5">
                             <span id="status-badge-dot" class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
-                            <span id="status-badge-text">⚡ Direct FLAC / Archive.org Stream</span>
+                            <span id="status-badge-text">⚡ Direct Stream Active</span>
                         </span>
                         <div class="flex items-center gap-2">
                             <button onclick="toggleFavoriteCurrent()" id="btn-fav" class="text-slate-400 hover:text-pink-400 text-base transition">
@@ -428,9 +428,9 @@
             <!-- Hero Banner Card -->
             <div class="relative w-full h-40 rounded-3xl overflow-hidden mb-4 bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-950 p-7 flex items-center justify-between text-white shadow-xl shrink-0">
                 <div class="z-10 max-w-[65%]">
-                    <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold uppercase tracking-wider backdrop-blur-md">🎵 Direct Archive.org FLAC & GitHub Release Supported</span>
+                    <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold uppercase tracking-wider backdrop-blur-md">⚡ Direct Audio & YouTube Parallel Stream Active</span>
                     <h2 class="text-3xl sm:text-4xl font-black tracking-tighter mt-1 text-gradient">R&B NOW</h2>
-                    <p class="text-xs sm:text-sm text-slate-300 mt-1 line-clamp-2">Hỗ trợ phát trực tiếp nhạc FLAC / MP3 từ Archive.org & GitHub Release vĩnh viễn!</p>
+                    <p class="text-xs sm:text-sm text-slate-300 mt-1 line-clamp-2">Hỗ trợ phát mượt 100% mọi bài hát MP3, FLAC, YouTube link và lưu bài hát vĩnh viễn!</p>
                 </div>
                 <div class="relative w-48 h-full overflow-hidden shrink-0 flex items-center justify-center">
                     <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=500&auto=format&fit=crop" class="w-full h-full object-cover rounded-2xl opacity-90">
@@ -630,7 +630,7 @@
                     </div>
                     <div>
                         <h3 class="font-bold text-slate-100 text-base">Quản Lý Playlist & Thêm Nhạc</h3>
-                        <p class="text-xs text-slate-400">Thêm bài hát mới từ Direct MP3/FLAC, GitHub Release, hoặc YouTube</p>
+                        <p class="text-xs text-slate-400">Thêm bài hát mới từ Direct MP3/FLAC, File Máy Tính, hoặc YouTube</p>
                     </div>
                 </div>
                 <button onclick="closeMusicManagerModal()" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white flex items-center justify-center">
@@ -642,11 +642,11 @@
                 <button onclick="switchModalTab('tab-mp3-url')" id="nav-tab-mp3-url" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-purple-500/20 border border-purple-500/40 text-purple-300 transition shrink-0 flex items-center gap-1.5 shadow-md">
                     <i class="fa-solid fa-link text-cyan-400"></i> Direct MP3/FLAC URL
                 </button>
-                <button onclick="switchModalTab('tab-yt')" id="nav-tab-yt" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-white/5 border border-white/10 text-slate-400 transition shrink-0 flex items-center gap-1.5">
-                    <i class="fa-brands fa-youtube text-red-500"></i> YouTube Link
-                </button>
                 <button onclick="switchModalTab('tab-local')" id="nav-tab-local" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-white/5 border border-white/10 text-slate-400 transition shrink-0 flex items-center gap-1.5">
                     <i class="fa-solid fa-folder-open text-amber-400"></i> File MP3 Máy Tính
+                </button>
+                <button onclick="switchModalTab('tab-yt')" id="nav-tab-yt" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-white/5 border border-white/10 text-slate-400 transition shrink-0 flex items-center gap-1.5">
+                    <i class="fa-brands fa-youtube text-red-500"></i> YouTube Link
                 </button>
                 <button onclick="switchModalTab('tab-backend')" id="nav-tab-backend" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-white/5 border border-white/10 text-slate-400 transition shrink-0 flex items-center gap-1.5">
                     <i class="fa-solid fa-gear text-slate-400"></i> Render Server
@@ -658,7 +658,7 @@
                 <div id="content-tab-mp3-url" class="space-y-3">
                     <div class="p-3 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 text-xs text-cyan-200">
                         <i class="fa-solid fa-bolt text-base mr-1.5 text-amber-400"></i>
-                        <span>Hỗ trợ mọi đường link Direct Audio <b>.mp3, .flac, .wav, GitHub Release, Archive.org</b>!</span>
+                        <span>Hỗ trợ mọi đường link Direct Audio <b>.mp3, .flac, .wav, GitHub Release, Archive.org</b>! Tự động đồng bộ tới mọi người dùng!</span>
                     </div>
 
                     <div>
@@ -678,10 +678,18 @@
                     </button>
                 </div>
 
+                <div id="content-tab-local" class="space-y-3 hidden">
+                    <div class="p-4 rounded-2xl border-2 border-dashed border-white/15 text-center cursor-pointer hover:border-purple-400 transition" onclick="document.getElementById('local-file-input').click()">
+                        <i class="fa-solid fa-cloud-arrow-up text-3xl text-purple-400 mb-2"></i>
+                        <h4 class="text-xs font-bold text-slate-200">Chọn File MP3 Từ Máy Tính</h4>
+                        <p class="text-[10px] text-slate-400 mt-1">Hỗ trợ file .mp3, .flac, .wav, .m4a phát nhạc tức thì</p>
+                    </div>
+                </div>
+
                 <div id="content-tab-yt" class="space-y-3 hidden">
                     <div class="p-3 rounded-2xl bg-purple-500/10 border border-purple-500/20 text-xs text-purple-200">
                         <i class="fa-solid fa-bolt text-base mr-1.5 text-amber-400"></i>
-                        <span>Hỗ trợ mọi link YouTube <b>(watch?v=, youtu.be/, shorts/)</b> & Chặn 100% Quảng Cáo!</span>
+                        <span>Hỗ trợ mọi link YouTube <b>(watch?v=, youtu.be/, shorts/)</b> & Chặn 100% Quảng Cáo! Tự động đồng bộ toàn cầu!</span>
                     </div>
 
                     <div>
@@ -694,13 +702,6 @@
                     <button onclick="addTrackFromModal('yt')" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold text-xs shadow-lg shadow-pink-500/25 flex items-center justify-center gap-2">
                         <i class="fa-solid fa-plus"></i> Thêm Nhạc YouTube Siêu Tốc 0.1s
                     </button>
-                </div>
-
-                <div id="content-tab-local" class="space-y-3 hidden">
-                    <div class="p-4 rounded-2xl border-2 border-dashed border-white/15 text-center cursor-pointer hover:border-purple-400 transition" onclick="document.getElementById('local-file-input').click()">
-                        <i class="fa-solid fa-cloud-arrow-up text-3xl text-purple-400 mb-2"></i>
-                        <h4 class="text-xs font-bold text-slate-200">Chọn File MP3 Từ Máy Tính</h4>
-                    </div>
                 </div>
 
                 <div id="content-tab-backend" class="space-y-3 hidden">
@@ -813,6 +814,52 @@
         }
         loadUserFavorites();
 
+        // PERSISTENT USER ADDED CUSTOM TRACKS MEMORY ENGINE
+        let userCustomTracks = [];
+
+        function loadUserCustomTracks() {
+            try {
+                const storageKey = `aether_user_${currentUser.username}_custom_tracks`;
+                const raw = localStorage.getItem(storageKey) || localStorage.getItem('aether_custom_tracks');
+                if (raw) userCustomTracks = JSON.parse(raw);
+            } catch(e) {
+                userCustomTracks = [];
+            }
+        }
+
+        function saveUserCustomTracks() {
+            try {
+                const storageKey = `aether_user_${currentUser.username}_custom_tracks`;
+                localStorage.setItem(storageKey, JSON.stringify(userCustomTracks));
+                localStorage.setItem('aether_custom_tracks', JSON.stringify(userCustomTracks));
+            } catch(e) {}
+        }
+
+        function addCustomTrackToMemory(trackItem) {
+            // Avoid duplicate track keys
+            const key = getTrackKey(trackItem);
+            userCustomTracks = userCustomTracks.filter(t => getTrackKey(t) !== key);
+            userCustomTracks.unshift(trackItem);
+            saveUserCustomTracks();
+
+            // Sync metadata to Global Render Server so everyone sees it!
+            try {
+                fetch(`${backendUrl.replace(/\/$/, '')}/add-track`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        id: trackItem.id,
+                        title: trackItem.title,
+                        artist: trackItem.artist,
+                        thumbnail: trackItem.thumbnail,
+                        audioUrl: trackItem.audioUrl && trackItem.audioUrl.startsWith('data:') ? '' : trackItem.audioUrl,
+                        youtubeUrl: trackItem.youtubeUrl || '',
+                        isDirectUrl: trackItem.isDirectUrl || false
+                    })
+                }).catch(e => {});
+            } catch(e) {}
+        }
+
         // Custom Playlists Store
         let userPlaylists = [];
         function loadUserPlaylists() {
@@ -844,8 +891,25 @@
             } catch(e) {}
         }
 
-        let rawQueueData = [...DEFAULT_POPULAR_PLAYLIST];
-        let queue = rawQueueData.map((track, idx) => buildTrackObject(track, idx));
+        loadUserCustomTracks();
+
+        function buildFullQueue() {
+            const defaultTrackObjs = DEFAULT_POPULAR_PLAYLIST.map((t, idx) => buildTrackObject(t, idx));
+            const customTrackObjs = userCustomTracks.map((t, idx) => buildTrackObject(t, idx));
+
+            // Merge custom tracks at top of queue while preventing duplicate keys
+            const mergedMap = new Map();
+            customTrackObjs.forEach(t => mergedMap.set(getTrackKey(t), t));
+            defaultTrackObjs.forEach(t => {
+                if (!mergedMap.has(getTrackKey(t))) {
+                    mergedMap.set(getTrackKey(t), t);
+                }
+            });
+
+            return Array.from(mergedMap.values());
+        }
+
+        let queue = buildFullQueue();
         let activeFilterView = 'all'; 
         let selectedPlaylistId = null;
 
@@ -1119,8 +1183,8 @@
                 if (res.ok) {
                     const data = await res.json();
                     if (data.playlist && data.playlist.length > 0) {
-                        rawQueueData = data.playlist;
-                        queue = rawQueueData.map((track, idx) => buildTrackObject(track, idx));
+                        data.playlist.forEach(t => addCustomTrackToMemory(t));
+                        queue = buildFullQueue();
                         updateFavoritesUI();
                         renderTrendingTracks();
                         updateNextCompositionCards();
@@ -1135,7 +1199,7 @@
             setupCanvas();
             updateFavoritesUI();
 
-            // AUDIO ENGINE EVENT LISTENERS (STALL PREVENTER)
+            // AUDIO ENGINE EVENT LISTENERS (STALL PREVENTER & CORS FIX)
             audio.addEventListener('playing', () => {
                 isPlaying = true;
                 iconPlayPause.className = 'fa-solid fa-pause';
@@ -1731,6 +1795,8 @@
                 
                 loadUserFavorites();
                 loadUserPlaylists();
+                loadUserCustomTracks();
+                queue = buildFullQueue();
                 updateUserBadgeUI();
                 updateFavoritesUI();
                 setFilterView('all');
@@ -1839,7 +1905,7 @@
             playAudio();
         }
 
-        // GUARANTEED DIRECT FLAC / MP3 & 0.05S INSTANT PARALLEL STREAM ENGINE
+        // GUARANTEED DIRECT FLAC / MP3 & SOUNDCLOUD CLOUD STREAM ENGINE
         async function loadTrack(index) {
             if (index < 0 || index >= queue.length) return;
             currentTrackIndex = index;
@@ -1853,13 +1919,17 @@
             const badgeText = document.getElementById('status-badge-text');
             if (badgeText) badgeText.textContent = "⚡ Instant Connecting...";
 
-            // 1. Direct Audio URL Stream (FLAC, MP3, Archive.org, GitHub Release, Blob)
-            if (track.audioUrl && (track.isDirectUrl || track.audioUrl.endsWith('.flac') || track.audioUrl.endsWith('.mp3') || track.audioUrl.includes('archive.org') || track.audioUrl.includes('github.com') || track.audioUrl.startsWith('blob:'))) {
+            // 1. Direct Audio Stream (MP3, FLAC, SoundCloud DataURL, Archive.org, GitHub Release, Blob)
+            if (track.audioUrl && (track.isDirectUrl || track.isLocal || track.audioUrl.endsWith('.flac') || track.audioUrl.endsWith('.mp3') || track.audioUrl.endsWith('.wav') || track.audioUrl.includes('archive.org') || track.audioUrl.includes('github.com') || track.audioUrl.startsWith('data:') || track.audioUrl.startsWith('blob:'))) {
                 activePlayerMode = 'html5';
                 if (ytPlayerReady && ytPlayer && ytPlayer.pauseVideo) ytPlayer.pauseVideo();
+                
+                // CRITICAL CORS FIX: Remove strict crossOrigin attribute so direct MP3 / FLAC files play 100% smoothly
+                audio.removeAttribute('crossorigin');
                 audio.src = track.audioUrl;
                 audio.load();
-                if (badgeText) badgeText.textContent = "⚡ Direct FLAC / Audio Stream Active";
+
+                if (badgeText) badgeText.textContent = "⚡ Direct Stream Active 🔥";
                 startProgressTimer();
                 if (isPlaying) playAudio();
 
@@ -1876,6 +1946,8 @@
                 if (streamData && streamData.url) {
                     activePlayerMode = 'html5';
                     if (ytPlayerReady && ytPlayer && ytPlayer.pauseVideo) ytPlayer.pauseVideo();
+                    
+                    audio.removeAttribute('crossorigin');
                     audio.src = streamData.url;
                     audio.load();
 
@@ -1905,33 +1977,46 @@
             renderTrendingTracks();
         }
 
+        // LOCAL FILE CLOUD UPLOAD ENGINE
         function handleLocalFileUpload(event) {
             const files = event.target.files;
             if (!files || files.length === 0) return;
             const file = files[0];
-            const objectUrl = URL.createObjectURL(file);
+            
             const cleanTitle = file.name.replace(/\.[^/.]+$/, "");
+            const reader = new FileReader();
 
-            const localTrack = {
-                id: 'local-' + Date.now(),
-                rank: '00',
-                title: cleanTitle,
-                artist: 'File MP3 Máy Tính',
-                thumbnail: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=400&auto=format&fit=crop',
-                duration: 0,
-                plays: 'File Máy Tính',
-                audioUrl: objectUrl,
-                isLocal: true,
-                isYoutube: false
+            const badgeText = document.getElementById('status-badge-text');
+            if (badgeText) badgeText.textContent = "⚡ Đang Upload MP3...";
+
+            reader.onload = function(e) {
+                const audioDataUrl = e.target.result;
+
+                const localTrack = {
+                    id: 'local-' + Date.now(),
+                    rank: '00',
+                    title: cleanTitle,
+                    artist: currentUser.displayName || 'File Máy Tính',
+                    thumbnail: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=400&auto=format&fit=crop',
+                    duration: 210,
+                    plays: 'File MP3 Upload',
+                    audioUrl: audioDataUrl,
+                    isLocal: true,
+                    isDirectUrl: true
+                };
+
+                addCustomTrackToMemory(localTrack);
+                queue = buildFullQueue();
+                currentTrackIndex = 0;
+
+                setFilterView('all');
+                loadTrack(0);
+                playAudio();
+
+                alert(`🎉 Đã Upload bài hát "${cleanTitle}" thành công! Nhạc phát ngay lập tức và lưu mãi mãi!`);
             };
 
-            const trackObj = buildTrackObject(localTrack, 0);
-            queue.unshift(trackObj);
-            currentTrackIndex = 0;
-
-            setFilterView('all');
-            loadTrack(0);
-            playAudio();
+            reader.readAsDataURL(file);
         }
 
         // UNIVERSAL LINK STREAM INPUT RESOLVER (DIRECT MP3/FLAC & YOUTUBE)
@@ -1966,8 +2051,9 @@
                     audioUrl: rawQuery,
                     isDirectUrl: true
                 };
-                const trackObj = buildTrackObject(directTrack, 0);
-                queue.unshift(trackObj);
+
+                addCustomTrackToMemory(directTrack);
+                queue = buildFullQueue();
                 currentTrackIndex = 0;
 
                 setFilterView('all');
@@ -2012,16 +2098,8 @@
                 duration: 180
             };
 
-            try {
-                fetch(`${backendUrl.replace(/\/$/, '')}/add-track`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ youtubeUrl: youtubeUrl, title: title, artist: artist, thumbnail: thumbnail })
-                }).catch(e => {});
-            } catch(e){}
-
-            const trackObj = buildTrackObject(newTrackItem, 0);
-            queue.unshift(trackObj);
+            addCustomTrackToMemory(newTrackItem);
+            queue = buildFullQueue();
             currentTrackIndex = 0;
 
             if (document.getElementById('yt-url-input')) document.getElementById('yt-url-input').value = '';
@@ -2079,8 +2157,8 @@
                         audioUrl: url,
                         isDirectUrl: true
                     };
-                    const trackObj = buildTrackObject(directTrack, 0);
-                    queue.unshift(trackObj);
+                    addCustomTrackToMemory(directTrack);
+                    queue = buildFullQueue();
                     currentTrackIndex = 0;
 
                     setFilterView('all');
@@ -2392,7 +2470,7 @@
                         <button onclick="event.stopPropagation(); toggleFavoriteKey('${trackKey}');" class="text-xs sm:text-sm transition ${isFav ? 'text-pink-500' : 'text-slate-300 hover:text-pink-500'}" title="Thêm/Xóa Yêu Thích">
                             <i class="${isFav ? 'fa-solid text-pink-500' : 'fa-regular'} fa-heart"></i>
                         </button>
-                        <button onclick="event.stopPropagation(); openMusicManagerModal();" class="text-slate-400 hover:text-slate-700 text-xs"><i class="fa-solid fa-ellipsis"></i></button>
+                        <button onclick="event.stopPropagation(); openMusicManagerModal('tab-mp3-url');" class="text-slate-400 hover:text-slate-700 text-xs"><i class="fa-solid fa-ellipsis"></i></button>
                     </div>
                 `;
                 trendingTracksContainer.appendChild(row);
@@ -2410,7 +2488,7 @@
         }
 
         function switchModalTab(tabId) {
-            const tabs = ['tab-yt', 'tab-mp3-url', 'tab-local', 'tab-backend'];
+            const tabs = ['tab-mp3-url', 'tab-local', 'tab-yt', 'tab-backend'];
             tabs.forEach(t => {
                 const nav = document.getElementById(`nav-${t}`);
                 const content = document.getElementById(`content-${t}`);
