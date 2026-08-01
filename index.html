@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aether | Glassmorphic Web Music Player (Auto YouTube & Favorites Edition)</title>
+    <title>Aether | Glassmorphic Web Music Player</title>
     <!-- Tailwind CSS v3 CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons CDN -->
@@ -123,13 +123,6 @@
             background: #a855f7;
         }
 
-        .spinning {
-            animation: spin 14s linear infinite;
-        }
-        .paused {
-            animation-play-state: paused;
-        }
-
         canvas#visualizer {
             filter: drop-shadow(0 0 8px rgba(168, 85, 247, 0.4));
         }
@@ -143,8 +136,8 @@
 </head>
 <body class="p-4 sm:p-6 w-screen h-screen flex items-center justify-center">
 
-    <!-- Hidden HTML5 Audio Element & File Input -->
-    <audio id="audio-player" crossorigin="anonymous" preload="metadata"></audio>
+    <!-- HTML5 Audio Element (CORS friendly) -->
+    <audio id="audio-player" preload="metadata"></audio>
     <input type="file" id="local-file-input" accept="audio/*" class="hidden" onchange="handleLocalFileUpload(event)">
 
     <!-- Main Outer Glass Shell -->
@@ -157,20 +150,27 @@
             <div class="w-14 shrink-0 flex flex-col items-center justify-between py-4 bg-white/5 rounded-3xl border border-white/5">
                 
                 <div class="w-9 h-9 rounded-2xl bg-gradient-to-tr from-pink-500 to-purple-600 flex items-center justify-center shadow-[0_0_15px_rgba(236,72,153,0.5)] cursor-pointer" onclick="openMusicManagerModal()">
-                    <i class="fa-solid fa-compact-disc text-white text-base animate-spin-slow"></i>
+                    <i class="fa-solid fa-compact-disc text-white text-base"></i>
                 </div>
 
+                <!-- Nav Sidebar Buttons -->
                 <div class="flex flex-col gap-6 text-slate-400">
-                    <button onclick="setFilterView('all')" class="text-white hover:text-purple-400 transition" title="Tất cả bài hát"><i class="fa-solid fa-house text-lg"></i></button>
-                    <button onclick="setFilterView('fav')" class="hover:text-pink-400 transition relative" title="Danh sách Yêu thích ❤️">
+                    <button onclick="setFilterView('all')" id="side-nav-home" class="text-white hover:text-purple-400 transition" title="Home - Tất cả bài hát">
+                        <i class="fa-solid fa-house text-lg"></i>
+                    </button>
+                    <button onclick="setFilterView('fav')" id="side-nav-fav" class="hover:text-pink-400 transition relative" title="Danh sách Yêu thích ❤️">
                         <i class="fa-solid fa-heart text-lg text-pink-400"></i>
                         <span id="fav-badge-count" class="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-pink-500 text-white text-[9px] font-bold flex items-center justify-center">0</span>
                     </button>
-                    <button onclick="setFilterView('trending')" class="hover:text-purple-400 transition" title="Trending"><i class="fa-solid fa-fire text-lg text-amber-400"></i></button>
-                    <button onclick="openMusicManagerModal()" class="hover:text-purple-400 transition" title="Thêm Nhạc & Link YouTube"><i class="fa-solid fa-circle-plus text-lg text-purple-400"></i></button>
+                    <button onclick="openMusicManagerModal()" id="side-nav-playlist" class="hover:text-purple-400 transition" title="Quản Lý Playlist & Thêm Nhạc">
+                        <i class="fa-solid fa-layer-group text-lg text-purple-400"></i>
+                    </button>
+                    <button onclick="openMusicManagerModal()" class="hover:text-purple-400 transition" title="Thêm Nhạc mới">
+                        <i class="fa-solid fa-circle-plus text-lg text-emerald-400"></i>
+                    </button>
                 </div>
 
-                <button onclick="openMusicManagerModal('backend')" class="text-slate-400 hover:text-white transition" title="Settings">
+                <button onclick="openMusicManagerModal('backend')" class="text-slate-400 hover:text-white transition" title="Cài đặt">
                     <i class="fa-solid fa-gear text-lg"></i>
                 </button>
 
@@ -190,14 +190,14 @@
 
                     <!-- Composition Cards Carousel -->
                     <div class="flex gap-2.5 overflow-x-auto pb-1">
-                        <div onclick="loadTrack(1)" class="w-40 shrink-0 p-2.5 rounded-2xl dark-card dark-card-interactive cursor-pointer flex items-center gap-2.5">
+                        <div onclick="playNextInQueue(1)" class="w-40 shrink-0 p-2.5 rounded-2xl dark-card dark-card-interactive cursor-pointer flex items-center gap-2.5">
                             <img id="next-thumb-1" src="https://i.ytimg.com/vi/4NRXx6U8ABQ/hqdefault.jpg" class="w-10 h-10 rounded-xl object-cover">
                             <div class="overflow-hidden">
                                 <h4 id="next-title-1" class="text-xs font-bold truncate text-slate-100">Blinding Lights</h4>
                                 <p id="next-artist-1" class="text-[10px] text-slate-400 truncate">The Weeknd</p>
                             </div>
                         </div>
-                        <div onclick="loadTrack(2)" class="w-40 shrink-0 p-2.5 rounded-2xl dark-card dark-card-interactive cursor-pointer flex items-center gap-2.5">
+                        <div onclick="playNextInQueue(2)" class="w-40 shrink-0 p-2.5 rounded-2xl dark-card dark-card-interactive cursor-pointer flex items-center gap-2.5">
                             <img id="next-thumb-2" src="https://i.ytimg.com/vi/H5v3kku4y6Q/hqdefault.jpg" class="w-10 h-10 rounded-xl object-cover">
                             <div class="overflow-hidden">
                                 <h4 id="next-title-2" class="text-xs font-bold truncate text-slate-100">As It Was</h4>
@@ -213,7 +213,7 @@
                     <div class="flex items-center justify-between z-10 mb-2">
                         <span id="stream-type-badge" class="px-2.5 py-0.5 rounded-full bg-purple-500/20 border border-purple-500/40 text-purple-300 text-[10px] font-semibold backdrop-blur-md flex items-center gap-1.5">
                             <span class="w-1.5 h-1.5 rounded-full bg-purple-400 animate-ping"></span>
-                            Auto YouTube Sync
+                            Ad-Free Audio Engine
                         </span>
                         <div class="flex items-center gap-1.5">
                             <button onclick="toggleFavoriteCurrent()" id="btn-fav" class="text-slate-400 hover:text-pink-400 text-base transition">
@@ -269,7 +269,7 @@
 
         </div>
 
-        <!-- RIGHT PANE: WHITE STAGE & TRENDING / FAVORITES TRACKS -->
+        <!-- RIGHT PANE: WHITE STAGE & TRACK LIST -->
         <div class="flex-1 white-stage p-6 sm:p-7 flex flex-col justify-between overflow-hidden relative">
             
             <div class="flex items-center justify-between gap-4 mb-4">
@@ -279,7 +279,7 @@
                 <div class="flex-1 max-w-md flex items-center gap-2 bg-slate-100 border border-slate-200 rounded-full px-4 py-2 focus-within:border-purple-500 focus-within:ring-2 focus-within:ring-purple-200 transition">
                     <i class="fa-brands fa-youtube text-red-500 text-base"></i>
                     <input type="text" id="yt-url-input" 
-                           placeholder="Nhập tên bài hát hoặc dán link YouTube (Tự động lấy tên & ảnh bìa)..." 
+                           placeholder="Nhập tên bài hát (VD: Sơn Tùng Chạy Ngay Đi)..." 
                            class="w-full bg-transparent text-xs text-slate-800 placeholder-slate-400 focus:outline-none"
                            onkeydown="if(event.key==='Enter') streamFromYoutubeInput()">
                     <button onclick="streamFromYoutubeInput()" id="btn-add-stream" class="px-3.5 py-1.5 rounded-full bg-purple-600 hover:bg-purple-700 text-white font-bold text-[11px] shrink-0 transition shadow-sm">
@@ -291,7 +291,7 @@
                     <button onclick="fetchGlobalPlaylistFromServer()" class="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition" title="Làm mới danh sách">
                         <i class="fa-solid fa-rotate text-sm"></i>
                     </button>
-                    <button onclick="openMusicManagerModal()" class="w-9 h-9 rounded-full bg-slate-900 hover:bg-purple-600 text-white flex items-center justify-center transition" title="Cài đặt">
+                    <button onclick="openMusicManagerModal()" class="w-9 h-9 rounded-full bg-slate-900 hover:bg-purple-600 text-white flex items-center justify-center transition" title="Quản Lý Playlist">
                         <i class="fa-solid fa-sliders text-sm"></i>
                     </button>
                 </div>
@@ -302,7 +302,7 @@
                 <div class="z-10 max-w-[60%]">
                     <span class="px-3 py-1 rounded-full bg-white/10 text-cyan-300 text-[10px] font-bold uppercase tracking-wider backdrop-blur-md">Auto YouTube Metadata Engine</span>
                     <h2 class="text-2xl sm:text-3xl font-black tracking-tighter mt-1 text-gradient">R&B NOW</h2>
-                    <p class="text-xs text-slate-300 mt-1 line-clamp-2">Nhập tên bài hát bất kỳ, hệ thống sẽ tự động bóc tách **Tên bài hát, Ca sĩ, và Ảnh bìa gốc trên YouTube**!</p>
+                    <p class="text-xs text-slate-300 mt-1 line-clamp-2">Nhập bất kỳ tên bài hát hoặc link YouTube nào để tự động bóc tách tên ca sĩ và ảnh bìa HD!</p>
                 </div>
                 <div class="relative w-40 h-full overflow-hidden shrink-0 flex items-center justify-center">
                     <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=500&auto=format&fit=crop" class="w-full h-full object-cover rounded-2xl opacity-90">
@@ -312,11 +312,10 @@
             <!-- Filter Tabs & Track Table List -->
             <div class="flex-1 overflow-hidden flex flex-col">
                 <div class="flex items-center justify-between mb-3 px-1 border-b border-slate-100 pb-2">
-                    <!-- Playlist View Nav Tabs -->
                     <div class="flex items-center gap-2">
                         <button onclick="setFilterView('all')" id="tab-btn-all" class="px-3 py-1 rounded-full text-xs font-bold bg-slate-900 text-white transition">Tất Cả Bài Hát</button>
                         <button onclick="setFilterView('fav')" id="tab-btn-fav" class="px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-600 hover:bg-pink-50 hover:text-pink-600 transition flex items-center gap-1">
-                            <i class="fa-solid fa-heart text-pink-500"></i> Bài Hát Yêu Thích ❤️ (<span id="fav-count-text">0</span>)
+                            <i class="fa-solid fa-heart text-pink-500"></i> Yêu Thích ❤️ (<span id="fav-count-text">0</span>)
                         </button>
                     </div>
 
@@ -325,7 +324,7 @@
                     </div>
                 </div>
 
-                <!-- Trending / Favorites Tracks List -->
+                <!-- Track List Container -->
                 <div id="trending-tracks-container" class="flex-1 overflow-y-auto pr-1 space-y-2">
                     <!-- Dynamically populated -->
                 </div>
@@ -343,7 +342,7 @@
                            class="w-24 h-1.5 cursor-pointer">
                 </div>
                 <div class="flex items-center gap-1.5 text-[11px] text-slate-400">
-                    <span>Render Server Backend:</span>
+                    <span>Render Backend Server:</span>
                     <code id="active-render-endpoint" class="text-purple-600 font-mono font-semibold">https://webservicebackend-zm90.onrender.com</code>
                 </div>
             </div>
@@ -359,11 +358,11 @@
             <div class="flex items-center justify-between pb-4 border-b border-white/10 shrink-0">
                 <div class="flex items-center gap-3">
                     <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-pink-500 to-purple-600 text-white flex items-center justify-center shadow-lg shadow-purple-500/30">
-                        <i class="fa-solid fa-cloud-arrow-up text-xl"></i>
+                        <i class="fa-solid fa-layer-group text-xl"></i>
                     </div>
                     <div>
-                        <h3 class="font-bold text-slate-100 text-base">Tìm Nhạc YouTube & Thêm Playlist</h3>
-                        <p class="text-xs text-slate-400">Tự động lấy Tên bài hát, Ca sĩ, và Ảnh bìa gốc trên YouTube</p>
+                        <h3 class="font-bold text-slate-100 text-base">Quản Lý Playlist & Thêm Nhạc</h3>
+                        <p class="text-xs text-slate-400">Thêm bài hát mới từ YouTube, MP3 Link hoặc File máy tính</p>
                     </div>
                 </div>
                 <button onclick="closeMusicManagerModal()" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white flex items-center justify-center">
@@ -373,7 +372,7 @@
 
             <div class="flex items-center gap-2 py-3 border-b border-white/5 shrink-0 overflow-x-auto">
                 <button onclick="switchModalTab('tab-yt')" id="nav-tab-yt" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-purple-500/20 border border-purple-500/40 text-purple-300 transition shrink-0 flex items-center gap-1.5">
-                    <i class="fa-brands fa-youtube text-red-500"></i> Tìm Nhạc / YouTube Link
+                    <i class="fa-brands fa-youtube text-red-500"></i> YouTube Link / Tên Nhạc
                 </button>
                 <button onclick="switchModalTab('tab-mp3-url')" id="nav-tab-mp3-url" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-white/5 border border-white/10 text-slate-400 transition shrink-0 flex items-center gap-1.5">
                     <i class="fa-solid fa-link text-cyan-400"></i> Direct MP3 URL
@@ -391,18 +390,18 @@
                 <div id="content-tab-yt" class="space-y-3">
                     <div class="p-3 rounded-2xl bg-purple-500/10 border border-purple-500/20 text-xs text-purple-200">
                         <i class="fa-solid fa-wand-magic-sparkles text-base mr-1.5"></i>
-                        <span><b>Tự Động Bóc Tách YouTube:</b> Chỉ cần nhập tên bài hát (VD: <i>Chạy Ngay Đi Sơn Tùng</i>) hoặc dán link YouTube. Hệ thống sẽ tự động bóc tách **Tên, Ca sĩ, và Ảnh bìa gốc HD** để lưu lên Server!</span>
+                        <span>Tự động bóc tách **Tên Bài Hát, Ca Sĩ, và Ảnh Bìa Gốc YouTube** khi thêm!</span>
                     </div>
 
                     <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">Nhập Tên Bài Hát hoặc Đường Link YouTube</label>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">Nhập Tên Bài Hát hoặc Link YouTube</label>
                         <input type="text" id="modal-yt-input" 
                                placeholder="VD: Attention Charlie Puth hoặc https://www.youtube.com/watch?v=..." 
                                class="w-full glass-input rounded-xl px-3.5 py-2.5 text-xs text-slate-100 focus:outline-none">
                     </div>
 
                     <button onclick="addTrackFromModal('yt')" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold text-xs shadow-lg shadow-pink-500/25 flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-magnifying-glass"></i> Tự Động Bóc Tách & Lưu Lên Server
+                        <i class="fa-solid fa-plus"></i> Thêm Vào Playlist & Lưu Server
                     </button>
                 </div>
 
@@ -440,7 +439,7 @@
 
     <!-- JavaScript Application Logic -->
     <script>
-        // Baseline Playlist
+        // Default Tracks
         const DEFAULT_POPULAR_PLAYLIST = [
             {
                 id: 'hit-1',
@@ -492,7 +491,6 @@
         // State Management
         let backendUrl = localStorage.getItem('aether_render_backend_url') || 'https://webservicebackend-zm90.onrender.com';
         
-        // Persistent Favorites State (❤️)
         let favoritesSet = new Set();
         try {
             const favRaw = localStorage.getItem('aether_user_favorites_ids');
@@ -505,7 +503,7 @@
 
         let rawQueueData = [...DEFAULT_POPULAR_PLAYLIST];
         let queue = rawQueueData.map((track, idx) => buildTrackObject(track, idx));
-        let activeFilterView = 'all'; // 'all' | 'fav' | 'trending'
+        let activeFilterView = 'all'; // 'all' | 'fav'
 
         let currentTrackIndex = 0;
         let isPlaying = false;
@@ -514,7 +512,7 @@
         let isMuted = false;
         let previousVolume = 0.8;
 
-        // DOM Cache
+        // DOM Elements
         const audio = document.getElementById('audio-player');
         const btnPlayPause = document.getElementById('btn-play-pause');
         const iconPlayPause = document.getElementById('icon-play-pause');
@@ -531,7 +529,7 @@
         const trendingTracksContainer = document.getElementById('trending-tracks-container');
         const ytUrlInput = document.getElementById('yt-url-input');
 
-        // Web Audio Canvas Visualizer
+        // Web Audio Canvas
         let audioCtx = null;
         let analyser = null;
         let sourceNode = null;
@@ -562,7 +560,6 @@
             };
         }
 
-        // Fetch Global Playlist from Render Server Database
         async function fetchGlobalPlaylistFromServer() {
             try {
                 const res = await fetch(`${backendUrl.replace(/\/$/, '')}/playlist`);
@@ -587,7 +584,6 @@
             renderTrendingTracks();
             loadTrack(0);
 
-            // Synchronize global playlist from server
             fetchGlobalPlaylistFromServer();
 
             audio.addEventListener('timeupdate', updateProgress);
@@ -625,7 +621,6 @@
             updateFavoritesUI();
             renderTrendingTracks();
 
-            // Update Current Heart Icon if active
             const currentTrack = queue[currentTrackIndex];
             if (currentTrack && currentTrack.id === trackId) {
                 updateCurrentFavIcon();
@@ -664,7 +659,7 @@
             if (viewMode === 'fav') {
                 if (tabAll) tabAll.className = "px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-600 transition";
                 if (tabFav) tabFav.className = "px-3 py-1 rounded-full text-xs font-bold bg-pink-500 text-white transition flex items-center gap-1 shadow-md";
-                if (stageTitle) stageTitle.textContent = "Yêu Thích ❤️";
+                if (stageTitle) stageTitle.textContent = "Bài Hát Yêu Thích ❤️";
             } else {
                 if (tabAll) tabAll.className = "px-3 py-1 rounded-full text-xs font-bold bg-slate-900 text-white transition";
                 if (tabFav) tabFav.className = "px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-600 hover:bg-pink-50 hover:text-pink-600 transition flex items-center gap-1";
@@ -747,6 +742,12 @@
             canvasCtx.stroke();
         }
 
+        function playNextInQueue(offsetIndex) {
+            const targetIdx = (currentTrackIndex + offsetIndex) % queue.length;
+            loadTrack(targetIdx);
+            playAudio();
+        }
+
         function loadTrack(index) {
             if (index < 0 || index >= queue.length) return;
             currentTrackIndex = index;
@@ -763,10 +764,7 @@
             renderTrendingTracks();
 
             if (isPlaying) {
-                audio.play().then(() => {
-                    initWebAudio();
-                    if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
-                }).catch(err => console.log('Playback error:', err));
+                playAudio();
             }
         }
 
@@ -781,7 +779,7 @@
                 id: 'local-' + Date.now(),
                 rank: '00',
                 title: cleanTitle,
-                artist: 'Local Music File',
+                artist: 'Local File',
                 thumbnail: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=400&auto=format&fit=crop',
                 duration: 0,
                 plays: 'Local File',
@@ -797,14 +795,13 @@
             playAudio();
         }
 
-        // Search & Auto Extract YouTube Title, Artist, & Official Cover Image
         async function streamFromYoutubeInput() {
             const rawQuery = ytUrlInput.value.trim();
             if (!rawQuery) return;
 
             const btnAdd = document.getElementById('btn-add-stream');
             btnAdd.disabled = true;
-            btnAdd.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Đang lấy dữ liệu...`;
+            btnAdd.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Đang tải...`;
 
             try {
                 const addApiUrl = `${backendUrl.replace(/\/$/, '')}/add-track`;
@@ -829,13 +826,12 @@
                     throw new Error("Lỗi bóc tách nhạc");
                 }
             } catch (err) {
-                // Fallback stream
                 const encodedUrl = encodeURIComponent(rawQuery);
                 const proxyAudioUrl = `${backendUrl.replace(/\/$/, '')}/play-audio?url=${encodedUrl}`;
                 const newTrackItem = {
                     id: 'yt-' + Date.now(),
                     title: rawQuery,
-                    artist: 'YouTube Audio',
+                    artist: 'YouTube Stream',
                     thumbnail: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=400&auto=format&fit=crop',
                     youtubeUrl: rawQuery,
                     duration: 180,
@@ -893,9 +889,15 @@
             audio.play().then(() => {
                 isPlaying = true;
                 iconPlayPause.className = 'fa-solid fa-pause';
-                initWebAudio();
+                try { initWebAudio(); } catch(e){}
                 if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
-            }).catch(err => console.error("Play error:", err));
+            }).catch(err => {
+                console.warn("Play audio notice:", err);
+                // Fallback attempt
+                audio.play();
+                isPlaying = true;
+                iconPlayPause.className = 'fa-solid fa-pause';
+            });
         }
 
         function pauseAudio() {
@@ -983,7 +985,6 @@
             changeVolume(audio.volume);
         }
 
-        // Render Trending & Favorites Track Table
         function renderTrendingTracks() {
             if (!trendingTracksContainer) return;
             trendingTracksContainer.innerHTML = '';
@@ -998,7 +999,7 @@
                     <div class="p-8 text-center text-slate-400">
                         <i class="fa-regular fa-heart text-3xl mb-2 text-pink-300"></i>
                         <p class="text-xs font-semibold">Chưa có bài hát yêu thích nào!</p>
-                        <p class="text-[11px] text-slate-400 mt-1">Bấm vào biểu tượng ❤️ trên bài hát để thêm vào danh sách yêu thích.</p>
+                        <p class="text-[11px] text-slate-400 mt-1">Bấm vào biểu tượng ❤️ trên bất kỳ bài hát nào để thêm vào Yêu Thích.</p>
                     </div>
                 `;
                 return;
@@ -1038,10 +1039,10 @@
                     <div class="flex items-center gap-6 shrink-0">
                         <span class="text-[11px] text-slate-400 font-mono hidden sm:inline">${track.plays || 'Global Sync'}</span>
                         <span class="text-[11px] text-slate-500 font-mono font-medium">${formatTime(track.duration || 180)}</span>
-                        <button onclick="event.stopPropagation(); toggleFavorite('${track.id}');" class="text-xs transition ${isFav ? 'text-pink-500' : 'text-slate-300 hover:text-pink-500'}">
-                            <i class="${isFav ? 'fa-solid' : 'fa-regular'} fa-heart"></i>
+                        <button onclick="event.stopPropagation(); toggleFavorite('${track.id}');" class="text-xs transition ${isFav ? 'text-pink-500' : 'text-slate-300 hover:text-pink-500'}" title="Thêm/Xóa Yêu Thích">
+                            <i class="${isFav ? 'fa-solid text-pink-500' : 'fa-regular'} fa-heart"></i>
                         </button>
-                        <button onclick="event.stopPropagation();" class="text-slate-400 hover:text-slate-700 text-xs"><i class="fa-solid fa-ellipsis"></i></button>
+                        <button onclick="event.stopPropagation(); openMusicManagerModal();" class="text-slate-400 hover:text-slate-700 text-xs"><i class="fa-solid fa-ellipsis"></i></button>
                     </div>
                 `;
                 trendingTracksContainer.appendChild(row);
