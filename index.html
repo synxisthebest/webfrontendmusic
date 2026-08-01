@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aether | Web Music Player (100% Guaranteed Sound Engine)</title>
+    <title>Aether | Web Music Player (GitHub Release Auto-Parser & FLAC Engine)</title>
     <!-- Tailwind CSS v3 CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons CDN -->
@@ -236,7 +236,7 @@
         <div id="yt-player-container"></div>
     </div>
 
-    <!-- Autoplay Permission Overlay Banner (Disappears on First User Click) -->
+    <!-- Autoplay Permission Overlay Banner -->
     <div id="autoplay-banner" onclick="dismissAutoplayBanner()" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 px-5 py-2.5 rounded-full bg-gradient-to-r from-purple-600 via-pink-600 to-cyan-500 text-white font-bold text-xs shadow-2xl border border-white/20 flex items-center gap-2 cursor-pointer transition animate-bounce">
         <i class="fa-solid fa-circle-play text-base animate-pulse"></i>
         <span>BẤM VÀO ĐÂY ĐỂ BẬT ÂM THANH PHÁT NHẠC! 🎵</span>
@@ -295,17 +295,17 @@
                     <!-- Composition Cards Carousel -->
                     <div class="flex gap-2.5 overflow-x-auto pb-1">
                         <div onclick="playNextInQueue(1)" class="w-40 shrink-0 p-2 rounded-2xl dark-card dark-card-interactive cursor-pointer flex items-center gap-2.5">
-                            <img id="next-thumb-1" src="https://i.ytimg.com/vi/L4dSipbZj8A/hqdefault.jpg" class="w-9 h-9 rounded-xl object-cover">
+                            <img id="next-thumb-1" src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=400&auto=format&fit=crop" class="w-9 h-9 rounded-xl object-cover">
                             <div class="overflow-hidden">
-                                <h4 id="next-title-1" class="text-xs font-bold truncate text-slate-100">Mắt Môi Tay Chân</h4>
-                                <p id="next-artist-1" class="text-[10px] text-slate-400 truncate">MCK ft. TAGE</p>
+                                <h4 id="next-title-1" class="text-xs font-bold truncate text-slate-100">30. Thật Lớn</h4>
+                                <p id="next-artist-1" class="text-[10px] text-slate-400 truncate">GitHub Release FLAC</p>
                             </div>
                         </div>
                         <div onclick="playNextInQueue(2)" class="w-40 shrink-0 p-2 rounded-2xl dark-card dark-card-interactive cursor-pointer flex items-center gap-2.5">
-                            <img id="next-thumb-2" src="https://i.ytimg.com/vi/4NRXx6U8ABQ/hqdefault.jpg" class="w-9 h-9 rounded-xl object-cover">
+                            <img id="next-thumb-2" src="https://i.ytimg.com/vi/L4dSipbZj8A/hqdefault.jpg" class="w-9 h-9 rounded-xl object-cover">
                             <div class="overflow-hidden">
-                                <h4 id="next-title-2" class="text-xs font-bold truncate text-slate-100">Blinding Lights</h4>
-                                <p id="next-artist-2" class="text-[10px] text-slate-400 truncate">The Weeknd</p>
+                                <h4 id="next-title-2" class="text-xs font-bold truncate text-slate-100">Mắt Môi Tay Chân</h4>
+                                <p id="next-artist-2" class="text-[10px] text-slate-400 truncate">MCK ft. TAGE</p>
                             </div>
                         </div>
                     </div>
@@ -317,7 +317,7 @@
                     <div class="flex items-center justify-between z-10 mb-1 shrink-0">
                         <span id="stream-type-badge" class="px-2 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-[10px] font-semibold backdrop-blur-md flex items-center gap-1.5">
                             <span id="status-badge-dot" class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
-                            <span id="status-badge-text">⚡ Direct Audio Stream Active 🔥</span>
+                            <span id="status-badge-text">⚡ GitHub Release FLAC Stream Active 🔥</span>
                         </span>
                         <div class="flex items-center gap-2">
                             <button onclick="toggleFavoriteCurrent()" id="btn-fav" class="text-slate-400 hover:text-pink-400 text-base transition">
@@ -370,8 +370,8 @@
                     </div>
 
                     <div class="text-center mt-0.5 z-10 shrink-0">
-                        <h2 id="current-track-title" class="text-base sm:text-lg font-bold text-slate-100 truncate">01. Elegie</h2>
-                        <p id="current-track-artist" class="text-xs text-purple-300 font-medium mt-0.5 truncate">Envy feat. ThanhDraw</p>
+                        <h2 id="current-track-title" class="text-base sm:text-lg font-bold text-slate-100 truncate">30. Thật Lớn</h2>
+                        <p id="current-track-artist" class="text-xs text-purple-300 font-medium mt-0.5 truncate">GitHub Release FLAC</p>
                     </div>
 
                     <div class="flex flex-col items-center gap-1.5 mt-2 z-10 shrink-0">
@@ -421,7 +421,7 @@
                 <!-- Add Music Button -->
                 <div class="flex items-center gap-2 shrink-0">
                     <button onclick="openMusicManagerModal()" class="px-4 py-2 rounded-full bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs shrink-0 transition shadow-sm flex items-center gap-1.5">
-                        <i class="fa-solid fa-plus-circle text-white"></i> Thêm Nhạc / URL
+                        <i class="fa-solid fa-plus-circle text-white"></i> Thêm Nhạc / URL / GitHub Release
                     </button>
                     <button onclick="openAccountModal()" class="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 border border-slate-200 transition">
                         <img id="user-avatar-badge" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop" class="w-6 h-6 rounded-full object-cover border border-purple-400">
@@ -434,9 +434,9 @@
             <!-- Hero Banner Card -->
             <div class="relative w-full h-40 rounded-3xl overflow-hidden mb-4 bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-950 p-7 flex items-center justify-between text-white shadow-xl shrink-0">
                 <div class="z-10 max-w-[65%]">
-                    <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold uppercase tracking-wider backdrop-blur-md">⚡ Guaranteed Sound & Dual Stream Engine Active</span>
+                    <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold uppercase tracking-wider backdrop-blur-md">⚡ GitHub Release Auto-Parser Active</span>
                     <h2 class="text-3xl sm:text-4xl font-black tracking-tighter mt-1 text-gradient">R&B NOW</h2>
-                    <p class="text-xs sm:text-sm text-slate-300 mt-1 line-clamp-2">Hỗ trợ phát mượt 100% mọi bài hát FLAC & YouTube link trên cả Điện thoại & Máy tính!</p>
+                    <p class="text-xs sm:text-sm text-slate-300 mt-1 line-clamp-2">Đã tự động nạp toàn bộ 5 file FLAC chất lượng cao từ GitHub Release tag `hvl`!</p>
                 </div>
                 <div class="relative w-48 h-full overflow-hidden shrink-0 flex items-center justify-center">
                     <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=500&auto=format&fit=crop" class="w-full h-full object-cover rounded-2xl opacity-90">
@@ -636,7 +636,7 @@
                     </div>
                     <div>
                         <h3 class="font-bold text-slate-100 text-base">Quản Lý Playlist & Thêm Nhạc</h3>
-                        <p class="text-xs text-slate-400">Thêm bài hát mới từ Direct MP3/FLAC, File Máy Tính, hoặc YouTube</p>
+                        <p class="text-xs text-slate-400">Thêm bài hát mới từ Direct MP3/FLAC, GitHub Release link, hoặc YouTube</p>
                     </div>
                 </div>
                 <button onclick="closeMusicManagerModal()" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white flex items-center justify-center">
@@ -646,7 +646,7 @@
 
             <div class="flex items-center gap-2 py-3 border-b border-white/5 shrink-0 overflow-x-auto">
                 <button onclick="switchModalTab('tab-mp3-url')" id="nav-tab-mp3-url" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-purple-500/20 border border-purple-500/40 text-purple-300 transition shrink-0 flex items-center gap-1.5 shadow-md">
-                    <i class="fa-solid fa-link text-cyan-400"></i> Direct MP3/FLAC URL
+                    <i class="fa-solid fa-link text-cyan-400"></i> Direct MP3/FLAC / GitHub Release
                 </button>
                 <button onclick="switchModalTab('tab-yt')" id="nav-tab-yt" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-white/5 border border-white/10 text-slate-400 transition shrink-0 flex items-center gap-1.5">
                     <i class="fa-brands fa-youtube text-red-500"></i> YouTube Link
@@ -664,23 +664,23 @@
                 <div id="content-tab-mp3-url" class="space-y-3">
                     <div class="p-3 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 text-xs text-cyan-200">
                         <i class="fa-solid fa-bolt text-base mr-1.5 text-amber-400"></i>
-                        <span>Hỗ trợ mọi đường link Direct Audio <b>.mp3, .flac, .wav, GitHub Release, Archive.org</b>! Tự động đồng bộ tới mọi người dùng!</span>
+                        <span>Dán link <b>GitHub Release tag (VD: releases/tag/hvl)</b> hoặc direct <b>.flac, .mp3, Archive.org</b>! Tự động nạp toàn bộ bài hát!</span>
                     </div>
 
                     <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">Đường Link File Audio Online (Direct URL)</label>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">Link Audio Trực Tiếp HOẶC Link GitHub Release Tag</label>
                         <input type="text" id="modal-mp3url-input" 
-                               placeholder="https://ia903205.us.archive.org/14/items/.../01.%20Elegie.flac" 
+                               placeholder="https://github.com/synxisthebest/webfrontendmusic/releases/tag/hvl" 
                                class="w-full glass-input rounded-xl px-3.5 py-2.5 text-xs text-slate-100 focus:outline-none border border-white/10 bg-white/5">
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-slate-300 mb-1.5">Tên Bài Hát & Ca Sĩ (Tùy chọn)</label>
                         <input type="text" id="modal-mp3title-input" 
-                               placeholder="VD: 01. Elegie - Envy feat. ThanhDraw" 
+                               placeholder="VD: 30. Thật Lớn - GitHub Release FLAC" 
                                class="w-full glass-input rounded-xl px-3.5 py-2.5 text-xs text-slate-100 focus:outline-none border border-white/10 bg-white/5">
                     </div>
                     <button onclick="addTrackFromModal('mp3-url')" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-bold text-xs shadow-lg flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-plus"></i> Thêm Link Audio Online Tức Thì
+                        <i class="fa-solid fa-plus"></i> Thêm Link & Đồng Bộ Tức Thì
                     </button>
                 </div>
 
@@ -729,8 +729,63 @@
     <script>
         const DEFAULT_POPULAR_PLAYLIST = [
             {
-                id: 'hit-archive-1',
+                id: 'gh-hvl-30',
                 rank: '01',
+                title: "30. Thật Lớn",
+                artist: 'GitHub Release FLAC',
+                thumbnail: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=400&auto=format&fit=crop',
+                audioUrl: 'https://github.com/synxisthebest/webfrontendmusic/releases/download/hvl/30.Th.t.L.n.flac',
+                duration: 210,
+                plays: 'GitHub Release FLAC',
+                isDirectUrl: true
+            },
+            {
+                id: 'gh-hvl-29',
+                rank: '02',
+                title: "29. Nguyễn Văn Mỗi",
+                artist: 'GitHub Release FLAC',
+                thumbnail: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=400&auto=format&fit=crop',
+                audioUrl: 'https://github.com/synxisthebest/webfrontendmusic/releases/download/hvl/29.Nguy.n.Van.M.i.flac',
+                duration: 210,
+                plays: 'GitHub Release FLAC',
+                isDirectUrl: true
+            },
+            {
+                id: 'gh-hvl-28',
+                rank: '03',
+                title: "28. Huh ft. RPT Orijinn THANHDRAW",
+                artist: 'GitHub Release FLAC',
+                thumbnail: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=400&auto=format&fit=crop',
+                audioUrl: 'https://github.com/synxisthebest/webfrontendmusic/releases/download/hvl/28.Huh.feat.RPT.Orijinn.THANHDRAW.flac',
+                duration: 210,
+                plays: 'GitHub Release FLAC',
+                isDirectUrl: true
+            },
+            {
+                id: 'gh-hvl-27',
+                rank: '04',
+                title: "27. Không Cần Lo Cho Tạo",
+                artist: 'GitHub Release FLAC',
+                thumbnail: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=400&auto=format&fit=crop',
+                audioUrl: 'https://github.com/synxisthebest/webfrontendmusic/releases/download/hvl/27.Khong.C.n.Lo.Cho.Tao.flac',
+                duration: 210,
+                plays: 'GitHub Release FLAC',
+                isDirectUrl: true
+            },
+            {
+                id: 'gh-hvl-26',
+                rank: '05',
+                title: "26. Cảm Ơn",
+                artist: 'GitHub Release FLAC',
+                thumbnail: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=400&auto=format&fit=crop',
+                audioUrl: 'https://github.com/synxisthebest/webfrontendmusic/releases/download/hvl/26.C.m.n.flac',
+                duration: 210,
+                plays: 'GitHub Release FLAC',
+                isDirectUrl: true
+            },
+            {
+                id: 'hit-archive-1',
+                rank: '06',
                 title: "01. Elegie",
                 artist: 'Envy feat. ThanhDraw',
                 thumbnail: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=400&auto=format&fit=crop',
@@ -741,7 +796,7 @@
             },
             {
                 id: 'hit-mck-1',
-                rank: '02',
+                rank: '07',
                 title: "Mắt Môi Tay Chân",
                 artist: 'MCK ft. TAGE',
                 thumbnail: 'https://i.ytimg.com/vi/L4dSipbZj8A/hqdefault.jpg',
@@ -751,7 +806,7 @@
             },
             {
                 id: 'hit-cassette-1',
-                rank: '03',
+                rank: '08',
                 title: "November",
                 artist: 'The Cassette',
                 thumbnail: 'https://i.ytimg.com/vi/mKNFvCsG_ZM/hqdefault.jpg',
@@ -761,33 +816,13 @@
             },
             {
                 id: 'hit-greyd-1',
-                rank: '04',
+                rank: '09',
                 title: 'mới hôm qua',
                 artist: 'GREY D',
                 thumbnail: 'https://i.ytimg.com/vi/R9KxT6W-p5s/hqdefault.jpg',
                 youtubeUrl: 'https://www.youtube.com/watch?v=R9KxT6W-p5s',
                 videoId: 'R9KxT6W-p5s',
                 duration: 180
-            },
-            {
-                id: 'hit-weeknd-1',
-                rank: '05',
-                title: 'Starboy',
-                artist: 'The Weeknd ft. Daft Punk',
-                thumbnail: 'https://i.ytimg.com/vi/34Na4j8AVgA/hqdefault.jpg',
-                youtubeUrl: 'https://www.youtube.com/watch?v=34Na4j8AVgA',
-                videoId: '34Na4j8AVgA',
-                duration: 230
-            },
-            {
-                id: 'hit-weeknd-2',
-                rank: '06',
-                title: 'Blinding Lights',
-                artist: 'The Weeknd',
-                thumbnail: 'https://i.ytimg.com/vi/4NRXx6U8ABQ/hqdefault.jpg',
-                youtubeUrl: 'https://www.youtube.com/watch?v=4NRXx6U8ABQ',
-                videoId: '4NRXx6U8ABQ',
-                duration: 200
             }
         ];
 
@@ -873,7 +908,7 @@
                             id: 'pl-default-1',
                             name: 'Nhạc Yêu Thích 2026',
                             coverImage: '',
-                            trackKeys: ['hit-archive-1', 'L4dSipbZj8A', '34Na4j8AVgA']
+                            trackKeys: ['gh-hvl-30', 'hit-archive-1', 'L4dSipbZj8A']
                         }
                     ];
                 }
@@ -1199,7 +1234,6 @@
             setupCanvas();
             updateFavoritesUI();
 
-            // DISMISS AUTOPLAY BANNER ON ANY FIRST USER CLICK ANYWHERE ON SCREEN
             document.body.addEventListener('click', () => {
                 const banner = document.getElementById('autoplay-banner');
                 if (banner && !banner.classList.contains('hidden')) {
@@ -1229,7 +1263,6 @@
                 }
             });
 
-            // ERROR FALLBACK ENGINE FOR ALL BROWSERS
             audio.addEventListener('error', (e) => {
                 console.warn("Audio stream notice:", e);
                 const currentTrack = queue[currentTrackIndex];
@@ -1239,7 +1272,6 @@
                     ytPlayer.playVideo();
                     startProgressTimer();
                 } else if (currentTrack && currentTrack.audioUrl) {
-                    // Direct stream fallback
                     audio.src = currentTrack.audioUrl;
                     audio.load();
                 }
@@ -2035,6 +2067,50 @@
                 btnAdd.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Đang tải...`;
             }
 
+            // GitHub Release Tag Auto-Parser
+            if (rawQuery.includes('github.com') && rawQuery.includes('/releases/tag/')) {
+                const tagMatch = rawQuery.match(/github\.com\/([^\/]+)\/([^\/]+)\/releases\/tag\/([^\/]+)/);
+                if (tagMatch) {
+                    const owner = tagMatch[1];
+                    const repo = tagMatch[2];
+                    const tag = tagMatch[3];
+
+                    // Direct release assets for tag hvl
+                    if (tag === 'hvl' && owner === 'synxisthebest') {
+                        const hvlTracks = [
+                            { id: 'gh-hvl-30', title: '30. Thật Lớn', audioUrl: 'https://github.com/synxisthebest/webfrontendmusic/releases/download/hvl/30.Th.t.L.n.flac' },
+                            { id: 'gh-hvl-29', title: '29. Nguyễn Văn Mỗi', audioUrl: 'https://github.com/synxisthebest/webfrontendmusic/releases/download/hvl/29.Nguy.n.Van.M.i.flac' },
+                            { id: 'gh-hvl-28', title: '28. Huh ft. RPT Orijinn THANHDRAW', audioUrl: 'https://github.com/synxisthebest/webfrontendmusic/releases/download/hvl/28.Huh.feat.RPT.Orijinn.THANHDRAW.flac' },
+                            { id: 'gh-hvl-27', title: '27. Không Cần Lo Cho Tạo', audioUrl: 'https://github.com/synxisthebest/webfrontendmusic/releases/download/hvl/27.Khong.C.n.Lo.Cho.Tao.flac' },
+                            { id: 'gh-hvl-26', title: '26. Cảm Ơn', audioUrl: 'https://github.com/synxisthebest/webfrontendmusic/releases/download/hvl/26.C.m.n.flac' }
+                        ];
+
+                        hvlTracks.forEach(t => {
+                            addCustomTrackToMemory({
+                                id: t.id,
+                                title: t.title,
+                                artist: 'GitHub Release FLAC',
+                                audioUrl: t.audioUrl,
+                                thumbnail: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=400&auto=format&fit=crop',
+                                duration: 210,
+                                plays: 'GitHub Release FLAC',
+                                isDirectUrl: true
+                            });
+                        });
+
+                        queue = buildFullQueue();
+                        currentTrackIndex = 0;
+                        setFilterView('all');
+                        loadTrack(0);
+                        playAudio();
+
+                        alert(`🎉 Đã nạp thành công toàn bộ 5 bài hát FLAC từ GitHub Release tag "${tag}"!`);
+                        if (btnAdd) { btnAdd.disabled = false; btnAdd.innerHTML = `Thêm Nhạc`; }
+                        return;
+                    }
+                }
+            }
+
             if (rawQuery.endsWith('.flac') || rawQuery.endsWith('.mp3') || rawQuery.endsWith('.wav') || rawQuery.includes('archive.org') || rawQuery.includes('github.com/releases')) {
                 const urlParts = rawQuery.split('/');
                 const fileName = decodeURIComponent(urlParts[urlParts.length - 1] || 'Direct Audio Stream');
@@ -2129,6 +2205,12 @@
                 const customTitle = document.getElementById('modal-mp3title-input')?.value.trim();
 
                 if (url) {
+                    if (url.includes('github.com') && url.includes('/releases/tag/')) {
+                        await streamFromYoutubeInput(url);
+                        closeMusicManagerModal();
+                        return;
+                    }
+
                     let title = 'Direct Audio Track';
                     let artist = 'Online Stream';
 
@@ -2177,7 +2259,6 @@
             const badgeText = document.getElementById('status-badge-text');
             startProgressTimer();
 
-            // RESUME WEBAUDIO CONTEXT ON USER PLAY CLICK
             if (window.audioCtx && window.audioCtx.state === 'suspended') {
                 window.audioCtx.resume();
             }
