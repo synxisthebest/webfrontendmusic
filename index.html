@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aether | Glassmorphic Web Music Player (Global Shared Edition)</title>
+    <title>Aether | Glassmorphic Web Music Player (Auto YouTube & Favorites Edition)</title>
     <!-- Tailwind CSS v3 CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons CDN -->
@@ -161,11 +161,13 @@
                 </div>
 
                 <div class="flex flex-col gap-6 text-slate-400">
-                    <button class="text-white hover:text-purple-400 transition" title="Home"><i class="fa-solid fa-house text-lg"></i></button>
-                    <button class="hover:text-purple-400 transition" title="Music"><i class="fa-solid fa-music text-lg"></i></button>
-                    <button class="hover:text-purple-400 transition" title="Queue"><i class="fa-solid fa-layer-group text-lg"></i></button>
-                    <button class="hover:text-purple-400 transition" title="Favorites"><i class="fa-solid fa-heart text-lg"></i></button>
-                    <button onclick="openMusicManagerModal()" class="hover:text-purple-400 transition" title="Thêm Nhạc Lên Server"><i class="fa-solid fa-circle-plus text-lg text-pink-400"></i></button>
+                    <button onclick="setFilterView('all')" class="text-white hover:text-purple-400 transition" title="Tất cả bài hát"><i class="fa-solid fa-house text-lg"></i></button>
+                    <button onclick="setFilterView('fav')" class="hover:text-pink-400 transition relative" title="Danh sách Yêu thích ❤️">
+                        <i class="fa-solid fa-heart text-lg text-pink-400"></i>
+                        <span id="fav-badge-count" class="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-pink-500 text-white text-[9px] font-bold flex items-center justify-center">0</span>
+                    </button>
+                    <button onclick="setFilterView('trending')" class="hover:text-purple-400 transition" title="Trending"><i class="fa-solid fa-fire text-lg text-amber-400"></i></button>
+                    <button onclick="openMusicManagerModal()" class="hover:text-purple-400 transition" title="Thêm Nhạc & Link YouTube"><i class="fa-solid fa-circle-plus text-lg text-purple-400"></i></button>
                 </div>
 
                 <button onclick="openMusicManagerModal('backend')" class="text-slate-400 hover:text-white transition" title="Settings">
@@ -189,17 +191,17 @@
                     <!-- Composition Cards Carousel -->
                     <div class="flex gap-2.5 overflow-x-auto pb-1">
                         <div onclick="loadTrack(1)" class="w-40 shrink-0 p-2.5 rounded-2xl dark-card dark-card-interactive cursor-pointer flex items-center gap-2.5">
-                            <img src="https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?q=80&w=300&auto=format&fit=crop" class="w-10 h-10 rounded-xl object-cover">
+                            <img id="next-thumb-1" src="https://i.ytimg.com/vi/4NRXx6U8ABQ/hqdefault.jpg" class="w-10 h-10 rounded-xl object-cover">
                             <div class="overflow-hidden">
-                                <h4 class="text-xs font-bold truncate text-slate-100">Blinding Lights</h4>
-                                <p class="text-[10px] text-slate-400 truncate">The Weeknd</p>
+                                <h4 id="next-title-1" class="text-xs font-bold truncate text-slate-100">Blinding Lights</h4>
+                                <p id="next-artist-1" class="text-[10px] text-slate-400 truncate">The Weeknd</p>
                             </div>
                         </div>
                         <div onclick="loadTrack(2)" class="w-40 shrink-0 p-2.5 rounded-2xl dark-card dark-card-interactive cursor-pointer flex items-center gap-2.5">
-                            <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=300&auto=format&fit=crop" class="w-10 h-10 rounded-xl object-cover">
+                            <img id="next-thumb-2" src="https://i.ytimg.com/vi/H5v3kku4y6Q/hqdefault.jpg" class="w-10 h-10 rounded-xl object-cover">
                             <div class="overflow-hidden">
-                                <h4 class="text-xs font-bold truncate text-slate-100">As It Was</h4>
-                                <p class="text-[10px] text-slate-400 truncate">Harry Styles</p>
+                                <h4 id="next-title-2" class="text-xs font-bold truncate text-slate-100">As It Was</h4>
+                                <p id="next-artist-2" class="text-[10px] text-slate-400 truncate">Harry Styles</p>
                             </div>
                         </div>
                     </div>
@@ -209,13 +211,13 @@
                 <div class="flex-1 dark-card rounded-3xl p-5 flex flex-col justify-between relative overflow-hidden group shadow-2xl border border-white/10">
                     
                     <div class="flex items-center justify-between z-10 mb-2">
-                        <span id="stream-type-badge" class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-[10px] font-semibold backdrop-blur-md flex items-center gap-1.5">
-                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
-                            Global Server Database Sync
+                        <span id="stream-type-badge" class="px-2.5 py-0.5 rounded-full bg-purple-500/20 border border-purple-500/40 text-purple-300 text-[10px] font-semibold backdrop-blur-md flex items-center gap-1.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-purple-400 animate-ping"></span>
+                            Auto YouTube Sync
                         </span>
                         <div class="flex items-center gap-1.5">
-                            <button onclick="toggleFavoriteCurrent()" id="btn-fav" class="text-slate-400 hover:text-pink-400 text-sm">
-                                <i class="fa-regular fa-heart"></i>
+                            <button onclick="toggleFavoriteCurrent()" id="btn-fav" class="text-slate-400 hover:text-pink-400 text-base transition">
+                                <i class="fa-regular fa-heart" id="icon-fav"></i>
                             </button>
                         </div>
                     </div>
@@ -223,8 +225,8 @@
                     <div class="my-auto py-2 flex flex-col items-center justify-center relative">
                         <div class="relative w-44 h-44 rounded-2xl overflow-hidden shadow-2xl border border-white/15 group-hover:scale-[1.02] transition-transform duration-300">
                             <img id="album-cover-img" 
-                                 src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=600&auto=format&fit=crop" 
-                                 alt="Cover Artwork" 
+                                 src="https://i.ytimg.com/vi/34Na4j8AVgA/hqdefault.jpg" 
+                                 alt="Official Cover Artwork" 
                                  class="w-full h-full object-cover">
                         </div>
 
@@ -267,61 +269,65 @@
 
         </div>
 
-        <!-- RIGHT PANE: WHITE STAGE & GLOBAL TRENDING TRACKS -->
+        <!-- RIGHT PANE: WHITE STAGE & TRENDING / FAVORITES TRACKS -->
         <div class="flex-1 white-stage p-6 sm:p-7 flex flex-col justify-between overflow-hidden relative">
             
-            <div class="flex items-center justify-between gap-4 mb-5">
-                <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Home</h1>
+            <div class="flex items-center justify-between gap-4 mb-4">
+                <h1 id="stage-main-title" class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Home</h1>
 
-                <!-- Search & Add YouTube link directly to Global Server Database -->
+                <!-- Search & Auto YouTube Fetch Bar -->
                 <div class="flex-1 max-w-md flex items-center gap-2 bg-slate-100 border border-slate-200 rounded-full px-4 py-2 focus-within:border-purple-500 focus-within:ring-2 focus-within:ring-purple-200 transition">
                     <i class="fa-brands fa-youtube text-red-500 text-base"></i>
                     <input type="text" id="yt-url-input" 
-                           placeholder="Dán link YouTube (Lưu lên Server cho MỌI NGƯỜI)..." 
+                           placeholder="Nhập tên bài hát hoặc dán link YouTube (Tự động lấy tên & ảnh bìa)..." 
                            class="w-full bg-transparent text-xs text-slate-800 placeholder-slate-400 focus:outline-none"
                            onkeydown="if(event.key==='Enter') streamFromYoutubeInput()">
                     <button onclick="streamFromYoutubeInput()" id="btn-add-stream" class="px-3.5 py-1.5 rounded-full bg-purple-600 hover:bg-purple-700 text-white font-bold text-[11px] shrink-0 transition shadow-sm">
-                        Lưu Lên Server
+                        Tìm & Phát
                     </button>
                 </div>
 
                 <div class="flex items-center gap-2 shrink-0">
-                    <button onclick="fetchGlobalPlaylistFromServer()" class="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition" title="Tải lại playlist từ Server">
+                    <button onclick="fetchGlobalPlaylistFromServer()" class="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition" title="Làm mới danh sách">
                         <i class="fa-solid fa-rotate text-sm"></i>
                     </button>
-                    <button onclick="openMusicManagerModal()" class="w-9 h-9 rounded-full bg-slate-900 hover:bg-purple-600 text-white flex items-center justify-center transition" title="Thêm Link & Cài Đặt">
+                    <button onclick="openMusicManagerModal()" class="w-9 h-9 rounded-full bg-slate-900 hover:bg-purple-600 text-white flex items-center justify-center transition" title="Cài đặt">
                         <i class="fa-solid fa-sliders text-sm"></i>
                     </button>
                 </div>
             </div>
 
             <!-- Hero Banner Card -->
-            <div class="relative w-full h-44 rounded-3xl overflow-hidden mb-5 bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-950 p-6 flex items-center justify-between text-white shadow-xl">
+            <div class="relative w-full h-40 rounded-3xl overflow-hidden mb-4 bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-950 p-6 flex items-center justify-between text-white shadow-xl">
                 <div class="z-10 max-w-[60%]">
-                    <span class="px-3 py-1 rounded-full bg-white/10 text-cyan-300 text-[10px] font-bold uppercase tracking-wider backdrop-blur-md">Global Shared Playlist</span>
-                    <h2 class="text-3xl font-black tracking-tighter mt-1 text-gradient">R&B NOW</h2>
-                    <p class="text-xs text-slate-300 mt-1 line-clamp-2">Bài hát bạn thêm sẽ tự động LƯU LÊN MÁY CHỦ RENDER. Tất cả mọi người mở trang web đều sẽ thấy bài hát của bạn!</p>
+                    <span class="px-3 py-1 rounded-full bg-white/10 text-cyan-300 text-[10px] font-bold uppercase tracking-wider backdrop-blur-md">Auto YouTube Metadata Engine</span>
+                    <h2 class="text-2xl sm:text-3xl font-black tracking-tighter mt-1 text-gradient">R&B NOW</h2>
+                    <p class="text-xs text-slate-300 mt-1 line-clamp-2">Nhập tên bài hát bất kỳ, hệ thống sẽ tự động bóc tách **Tên bài hát, Ca sĩ, và Ảnh bìa gốc trên YouTube**!</p>
                 </div>
                 <div class="relative w-40 h-full overflow-hidden shrink-0 flex items-center justify-center">
                     <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=500&auto=format&fit=crop" class="w-full h-full object-cover rounded-2xl opacity-90">
                 </div>
             </div>
 
-            <!-- Trending Right Now Section -->
+            <!-- Filter Tabs & Track Table List -->
             <div class="flex-1 overflow-hidden flex flex-col">
-                <div class="flex items-center justify-between mb-3 px-1">
+                <div class="flex items-center justify-between mb-3 px-1 border-b border-slate-100 pb-2">
+                    <!-- Playlist View Nav Tabs -->
                     <div class="flex items-center gap-2">
-                        <h3 class="text-base font-bold text-slate-900 tracking-tight">Trending right now</h3>
-                        <span id="saved-badge" class="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold">Global Sync Online</span>
+                        <button onclick="setFilterView('all')" id="tab-btn-all" class="px-3 py-1 rounded-full text-xs font-bold bg-slate-900 text-white transition">Tất Cả Bài Hát</button>
+                        <button onclick="setFilterView('fav')" id="tab-btn-fav" class="px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-600 hover:bg-pink-50 hover:text-pink-600 transition flex items-center gap-1">
+                            <i class="fa-solid fa-heart text-pink-500"></i> Bài Hát Yêu Thích ❤️ (<span id="fav-count-text">0</span>)
+                        </button>
                     </div>
+
                     <div class="flex items-center gap-3">
-                        <button onclick="fetchGlobalPlaylistFromServer()" class="text-[11px] font-semibold text-purple-600 hover:text-purple-800 transition"><i class="fa-solid fa-rotate mr-1"></i> Làm Mới Danh Sách</button>
+                        <button onclick="fetchGlobalPlaylistFromServer()" class="text-[11px] font-semibold text-purple-600 hover:text-purple-800 transition"><i class="fa-solid fa-rotate mr-1"></i> Làm Mới</button>
                     </div>
                 </div>
 
-                <!-- Trending Tracks List -->
+                <!-- Trending / Favorites Tracks List -->
                 <div id="trending-tracks-container" class="flex-1 overflow-y-auto pr-1 space-y-2">
-                    <!-- Dynamically populated from Server Database / POPULAR_PLAYLIST -->
+                    <!-- Dynamically populated -->
                 </div>
             </div>
 
@@ -337,7 +343,7 @@
                            class="w-24 h-1.5 cursor-pointer">
                 </div>
                 <div class="flex items-center gap-1.5 text-[11px] text-slate-400">
-                    <span>Render Shared Database:</span>
+                    <span>Render Server Backend:</span>
                     <code id="active-render-endpoint" class="text-purple-600 font-mono font-semibold">https://webservicebackend-zm90.onrender.com</code>
                 </div>
             </div>
@@ -356,8 +362,8 @@
                         <i class="fa-solid fa-cloud-arrow-up text-xl"></i>
                     </div>
                     <div>
-                        <h3 class="font-bold text-slate-100 text-base">Thêm Nhạc Lên Server Đám Mây</h3>
-                        <p class="text-xs text-slate-400">Mọi bài hát thêm tại đây sẽ lưu lên Máy Chủ cho MỌI NGƯỜI cùng nghe</p>
+                        <h3 class="font-bold text-slate-100 text-base">Tìm Nhạc YouTube & Thêm Playlist</h3>
+                        <p class="text-xs text-slate-400">Tự động lấy Tên bài hát, Ca sĩ, và Ảnh bìa gốc trên YouTube</p>
                     </div>
                 </div>
                 <button onclick="closeMusicManagerModal()" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white flex items-center justify-center">
@@ -367,7 +373,7 @@
 
             <div class="flex items-center gap-2 py-3 border-b border-white/5 shrink-0 overflow-x-auto">
                 <button onclick="switchModalTab('tab-yt')" id="nav-tab-yt" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-purple-500/20 border border-purple-500/40 text-purple-300 transition shrink-0 flex items-center gap-1.5">
-                    <i class="fa-brands fa-youtube text-red-500"></i> YouTube Link
+                    <i class="fa-brands fa-youtube text-red-500"></i> Tìm Nhạc / YouTube Link
                 </button>
                 <button onclick="switchModalTab('tab-mp3-url')" id="nav-tab-mp3-url" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-white/5 border border-white/10 text-slate-400 transition shrink-0 flex items-center gap-1.5">
                     <i class="fa-solid fa-link text-cyan-400"></i> Direct MP3 URL
@@ -383,31 +389,20 @@
             <div class="flex-1 overflow-y-auto py-4 space-y-4 pr-1">
                 
                 <div id="content-tab-yt" class="space-y-3">
-                    <div class="p-3 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-xs text-emerald-200">
-                        <i class="fa-solid fa-globe text-base mr-1.5"></i>
-                        <span><b>Lưu Lên Máy Chủ Đám Mây (Global Sync):</b> Dán link YouTube vào đây, hệ thống sẽ lưu bài hát lên Server Render để bất kỳ ai trên thế giới truy cập vào trang web của bạn đều nghe thấy bài này!</span>
+                    <div class="p-3 rounded-2xl bg-purple-500/10 border border-purple-500/20 text-xs text-purple-200">
+                        <i class="fa-solid fa-wand-magic-sparkles text-base mr-1.5"></i>
+                        <span><b>Tự Động Bóc Tách YouTube:</b> Chỉ cần nhập tên bài hát (VD: <i>Chạy Ngay Đi Sơn Tùng</i>) hoặc dán link YouTube. Hệ thống sẽ tự động bóc tách **Tên, Ca sĩ, và Ảnh bìa gốc HD** để lưu lên Server!</span>
                     </div>
 
                     <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">Nhập Đường Link YouTube (URL)</label>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">Nhập Tên Bài Hát hoặc Đường Link YouTube</label>
                         <input type="text" id="modal-yt-input" 
-                               placeholder="https://www.youtube.com/watch?v=..." 
+                               placeholder="VD: Attention Charlie Puth hoặc https://www.youtube.com/watch?v=..." 
                                class="w-full glass-input rounded-xl px-3.5 py-2.5 text-xs text-slate-100 focus:outline-none">
                     </div>
 
-                    <div class="grid grid-cols-2 gap-2">
-                        <div>
-                            <label class="block text-[11px] font-semibold text-slate-400 mb-1">Tên Bài Hát (Tùy chọn)</label>
-                            <input type="text" id="modal-yt-title" placeholder="VD: Starboy" class="w-full glass-input rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-[11px] font-semibold text-slate-400 mb-1">Ca Sĩ (Tùy chọn)</label>
-                            <input type="text" id="modal-yt-artist" placeholder="VD: The Weeknd" class="w-full glass-input rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none">
-                        </div>
-                    </div>
-
                     <button onclick="addTrackFromModal('yt')" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold text-xs shadow-lg shadow-pink-500/25 flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-cloud-arrow-up"></i> Lưu Lên Server Cho Mọi Người Cùng Nghe
+                        <i class="fa-solid fa-magnifying-glass"></i> Tự Động Bóc Tách & Lưu Lên Server
                     </button>
                 </div>
 
@@ -450,70 +445,67 @@
             {
                 id: 'hit-1',
                 rank: '01',
-                title: "I'm Good (Blue)",
-                artist: 'David Guetta & Bebe Rexha',
-                thumbnail: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=400&auto=format&fit=crop',
-                youtubeUrl: 'https://www.youtube.com/watch?v=90RLzVUzu18',
-                duration: 179,
-                plays: '8 078 651'
+                title: "Starboy",
+                artist: 'The Weeknd ft. Daft Punk',
+                thumbnail: 'https://i.ytimg.com/vi/34Na4j8AVgA/hqdefault.jpg',
+                youtubeUrl: 'https://www.youtube.com/watch?v=34Na4j8AVgA',
+                duration: 230
             },
             {
                 id: 'hit-2',
                 rank: '02',
-                title: 'Under the Influence',
-                artist: 'Chris Brown',
-                thumbnail: 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?q=80&w=400&auto=format&fit=crop',
-                youtubeUrl: 'https://www.youtube.com/watch?v=vL-12Vj2GgM',
-                duration: 184,
-                plays: '2 341 221'
+                title: 'Blinding Lights',
+                artist: 'The Weeknd',
+                thumbnail: 'https://i.ytimg.com/vi/4NRXx6U8ABQ/hqdefault.jpg',
+                youtubeUrl: 'https://www.youtube.com/watch?v=4NRXx6U8ABQ',
+                duration: 200
             },
             {
                 id: 'hit-3',
                 rank: '03',
-                title: 'Forget Me',
-                artist: 'Lewis Capaldi',
-                thumbnail: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=400&auto=format&fit=crop',
-                youtubeUrl: 'https://www.youtube.com/watch?v=n_eX6lVb-kI',
-                duration: 204,
-                plays: '2 212 883'
+                title: 'As It Was',
+                artist: 'Harry Styles',
+                thumbnail: 'https://i.ytimg.com/vi/H5v3kku4y6Q/hqdefault.jpg',
+                youtubeUrl: 'https://www.youtube.com/watch?v=H5v3kku4y6Q',
+                duration: 167
             },
             {
                 id: 'hit-4',
                 rank: '04',
-                title: 'Bad Habit',
-                artist: 'Steve Lacy',
-                thumbnail: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=400&auto=format&fit=crop',
-                youtubeUrl: 'https://www.youtube.com/watch?v=VF-rug85700',
-                duration: 212,
-                plays: '1 934 291'
+                title: 'Shape of You',
+                artist: 'Ed Sheeran',
+                thumbnail: 'https://i.ytimg.com/vi/JGwWNGJdvx8/hqdefault.jpg',
+                youtubeUrl: 'https://www.youtube.com/watch?v=JGwWNGJdvx8',
+                duration: 233
             },
             {
                 id: 'hit-5',
                 rank: '05',
-                title: "DON'T YOU WORRY",
-                artist: 'Black Eyed Peas, Shakira & David Guetta',
-                thumbnail: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=400&auto=format&fit=crop',
-                youtubeUrl: 'https://www.youtube.com/watch?v=nutZ_wX1xT4',
-                duration: 198,
-                plays: '1 556 239'
-            },
-            {
-                id: 'hit-6',
-                rank: '06',
-                title: 'Starboy',
-                artist: 'The Weeknd ft. Daft Punk',
-                thumbnail: 'https://images.unsplash.com/photo-1518609878373-06d740f60d8b?q=80&w=400&auto=format&fit=crop',
-                youtubeUrl: 'https://www.youtube.com/watch?v=34Na4j8AVgA',
-                duration: 230,
-                plays: '3 410 882'
+                title: 'Stay',
+                artist: 'The Kid LAROI & Justin Bieber',
+                thumbnail: 'https://i.ytimg.com/vi/kTJczUoc26U/hqdefault.jpg',
+                youtubeUrl: 'https://www.youtube.com/watch?v=kTJczUoc26U',
+                duration: 141
             }
         ];
 
         // State Management
         let backendUrl = localStorage.getItem('aether_render_backend_url') || 'https://webservicebackend-zm90.onrender.com';
         
+        // Persistent Favorites State (❤️)
+        let favoritesSet = new Set();
+        try {
+            const favRaw = localStorage.getItem('aether_user_favorites_ids');
+            if (favRaw) {
+                favoritesSet = new Set(JSON.parse(favRaw));
+            }
+        } catch (e) {
+            favoritesSet = new Set();
+        }
+
         let rawQueueData = [...DEFAULT_POPULAR_PLAYLIST];
         let queue = rawQueueData.map((track, idx) => buildTrackObject(track, idx));
+        let activeFilterView = 'all'; // 'all' | 'fav' | 'trending'
 
         let currentTrackIndex = 0;
         let isPlaying = false;
@@ -545,7 +537,6 @@
         let sourceNode = null;
         let canvas = document.getElementById('visualizer');
         let canvasCtx = canvas.getContext('2d');
-        let visualizerStyle = 'wave';
 
         function buildTrackObject(item, idx = 0) {
             let proxyStreamUrl = item.audioUrl;
@@ -561,9 +552,9 @@
                 rank: item.rank || formattedRank,
                 title: item.title,
                 artist: item.artist,
-                thumbnail: item.thumbnail,
+                thumbnail: item.thumbnail || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=400&auto=format&fit=crop',
                 duration: item.duration || 180,
-                plays: item.plays || 'Global Track',
+                plays: item.plays || 'Global Sync',
                 audioUrl: proxyStreamUrl,
                 isYoutube: !!(item.youtubeUrl || item.rawUrl),
                 isDirectUrl: item.isDirectUrl || false,
@@ -571,7 +562,7 @@
             };
         }
 
-        // Fetch Global Playlist from Render Server Database so everyone sees added tracks
+        // Fetch Global Playlist from Render Server Database
         async function fetchGlobalPlaylistFromServer() {
             try {
                 const res = await fetch(`${backendUrl.replace(/\/$/, '')}/playlist`);
@@ -581,7 +572,7 @@
                         rawQueueData = data.playlist;
                         queue = rawQueueData.map((track, idx) => buildTrackObject(track, idx));
                         renderTrendingTracks();
-                        console.log("Global playlist loaded from Render server!");
+                        updateNextCompositionCards();
                     }
                 }
             } catch (e) {
@@ -592,6 +583,7 @@
         window.addEventListener('DOMContentLoaded', () => {
             updateBackendUI();
             setupCanvas();
+            updateFavoritesUI();
             renderTrendingTracks();
             loadTrack(0);
 
@@ -610,6 +602,91 @@
             const inputEl = document.getElementById('input-backend-url');
             if (displayEl) displayEl.textContent = backendUrl;
             if (inputEl) inputEl.value = backendUrl;
+        }
+
+        function updateFavoritesUI() {
+            const count = favoritesSet.size;
+            const favCountText = document.getElementById('fav-count-text');
+            const favBadgeCount = document.getElementById('fav-badge-count');
+            if (favCountText) favCountText.textContent = count;
+            if (favBadgeCount) favBadgeCount.textContent = count;
+
+            try {
+                localStorage.setItem('aether_user_favorites_ids', JSON.stringify(Array.from(favoritesSet)));
+            } catch (e) {}
+        }
+
+        function toggleFavorite(trackId) {
+            if (favoritesSet.has(trackId)) {
+                favoritesSet.delete(trackId);
+            } else {
+                favoritesSet.add(trackId);
+            }
+            updateFavoritesUI();
+            renderTrendingTracks();
+
+            // Update Current Heart Icon if active
+            const currentTrack = queue[currentTrackIndex];
+            if (currentTrack && currentTrack.id === trackId) {
+                updateCurrentFavIcon();
+            }
+        }
+
+        function toggleFavoriteCurrent() {
+            const currentTrack = queue[currentTrackIndex];
+            if (currentTrack) {
+                toggleFavorite(currentTrack.id);
+            }
+        }
+
+        function updateCurrentFavIcon() {
+            const currentTrack = queue[currentTrackIndex];
+            const iconFav = document.getElementById('icon-fav');
+            const btnFav = document.getElementById('btn-fav');
+            if (!currentTrack || !iconFav) return;
+
+            if (favoritesSet.has(currentTrack.id)) {
+                iconFav.className = "fa-solid fa-heart text-pink-500";
+                if (btnFav) btnFav.className = "text-pink-500 text-base transition";
+            } else {
+                iconFav.className = "fa-regular fa-heart text-slate-400";
+                if (btnFav) btnFav.className = "text-slate-400 hover:text-pink-400 text-base transition";
+            }
+        }
+
+        function setFilterView(viewMode) {
+            activeFilterView = viewMode;
+
+            const tabAll = document.getElementById('tab-btn-all');
+            const tabFav = document.getElementById('tab-btn-fav');
+            const stageTitle = document.getElementById('stage-main-title');
+
+            if (viewMode === 'fav') {
+                if (tabAll) tabAll.className = "px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-600 transition";
+                if (tabFav) tabFav.className = "px-3 py-1 rounded-full text-xs font-bold bg-pink-500 text-white transition flex items-center gap-1 shadow-md";
+                if (stageTitle) stageTitle.textContent = "Yêu Thích ❤️";
+            } else {
+                if (tabAll) tabAll.className = "px-3 py-1 rounded-full text-xs font-bold bg-slate-900 text-white transition";
+                if (tabFav) tabFav.className = "px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-600 hover:bg-pink-50 hover:text-pink-600 transition flex items-center gap-1";
+                if (stageTitle) stageTitle.textContent = "Home";
+            }
+
+            renderTrendingTracks();
+        }
+
+        function updateNextCompositionCards() {
+            if (queue.length > 1) {
+                const track1 = queue[1];
+                document.getElementById('next-thumb-1').src = track1.thumbnail;
+                document.getElementById('next-title-1').textContent = track1.title;
+                document.getElementById('next-artist-1').textContent = track1.artist;
+            }
+            if (queue.length > 2) {
+                const track2 = queue[2];
+                document.getElementById('next-thumb-2').src = track2.thumbnail;
+                document.getElementById('next-title-2').textContent = track2.title;
+                document.getElementById('next-artist-2').textContent = track2.artist;
+            }
         }
 
         function initWebAudio() {
@@ -682,6 +759,7 @@
             audio.src = track.audioUrl;
             audio.load();
 
+            updateCurrentFavIcon();
             renderTrendingTracks();
 
             if (isPlaying) {
@@ -706,7 +784,7 @@
                 artist: 'Local Music File',
                 thumbnail: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=400&auto=format&fit=crop',
                 duration: 0,
-                plays: 'Local',
+                plays: 'Local File',
                 audioUrl: objectUrl,
                 isLocal: true,
                 isYoutube: false
@@ -719,21 +797,21 @@
             playAudio();
         }
 
-        // Save track to Server Database via POST /add-track
+        // Search & Auto Extract YouTube Title, Artist, & Official Cover Image
         async function streamFromYoutubeInput() {
-            const rawUrl = ytUrlInput.value.trim();
-            if (!rawUrl) return;
+            const rawQuery = ytUrlInput.value.trim();
+            if (!rawQuery) return;
 
             const btnAdd = document.getElementById('btn-add-stream');
             btnAdd.disabled = true;
-            btnAdd.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Đang lưu Server...`;
+            btnAdd.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Đang lấy dữ liệu...`;
 
             try {
                 const addApiUrl = `${backendUrl.replace(/\/$/, '')}/add-track`;
                 const response = await fetch(addApiUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ youtubeUrl: rawUrl })
+                    body: JSON.stringify({ youtubeUrl: rawQuery })
                 });
 
                 if (response.ok) {
@@ -744,22 +822,22 @@
                     }
                     ytUrlInput.value = '';
                     renderTrendingTracks();
+                    updateNextCompositionCards();
                     loadTrack(0);
                     playAudio();
-                    alert("Đã lưu bài hát lên Server cho TẤT CẢ MỌI NGƯỜI cùng nghe!");
                 } else {
-                    throw new Error("Lỗi lưu bài hát lên Server");
+                    throw new Error("Lỗi bóc tách nhạc");
                 }
             } catch (err) {
-                // Fallback to local queue if offline
-                const encodedUrl = encodeURIComponent(rawUrl);
+                // Fallback stream
+                const encodedUrl = encodeURIComponent(rawQuery);
                 const proxyAudioUrl = `${backendUrl.replace(/\/$/, '')}/play-audio?url=${encodedUrl}`;
                 const newTrackItem = {
                     id: 'yt-' + Date.now(),
-                    title: 'YouTube Track',
-                    artist: 'Global Track',
+                    title: rawQuery,
+                    artist: 'YouTube Audio',
                     thumbnail: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=400&auto=format&fit=crop',
-                    youtubeUrl: rawUrl,
+                    youtubeUrl: rawQuery,
                     duration: 180,
                     audioUrl: proxyAudioUrl
                 };
@@ -770,38 +848,16 @@
                 playAudio();
             } finally {
                 btnAdd.disabled = false;
-                btnAdd.innerHTML = `Lưu Lên Server`;
+                btnAdd.innerHTML = `Tìm & Phát`;
             }
         }
 
         async function addTrackFromModal(type) {
             if (type === 'yt') {
                 const url = document.getElementById('modal-yt-input').value.trim();
-                const customTitle = document.getElementById('modal-yt-title').value.trim();
-                const customArtist = document.getElementById('modal-yt-artist').value.trim();
                 if (url) {
-                    try {
-                        const addApiUrl = `${backendUrl.replace(/\/$/, '')}/add-track`;
-                        const res = await fetch(addApiUrl, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ youtubeUrl: url, title: customTitle, artist: customArtist })
-                        });
-                        if (res.ok) {
-                            const data = await res.json();
-                            if (data.playlist) {
-                                rawQueueData = data.playlist;
-                                queue = rawQueueData.map((track, idx) => buildTrackObject(track, idx));
-                            }
-                            renderTrendingTracks();
-                            loadTrack(0);
-                            playAudio();
-                            alert("Đã lưu bài hát lên Server cho MỌI NGƯỜI cùng nghe!");
-                        }
-                    } catch (e) {
-                        ytUrlInput.value = url;
-                        streamFromYoutubeInput();
-                    }
+                    ytUrlInput.value = url;
+                    streamFromYoutubeInput();
                     closeMusicManagerModal();
                 }
             } else if (type === 'mp3-url') {
@@ -927,12 +983,32 @@
             changeVolume(audio.volume);
         }
 
+        // Render Trending & Favorites Track Table
         function renderTrendingTracks() {
             if (!trendingTracksContainer) return;
             trendingTracksContainer.innerHTML = '';
 
-            queue.forEach((track, idx) => {
-                const isCurrent = idx === currentTrackIndex;
+            let displayTracks = queue;
+            if (activeFilterView === 'fav') {
+                displayTracks = queue.filter(t => favoritesSet.has(t.id));
+            }
+
+            if (displayTracks.length === 0) {
+                trendingTracksContainer.innerHTML = `
+                    <div class="p-8 text-center text-slate-400">
+                        <i class="fa-regular fa-heart text-3xl mb-2 text-pink-300"></i>
+                        <p class="text-xs font-semibold">Chưa có bài hát yêu thích nào!</p>
+                        <p class="text-[11px] text-slate-400 mt-1">Bấm vào biểu tượng ❤️ trên bài hát để thêm vào danh sách yêu thích.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            displayTracks.forEach((track, idx) => {
+                const originalIndex = queue.findIndex(q => q.id === track.id);
+                const isCurrent = originalIndex === currentTrackIndex;
+                const isFav = favoritesSet.has(track.id);
+
                 const row = document.createElement('div');
                 row.className = `p-2.5 rounded-2xl flex items-center justify-between gap-4 cursor-pointer transition ${
                     isCurrent 
@@ -941,7 +1017,7 @@
                 }`;
 
                 row.onclick = () => {
-                    loadTrack(idx);
+                    loadTrack(originalIndex);
                     playAudio();
                 };
 
@@ -960,22 +1036,16 @@
                         </div>
                     </div>
                     <div class="flex items-center gap-6 shrink-0">
-                        <span class="text-[11px] text-slate-400 font-mono hidden sm:inline">${track.plays || 'Global Track'}</span>
+                        <span class="text-[11px] text-slate-400 font-mono hidden sm:inline">${track.plays || 'Global Sync'}</span>
                         <span class="text-[11px] text-slate-500 font-mono font-medium">${formatTime(track.duration || 180)}</span>
-                        <button onclick="event.stopPropagation(); toggleFavoriteCurrent();" class="text-slate-300 hover:text-pink-500 text-xs"><i class="fa-regular fa-heart"></i></button>
+                        <button onclick="event.stopPropagation(); toggleFavorite('${track.id}');" class="text-xs transition ${isFav ? 'text-pink-500' : 'text-slate-300 hover:text-pink-500'}">
+                            <i class="${isFav ? 'fa-solid' : 'fa-regular'} fa-heart"></i>
+                        </button>
                         <button onclick="event.stopPropagation();" class="text-slate-400 hover:text-slate-700 text-xs"><i class="fa-solid fa-ellipsis"></i></button>
                     </div>
                 `;
                 trendingTracksContainer.appendChild(row);
             });
-        }
-
-        function toggleFavoriteCurrent() {
-            const btnFav = document.getElementById('btn-fav');
-            if (btnFav) {
-                btnFav.classList.toggle('text-pink-500');
-                btnFav.classList.toggle('text-slate-400');
-            }
         }
 
         function openMusicManagerModal(initialTab = 'tab-yt') {
