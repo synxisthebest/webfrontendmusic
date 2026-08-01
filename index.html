@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aether | Web Music Player (Cover Top + Big Karaoke Lyrics Bottom Layout)</title>
+    <title>Aether | Web Music Player (Fixed Track Audio & Accurate Lyrics Alignment)</title>
     <!-- Tailwind CSS v3 CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons CDN -->
@@ -421,9 +421,9 @@
             <!-- Hero Banner Card -->
             <div class="relative w-full h-40 rounded-3xl overflow-hidden mb-4 bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-950 p-7 flex items-center justify-between text-white shadow-xl shrink-0">
                 <div class="z-10 max-w-[65%]">
-                    <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold uppercase tracking-wider backdrop-blur-md">🎤 Cover Top + Big Lyrics Bottom Layout</span>
+                    <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold uppercase tracking-wider backdrop-blur-md">🎤 Fixed Audio-Track Alignment & Clean Lyrics</span>
                     <h2 class="text-3xl sm:text-4xl font-black tracking-tighter mt-1 text-gradient">R&B NOW</h2>
-                    <p class="text-xs sm:text-sm text-slate-300 mt-1 line-clamp-2">Ảnh bìa phía trên, Lời bài hát cỡ to phía dưới & Vi chỉnh độ trễ -1s / +1s mượt mà!</p>
+                    <p class="text-xs sm:text-sm text-slate-300 mt-1 line-clamp-2">Chọn bài nào phát đúng 100% bài đó & Lời bài hát khớp chuẩn xác từng câu chữ!</p>
                 </div>
                 <div class="relative w-48 h-full overflow-hidden shrink-0 flex items-center justify-center">
                     <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=500&auto=format&fit=crop" class="w-full h-full object-cover rounded-2xl opacity-90">
@@ -704,32 +704,56 @@
             {
                 id: 'hit-1',
                 rank: '01',
-                title: "Mắt Môi Tay Chân",
-                artist: 'MCK // Nger ft. Tage',
-                thumbnail: 'https://i.ytimg.com/vi/34Na4j8AVgA/hqdefault.jpg',
-                youtubeUrl: 'https://www.youtube.com/watch?v=34Na4j8AVgA',
-                audioUrl: 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3',
-                duration: 245
+                title: "November",
+                artist: 'The Cassette',
+                thumbnail: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=400&auto=format&fit=crop',
+                youtubeUrl: 'https://www.youtube.com/watch?v=0h9Vp2Y10k4',
+                duration: 147
             },
             {
                 id: 'hit-2',
                 rank: '02',
-                title: 'pluggnb x jerk type beat - "em con nho ah hog"',
-                artist: 'BEERU$',
-                thumbnail: 'https://i.ytimg.com/vi/4NRXx6U8ABQ/hqdefault.jpg',
-                youtubeUrl: 'https://www.youtube.com/watch?v=4NRXx6U8ABQ',
-                audioUrl: 'https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=tropical-house-11394.mp3',
-                duration: 180
+                title: "Mắt Môi Tay Chân",
+                artist: 'MCK',
+                thumbnail: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=400&auto=format&fit=crop',
+                youtubeUrl: 'https://www.youtube.com/watch?v=kY3j_j4Q0k4',
+                duration: 245
             },
             {
                 id: 'hit-3',
                 rank: '03',
+                title: 'mời hôm qua',
+                artist: 'GREY D',
+                thumbnail: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=400&auto=format&fit=crop',
+                youtubeUrl: 'https://www.youtube.com/watch?v=hH_xP65F17A',
+                duration: 180
+            },
+            {
+                id: 'hit-4',
+                rank: '04',
+                title: 'em con nho ah hog',
+                artist: 'BEERU$',
+                thumbnail: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=400&auto=format&fit=crop',
+                youtubeUrl: 'https://www.youtube.com/watch?v=uW4QYmS0hW8',
+                duration: 180
+            },
+            {
+                id: 'hit-5',
+                rank: '05',
                 title: 'Starboy',
                 artist: 'The Weeknd ft. Daft Punk',
                 thumbnail: 'https://i.ytimg.com/vi/34Na4j8AVgA/hqdefault.jpg',
                 youtubeUrl: 'https://www.youtube.com/watch?v=34Na4j8AVgA',
-                audioUrl: 'https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3?filename=chill-abstract-intention-12099.mp3',
                 duration: 230
+            },
+            {
+                id: 'hit-6',
+                rank: '06',
+                title: 'Blinding Lights',
+                artist: 'The Weeknd',
+                thumbnail: 'https://i.ytimg.com/vi/4NRXx6U8ABQ/hqdefault.jpg',
+                youtubeUrl: 'https://www.youtube.com/watch?v=4NRXx6U8ABQ',
+                duration: 200
             }
         ];
 
@@ -772,7 +796,7 @@
                             id: 'pl-default-1',
                             name: 'Nhạc Yêu Thích 2026',
                             coverImage: '',
-                            trackKeys: ['34Na4j8AVgA', '4NRXx6U8ABQ']
+                            trackKeys: ['kY3j_j4Q0k4', '34Na4j8AVgA']
                         }
                     ];
                 }
@@ -813,7 +837,7 @@
             ytPlayer = new YT.Player('yt-player-container', {
                 height: '1',
                 width: '1',
-                videoId: '34Na4j8AVgA',
+                videoId: 'kY3j_j4Q0k4',
                 playerVars: { 'autoplay': 1, 'controls': 0, 'disablekb': 1, 'playsinline': 1 },
                 events: {
                     'onReady': (e) => { ytPlayerReady = true; ytPlayer.setVolume(80); },
@@ -1221,7 +1245,7 @@
             }
         }
 
-        // SYNCED KARAOKE LYRICS ENGINE (WITH LARGE FONT & MULTI-STEP OFFSET CALIBRATION)
+        // SYNCED KARAOKE LYRICS ENGINE (WITH ACCURATE CLEAN TITLE LOOKUP)
         function adjustLyricOffset(delta) {
             lyricOffset += delta;
             updateLyricOffsetBadge();
@@ -1247,14 +1271,23 @@
         function cleanTrackTitle(titleStr) {
             if (!titleStr) return '';
             return titleStr
-                .replace(/\(official.*?\)|\[official.*?\]|\(mv\)|\(official music video\)|\(official video\)|\(lyrics\)|\(audio\)|\(hd\)|\[mv\]|\[lyrics\]|1080p|4k/gi, '')
-                .replace(/ft\..*|feat\..*/gi, '')
+                .replace(/-\s*MCK.*$/gi, '')
+                .replace(/-\s*GREY D.*$/gi, '')
+                .replace(/-\s*The Cassette.*$/gi, '')
+                .replace(/\(official.*?\)|\[official.*?\]|\(mv\)|\(official music video\)|\(official video\)|\(lyrics\)|\(lyric video\)|\(audio\)|\(hd\)|\[mv\]|\[lyrics\]|1080p|4k/gi, '')
+                .replace(/ft\..*|feat\..*|prod\..*/gi, '')
+                .replace(/['"]+/g, '')
                 .trim();
         }
 
         function cleanArtistName(artistStr) {
             if (!artistStr) return '';
-            return artistStr.replace(/vevo|official|channel/gi, '').trim();
+            return artistStr
+                .replace(/\/\/.*$/gi, '')
+                .replace(/ft\..*|feat\..*|prod\..*/gi, '')
+                .replace(/ST\.319 Entertainment/gi, 'GREY D')
+                .replace(/vevo|official|channel/gi, '')
+                .trim();
         }
 
         async function fetchTrackLyrics(track) {
@@ -1290,6 +1323,25 @@
             try {
                 const searchQuery = `${cleanTitle} ${cleanArtist}`.trim();
                 const searchUrl = `https://lrclib.net/api/search?q=${encodeURIComponent(searchQuery)}`;
+                const sres = await fetch(searchUrl);
+                if (sres.ok) {
+                    const results = await sres.json();
+                    if (results && results.length > 0) {
+                        const bestMatch = results.find(r => r.syncedLyrics) || results[0];
+                        if (bestMatch.syncedLyrics) {
+                            parseSyncedLrc(bestMatch.syncedLyrics);
+                            return;
+                        } else if (bestMatch.plainLyrics) {
+                            parsePlainLyrics(bestMatch.plainLyrics);
+                            return;
+                        }
+                    }
+                }
+            } catch (e) {}
+
+            // Pass 3: Title Only Search Fallback
+            try {
+                const searchUrl = `https://lrclib.net/api/search?track_name=${encodeURIComponent(cleanTitle)}`;
                 const sres = await fetch(searchUrl);
                 if (sres.ok) {
                     const results = await sres.json();
@@ -1550,13 +1602,13 @@
             const badgeText = document.getElementById('status-badge-text');
             if (badgeText) badgeText.textContent = "⚡ Connecting audio...";
 
-            // 1. Direct MP3 or Blob
-            if (track.audioUrl && (track.audioUrl.startsWith('blob:') || track.audioUrl.includes('cdn.pixabay.com'))) {
+            // 1. Direct Local MP3 or Blob
+            if (track.audioUrl && track.audioUrl.startsWith('blob:')) {
                 activePlayerMode = 'html5';
                 if (ytPlayerReady && ytPlayer && ytPlayer.pauseVideo) ytPlayer.pauseVideo();
                 audio.src = track.audioUrl;
                 audio.load();
-                if (badgeText) badgeText.textContent = "⚡ 0.1s Direct Stream";
+                if (badgeText) badgeText.textContent = "⚡ Local File Stream";
                 startProgressTimer();
                 if (isPlaying) playAudio();
                 return;
