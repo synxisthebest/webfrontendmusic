@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aether | Web Music Player (Fix Add YouTube Song & Universal Links)</title>
+    <title>Aether | Web Music Player (Instant Playback & Exact Duration Engine)</title>
     <!-- Tailwind CSS v3 CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons CDN -->
@@ -309,7 +309,7 @@
                     <div class="flex items-center justify-between z-10 mb-2">
                         <span id="stream-type-badge" class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-[10px] font-semibold backdrop-blur-md flex items-center gap-1.5">
                             <span id="status-badge-dot" class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
-                            <span id="status-badge-text">⚡ 0.1s Stream Connected 🔥</span>
+                            <span id="status-badge-text">⚡ Instant Playback Engine</span>
                         </span>
                         <div class="flex items-center gap-2">
                             <button onclick="toggleLyricsView()" id="btn-lyrics-toggle" class="text-slate-400 hover:text-cyan-300 text-xs transition px-2 py-0.5 rounded-full bg-white/5 border border-white/10" title="Hiện/Ẩn Lời Bài Hát">
@@ -407,9 +407,9 @@
             <!-- Hero Banner Card -->
             <div class="relative w-full h-36 rounded-3xl overflow-hidden mb-3 bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-950 p-6 flex items-center justify-between text-white shadow-xl shrink-0">
                 <div class="z-10 max-w-[65%]">
-                    <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold uppercase tracking-wider backdrop-blur-md">⚡ Universal YouTube Stream Engine</span>
+                    <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold uppercase tracking-wider backdrop-blur-md">⚡ Real-Time YouTube Duration Sync Engine</span>
                     <h2 class="text-2xl sm:text-3xl font-black tracking-tighter mt-1 text-gradient">R&B NOW</h2>
-                    <p class="text-xs text-slate-300 mt-1 line-clamp-2">Dán mọi link YouTube (`watch?v=`, `youtu.be/`, `shorts/`) ➔ Tự động thêm vào danh sách & phát ngay!</p>
+                    <p class="text-xs text-slate-300 mt-1 line-clamp-2">Phát nhạc tức thì & Tự động cập nhật độ dài bài hát thực chuẩn xác 100%!</p>
                 </div>
                 <div class="relative w-40 h-full overflow-hidden shrink-0 flex items-center justify-center">
                     <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=500&auto=format&fit=crop" class="w-full h-full object-cover rounded-2xl opacity-90">
@@ -695,7 +695,7 @@
                 thumbnail: 'https://i.ytimg.com/vi/34Na4j8AVgA/hqdefault.jpg',
                 youtubeUrl: 'https://www.youtube.com/watch?v=34Na4j8AVgA',
                 audioUrl: 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3',
-                duration: 180
+                duration: 245
             },
             {
                 id: 'hit-2',
@@ -809,6 +809,12 @@
                             iconPlayPause.className = 'fa-solid fa-pause';
                             const badgeText = document.getElementById('status-badge-text');
                             if (badgeText) badgeText.textContent = "⚡ YouTube Stream Connected 🔥";
+
+                            // DYNAMICALLY SYNC EXACT REAL YOUTUBE DURATION
+                            if (ytPlayer && ytPlayer.getDuration) {
+                                const realDur = ytPlayer.getDuration();
+                                updateTrackDuration(realDur);
+                            }
                             startProgressTimer();
                         } else if (e.data === YT.PlayerState.PAUSED) {
                             isPlaying = false;
@@ -822,19 +828,34 @@
             });
         };
 
+        function updateTrackDuration(actualDur) {
+            if (actualDur && !isNaN(actualDur) && actualDur > 0) {
+                const currentTrack = queue[currentTrackIndex];
+                if (currentTrack) {
+                    currentTrack.duration = Math.floor(actualDur);
+                    timeTotal.textContent = formatTime(currentTrack.duration);
+                }
+            }
+        }
+
         // UNIFIED 200MS REAL-TIME PROGRESS BAR TIMER ENGINE
         function startProgressTimer() {
             stopProgressTimer();
             progressInterval = setInterval(() => {
                 let cur = 0;
-                let dur = 180;
+                let dur = queue[currentTrackIndex]?.duration || 180;
 
                 if (activePlayerMode === 'yt_iframe' && ytPlayerReady && ytPlayer && ytPlayer.getCurrentTime) {
                     cur = ytPlayer.getCurrentTime() || 0;
-                    dur = ytPlayer.getDuration() || (queue[currentTrackIndex]?.duration || 180);
+                    const realDur = ytPlayer.getDuration();
+                    if (realDur > 0) {
+                        dur = realDur;
+                        updateTrackDuration(realDur);
+                    }
                 } else if (audio && audio.duration && !isNaN(audio.duration)) {
                     cur = audio.currentTime || 0;
                     dur = audio.duration;
+                    updateTrackDuration(dur);
                 }
 
                 if (dur > 0) {
@@ -869,7 +890,6 @@
         const currentTrackArtist = document.getElementById('current-track-artist');
 
         const trendingTracksContainer = document.getElementById('trending-tracks-container');
-        const ytUrlInput = document.getElementById('yt-url-input');
 
         let canvas = document.getElementById('visualizer');
         let canvasCtx = canvas.getContext('2d');
@@ -935,7 +955,7 @@
                 ];
 
                 const fetchMirror = async (endpoint) => {
-                    const res = await fetch(endpoint, { signal: AbortSignal.timeout(1200) });
+                    const res = await fetch(endpoint, { signal: AbortSignal.timeout(800) });
                     if (!res.ok) throw new Error("Mirror Error");
                     const data = await res.json();
                     const streams = data.audioStreams || data.adaptiveFormats;
@@ -986,6 +1006,7 @@
                 iconPlayPause.className = 'fa-solid fa-pause';
                 const badgeText = document.getElementById('status-badge-text');
                 if (badgeText) badgeText.textContent = "⚡ 0.1s Instant Stream Connected 🔥";
+                if (audio.duration) updateTrackDuration(audio.duration);
                 startProgressTimer();
             });
 
@@ -1006,6 +1027,7 @@
                 if (currentTrack && currentTrack.videoId && ytPlayerReady && ytPlayer) {
                     activePlayerMode = 'yt_iframe';
                     ytPlayer.loadVideoById(currentTrack.videoId);
+                    ytPlayer.playVideo();
                     startProgressTimer();
                 } else if (currentTrack && currentTrack.audioUrl) {
                     audio.src = currentTrack.audioUrl;
@@ -1530,7 +1552,7 @@
             playAudio();
         }
 
-        // Hybrid Guarantee Audio Loader
+        // INSTANT PLAYBACK & DYNAMIC DURATION ENGINE
         async function loadTrack(index) {
             if (index < 0 || index >= queue.length) return;
             currentTrackIndex = index;
@@ -1539,6 +1561,7 @@
             currentTrackTitle.textContent = track.title;
             currentTrackArtist.textContent = track.artist;
             albumCoverImg.src = track.thumbnail;
+            timeTotal.textContent = formatTime(track.duration || 180);
 
             const badgeText = document.getElementById('status-badge-text');
 
@@ -1549,6 +1572,12 @@
                 audio.load();
                 if (badgeText) badgeText.textContent = "⚡ 0.1s Direct Stream";
                 startProgressTimer();
+            } else if (track.videoId && ytPlayerReady && ytPlayer) {
+                activePlayerMode = 'yt_iframe';
+                audio.pause();
+                ytPlayer.loadVideoById(track.videoId);
+                if (badgeText) badgeText.textContent = "⚡ YouTube Stream Connected";
+                startProgressTimer();
             } else {
                 const rawAudioUrl = await resolveAdFreeRawAudioStream(track);
                 if (rawAudioUrl) {
@@ -1557,12 +1586,6 @@
                     audio.src = rawAudioUrl;
                     audio.load();
                     if (badgeText) badgeText.textContent = "⚡ 0.1s Fast Stream";
-                    startProgressTimer();
-                } else if (track.videoId && ytPlayerReady && ytPlayer) {
-                    activePlayerMode = 'yt_iframe';
-                    audio.pause();
-                    ytPlayer.loadVideoById(track.videoId);
-                    if (badgeText) badgeText.textContent = "⚡ YouTube Stream Connected";
                     startProgressTimer();
                 }
             }
@@ -1803,7 +1826,7 @@
         }
 
         function onMetadataLoaded() {
-            timeTotal.textContent = formatTime(audio.duration);
+            if (audio.duration) updateTrackDuration(audio.duration);
         }
 
         function onScrubInput(val) {
