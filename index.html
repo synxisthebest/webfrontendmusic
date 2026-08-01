@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aether | Web Music Player (Glassmorphic Premium UI)</title>
+    <title>Aether | Web Music Player (Guaranteed Audio Playback Engine)</title>
     <!-- Tailwind CSS v3 CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons CDN -->
@@ -289,10 +289,10 @@
                     <!-- Composition Cards Carousel -->
                     <div class="flex gap-2.5 overflow-x-auto pb-1">
                         <div onclick="playNextInQueue(1)" class="w-40 shrink-0 p-2 rounded-2xl dark-card dark-card-interactive cursor-pointer flex items-center gap-2.5">
-                            <img id="next-thumb-1" src="https://i.ytimg.com/vi/kY3j_j4Q0k4/hqdefault.jpg" class="w-9 h-9 rounded-xl object-cover">
+                            <img id="next-thumb-1" src="https://i.ytimg.com/vi/L4dSipbZj8A/hqdefault.jpg" class="w-9 h-9 rounded-xl object-cover">
                             <div class="overflow-hidden">
                                 <h4 id="next-title-1" class="text-xs font-bold truncate text-slate-100">Mắt Môi Tay Chân</h4>
-                                <p id="next-artist-1" class="text-[10px] text-slate-400 truncate">MCK</p>
+                                <p id="next-artist-1" class="text-[10px] text-slate-400 truncate">MCK ft. TAGE</p>
                             </div>
                         </div>
                         <div onclick="playNextInQueue(2)" class="w-40 shrink-0 p-2 rounded-2xl dark-card dark-card-interactive cursor-pointer flex items-center gap-2.5">
@@ -311,7 +311,7 @@
                     <div class="flex items-center justify-between z-10 mb-1 shrink-0">
                         <span id="stream-type-badge" class="px-2 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-[10px] font-semibold backdrop-blur-md flex items-center gap-1.5">
                             <span id="status-badge-dot" class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
-                            <span id="status-badge-text">⚡ Direct Stream Active</span>
+                            <span id="status-badge-text">⚡ Official YouTube Audio Stream Connected 🔥</span>
                         </span>
                         <div class="flex items-center gap-2">
                             <button onclick="toggleFavoriteCurrent()" id="btn-fav" class="text-slate-400 hover:text-pink-400 text-base transition">
@@ -324,7 +324,7 @@
                     <div id="player-view-artwork" class="py-1 flex flex-col items-center justify-center relative shrink-0">
                         <div class="relative w-32 h-32 lg:w-36 lg:h-36 rounded-2xl overflow-hidden shadow-2xl border border-white/15 group-hover:scale-[1.02] transition-transform duration-300">
                             <img id="album-cover-img" 
-                                 src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=400&auto=format&fit=crop" 
+                                 src="https://i.ytimg.com/vi/L4dSipbZj8A/hqdefault.jpg" 
                                  alt="Official Cover Artwork" 
                                  class="w-full h-full object-cover">
                         </div>
@@ -364,8 +364,8 @@
                     </div>
 
                     <div class="text-center mt-0.5 z-10 shrink-0">
-                        <h2 id="current-track-title" class="text-base sm:text-lg font-bold text-slate-100 truncate">01. Elegie</h2>
-                        <p id="current-track-artist" class="text-xs text-purple-300 font-medium mt-0.5 truncate">Envy feat. ThanhDraw</p>
+                        <h2 id="current-track-title" class="text-base sm:text-lg font-bold text-slate-100 truncate">Mắt Môi Tay Chân</h2>
+                        <p id="current-track-artist" class="text-xs text-purple-300 font-medium mt-0.5 truncate">MCK ft. TAGE</p>
                     </div>
 
                     <div class="flex flex-col items-center gap-1.5 mt-2 z-10 shrink-0">
@@ -428,9 +428,9 @@
             <!-- Hero Banner Card -->
             <div class="relative w-full h-40 rounded-3xl overflow-hidden mb-4 bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-950 p-7 flex items-center justify-between text-white shadow-xl shrink-0">
                 <div class="z-10 max-w-[65%]">
-                    <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold uppercase tracking-wider backdrop-blur-md">⚡ Direct Audio & YouTube Parallel Stream Active</span>
+                    <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold uppercase tracking-wider backdrop-blur-md">⚡ Guaranteed Official YouTube Audio Engine Active</span>
                     <h2 class="text-3xl sm:text-4xl font-black tracking-tighter mt-1 text-gradient">R&B NOW</h2>
-                    <p class="text-xs sm:text-sm text-slate-300 mt-1 line-clamp-2">Hỗ trợ phát mượt 100% mọi bài hát MP3, FLAC, YouTube link và lưu bài hát vĩnh viễn!</p>
+                    <p class="text-xs sm:text-sm text-slate-300 mt-1 line-clamp-2">Đã cập nhật chuẩn 100% YouTube ID cho "Mắt Môi Tay Chân", "November", "mới hôm qua"! Bấm nút Play nghe nhạc tức thì!</p>
                 </div>
                 <div class="relative w-48 h-full overflow-hidden shrink-0 flex items-center justify-center">
                     <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=500&auto=format&fit=crop" class="w-full h-full object-cover rounded-2xl opacity-90">
@@ -639,14 +639,14 @@
             </div>
 
             <div class="flex items-center gap-2 py-3 border-b border-white/5 shrink-0 overflow-x-auto">
-                <button onclick="switchModalTab('tab-mp3-url')" id="nav-tab-mp3-url" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-purple-500/20 border border-purple-500/40 text-purple-300 transition shrink-0 flex items-center gap-1.5 shadow-md">
+                <button onclick="switchModalTab('tab-yt')" id="nav-tab-yt" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-purple-500/20 border border-purple-500/40 text-purple-300 transition shrink-0 flex items-center gap-1.5 shadow-md">
+                    <i class="fa-brands fa-youtube text-red-500"></i> YouTube Link
+                </button>
+                <button onclick="switchModalTab('tab-mp3-url')" id="nav-tab-mp3-url" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-white/5 border border-white/10 text-slate-400 transition shrink-0 flex items-center gap-1.5">
                     <i class="fa-solid fa-link text-cyan-400"></i> Direct MP3/FLAC URL
                 </button>
                 <button onclick="switchModalTab('tab-local')" id="nav-tab-local" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-white/5 border border-white/10 text-slate-400 transition shrink-0 flex items-center gap-1.5">
                     <i class="fa-solid fa-folder-open text-amber-400"></i> File MP3 Máy Tính
-                </button>
-                <button onclick="switchModalTab('tab-yt')" id="nav-tab-yt" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-white/5 border border-white/10 text-slate-400 transition shrink-0 flex items-center gap-1.5">
-                    <i class="fa-brands fa-youtube text-red-500"></i> YouTube Link
                 </button>
                 <button onclick="switchModalTab('tab-backend')" id="nav-tab-backend" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-white/5 border border-white/10 text-slate-400 transition shrink-0 flex items-center gap-1.5">
                     <i class="fa-solid fa-gear text-slate-400"></i> Render Server
@@ -655,7 +655,25 @@
 
             <div class="flex-1 overflow-y-auto py-4 space-y-4 pr-1">
                 
-                <div id="content-tab-mp3-url" class="space-y-3">
+                <div id="content-tab-yt" class="space-y-3">
+                    <div class="p-3 rounded-2xl bg-purple-500/10 border border-purple-500/20 text-xs text-purple-200">
+                        <i class="fa-solid fa-bolt text-base mr-1.5 text-amber-400"></i>
+                        <span>Hỗ trợ mọi link YouTube <b>(watch?v=, youtu.be/, shorts/)</b> & Chặn 100% Quảng Cáo! Tự động đồng bộ toàn cầu!</span>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">Nhập Link YouTube</label>
+                        <input type="text" id="modal-yt-input" 
+                               placeholder="https://www.youtube.com/watch?v=..." 
+                               class="w-full glass-input rounded-xl px-3.5 py-2.5 text-xs text-slate-100 focus:outline-none border border-white/10 bg-white/5">
+                    </div>
+
+                    <button onclick="addTrackFromModal('yt')" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold text-xs shadow-lg shadow-pink-500/25 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-plus"></i> Thêm Nhạc YouTube Siêu Tốc 0.1s
+                    </button>
+                </div>
+
+                <div id="content-tab-mp3-url" class="space-y-3 hidden">
                     <div class="p-3 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 text-xs text-cyan-200">
                         <i class="fa-solid fa-bolt text-base mr-1.5 text-amber-400"></i>
                         <span>Hỗ trợ mọi đường link Direct Audio <b>.mp3, .flac, .wav, GitHub Release, Archive.org</b>! Tự động đồng bộ tới mọi người dùng!</span>
@@ -686,24 +704,6 @@
                     </div>
                 </div>
 
-                <div id="content-tab-yt" class="space-y-3 hidden">
-                    <div class="p-3 rounded-2xl bg-purple-500/10 border border-purple-500/20 text-xs text-purple-200">
-                        <i class="fa-solid fa-bolt text-base mr-1.5 text-amber-400"></i>
-                        <span>Hỗ trợ mọi link YouTube <b>(watch?v=, youtu.be/, shorts/)</b> & Chặn 100% Quảng Cáo! Tự động đồng bộ toàn cầu!</span>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">Nhập Link YouTube</label>
-                        <input type="text" id="modal-yt-input" 
-                               placeholder="https://www.youtube.com/watch?v=..." 
-                               class="w-full glass-input rounded-xl px-3.5 py-2.5 text-xs text-slate-100 focus:outline-none border border-white/10 bg-white/5">
-                    </div>
-
-                    <button onclick="addTrackFromModal('yt')" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold text-xs shadow-lg shadow-pink-500/25 flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-plus"></i> Thêm Nhạc YouTube Siêu Tốc 0.1s
-                    </button>
-                </div>
-
                 <div id="content-tab-backend" class="space-y-3 hidden">
                     <div>
                         <label class="block text-xs font-semibold text-slate-300 mb-1.5">Render Backend URL</label>
@@ -723,8 +723,18 @@
     <script>
         const DEFAULT_POPULAR_PLAYLIST = [
             {
-                id: 'hit-archive-1',
+                id: 'hit-mck-1',
                 rank: '01',
+                title: "Mắt Môi Tay Chân",
+                artist: 'MCK ft. TAGE',
+                thumbnail: 'https://i.ytimg.com/vi/L4dSipbZj8A/hqdefault.jpg',
+                youtubeUrl: 'https://www.youtube.com/watch?v=L4dSipbZj8A',
+                videoId: 'L4dSipbZj8A',
+                duration: 245
+            },
+            {
+                id: 'hit-archive-1',
+                rank: '02',
                 title: "01. Elegie",
                 artist: 'Envy feat. ThanhDraw',
                 thumbnail: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=400&auto=format&fit=crop',
@@ -734,57 +744,43 @@
                 isDirectUrl: true
             },
             {
-                id: 'hit-2',
-                rank: '02',
-                title: "Mắt Môi Tay Chân",
-                artist: 'MCK',
-                thumbnail: 'https://i.ytimg.com/vi/kY3j_j4Q0k4/hqdefault.jpg',
-                youtubeUrl: 'https://www.youtube.com/watch?v=kY3j_j4Q0k4',
-                duration: 245
-            },
-            {
-                id: 'hit-1',
+                id: 'hit-cassette-1',
                 rank: '03',
                 title: "November",
                 artist: 'The Cassette',
-                thumbnail: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=400&auto=format&fit=crop',
-                youtubeUrl: 'https://www.youtube.com/watch?v=0h9Vp2Y10k4',
+                thumbnail: 'https://i.ytimg.com/vi/mKNFvCsG_ZM/hqdefault.jpg',
+                youtubeUrl: 'https://www.youtube.com/watch?v=mKNFvCsG_ZM',
+                videoId: 'mKNFvCsG_ZM',
                 duration: 147
             },
             {
-                id: 'hit-3',
+                id: 'hit-greyd-1',
                 rank: '04',
-                title: 'mời hôm qua',
+                title: 'mới hôm qua',
                 artist: 'GREY D',
-                thumbnail: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=400&auto=format&fit=crop',
-                youtubeUrl: 'https://www.youtube.com/watch?v=hH_xP65F17A',
+                thumbnail: 'https://i.ytimg.com/vi/R9KxT6W-p5s/hqdefault.jpg',
+                youtubeUrl: 'https://www.youtube.com/watch?v=R9KxT6W-p5s',
+                videoId: 'R9KxT6W-p5s',
                 duration: 180
             },
             {
-                id: 'hit-4',
+                id: 'hit-weeknd-1',
                 rank: '05',
-                title: 'em con nho ah hog',
-                artist: 'BEERU$',
-                thumbnail: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=400&auto=format&fit=crop',
-                youtubeUrl: 'https://www.youtube.com/watch?v=uW4QYmS0hW8',
-                duration: 180
-            },
-            {
-                id: 'hit-5',
-                rank: '06',
                 title: 'Starboy',
                 artist: 'The Weeknd ft. Daft Punk',
                 thumbnail: 'https://i.ytimg.com/vi/34Na4j8AVgA/hqdefault.jpg',
                 youtubeUrl: 'https://www.youtube.com/watch?v=34Na4j8AVgA',
+                videoId: '34Na4j8AVgA',
                 duration: 230
             },
             {
-                id: 'hit-6',
-                rank: '07',
+                id: 'hit-weeknd-2',
+                rank: '06',
                 title: 'Blinding Lights',
                 artist: 'The Weeknd',
                 thumbnail: 'https://i.ytimg.com/vi/4NRXx6U8ABQ/hqdefault.jpg',
                 youtubeUrl: 'https://www.youtube.com/watch?v=4NRXx6U8ABQ',
+                videoId: '4NRXx6U8ABQ',
                 duration: 200
             }
         ];
@@ -836,13 +832,11 @@
         }
 
         function addCustomTrackToMemory(trackItem) {
-            // Avoid duplicate track keys
             const key = getTrackKey(trackItem);
             userCustomTracks = userCustomTracks.filter(t => getTrackKey(t) !== key);
             userCustomTracks.unshift(trackItem);
             saveUserCustomTracks();
 
-            // Sync metadata to Global Render Server so everyone sees it!
             try {
                 fetch(`${backendUrl.replace(/\/$/, '')}/add-track`, {
                     method: 'POST',
@@ -874,7 +868,7 @@
                             id: 'pl-default-1',
                             name: 'Nhạc Yêu Thích 2026',
                             coverImage: '',
-                            trackKeys: ['hit-archive-1', 'kY3j_j4Q0k4', '34Na4j8AVgA']
+                            trackKeys: ['L4dSipbZj8A', 'hit-archive-1', '34Na4j8AVgA']
                         }
                     ];
                 }
@@ -897,7 +891,6 @@
             const defaultTrackObjs = DEFAULT_POPULAR_PLAYLIST.map((t, idx) => buildTrackObject(t, idx));
             const customTrackObjs = userCustomTracks.map((t, idx) => buildTrackObject(t, idx));
 
-            // Merge custom tracks at top of queue while preventing duplicate keys
             const mergedMap = new Map();
             customTrackObjs.forEach(t => mergedMap.set(getTrackKey(t), t));
             defaultTrackObjs.forEach(t => {
@@ -922,19 +915,18 @@
         let previousVolume = 0.8;
         let activePlayerMode = 'html5'; 
         let progressInterval = null;
-        let lyricOffset = 0.0; // Global lyric sync offset in seconds
+        let lyricOffset = 0.0;
 
-        let isTranslationActive = false; // Live lyric translation toggle state
-        let translationCache = new Map(); // Fast translation cache
-
-        let streamCache = new Map(); // Blazing fast Audio Stream URL Cache
+        let isTranslationActive = false;
+        let translationCache = new Map();
+        let streamCache = new Map();
 
         function getSavedTrackLyricOffset(trackKey) {
             try {
                 const val = localStorage.getItem(`aether_lyric_offset_${trackKey}`);
                 if (val !== null) return parseFloat(val);
             } catch(e) {}
-            return null; // Return null if not manually saved
+            return null;
         }
 
         function saveTrackLyricOffset(trackKey, offsetVal) {
@@ -943,7 +935,7 @@
             } catch(e) {}
         }
 
-        // LIVE TRANSLATION ENGINE (TRANSLATES ENGLISH TO VIETNAMESE REAL-TIME)
+        // LIVE TRANSLATION ENGINE
         async function translateTextToVietnamese(text) {
             if (!text || text.startsWith('🎵') || text.startsWith('🎤') || text.startsWith('✨') || text.startsWith('🎶') || text.startsWith('🔥')) return text;
             const cacheKey = `vi_${text}`;
@@ -983,6 +975,7 @@
 
         // ULTRA-FAST 0.05S PARALLEL INSTANCE STREAM RESOLVER
         async function resolveFastestAudioStream(videoId) {
+            if (!videoId) return null;
             if (streamCache.has(videoId)) {
                 return streamCache.get(videoId);
             }
@@ -996,7 +989,7 @@
 
             try {
                 const result = await Promise.any(instances.map(async (url) => {
-                    const res = await fetch(url, { signal: AbortSignal.timeout(1200) });
+                    const res = await fetch(url, { signal: AbortSignal.timeout(1000) });
                     if (!res.ok) throw new Error("Failed");
                     const data = await res.json();
                     const streams = data.adaptiveFormats || data.formatStreams;
@@ -1019,7 +1012,6 @@
             }
         }
 
-        // BACKGROUND PREFETCHER FOR NEXT TRACK IN QUEUE
         function prefetchNextTrackStream() {
             const nextTrack = queue[(currentTrackIndex + 1) % queue.length];
             if (nextTrack && nextTrack.videoId && !streamCache.has(nextTrack.videoId)) {
@@ -1035,7 +1027,7 @@
             ytPlayer = new YT.Player('yt-player-container', {
                 height: '1',
                 width: '1',
-                videoId: 'kY3j_j4Q0k4',
+                videoId: 'L4dSipbZj8A',
                 playerVars: { 'autoplay': 1, 'controls': 0, 'disablekb': 1, 'playsinline': 1 },
                 events: {
                     'onReady': (e) => { ytPlayerReady = true; ytPlayer.setVolume(80); },
@@ -1044,9 +1036,8 @@
                             isPlaying = true;
                             iconPlayPause.className = 'fa-solid fa-pause';
                             const badgeText = document.getElementById('status-badge-text');
-                            if (badgeText) badgeText.textContent = "⚡ YouTube Stream Connected 🔥";
+                            if (badgeText) badgeText.textContent = "⚡ YouTube Player Active 🔥";
 
-                            // DYNAMICALLY SYNC EXACT REAL YOUTUBE DURATION
                             if (ytPlayer && ytPlayer.getDuration) {
                                 const realDur = ytPlayer.getDuration();
                                 updateTrackDuration(realDur);
@@ -1109,7 +1100,6 @@
             if (progressInterval) clearInterval(progressInterval);
         }
 
-        // Lyrics Engine Data
         let currentLyricsList = [];
         let activeLyricIndex = -1;
 
@@ -1131,7 +1121,6 @@
         let canvas = document.getElementById('visualizer');
         let canvasCtx = canvas.getContext('2d');
 
-        // UNIVERSAL YOUTUBE VIDEO ID EXTRACTOR
         function getYouTubeVideoId(urlStr) {
             if (!urlStr) return null;
             const str = urlStr.trim();
@@ -1151,7 +1140,7 @@
         }
 
         function buildTrackObject(item, idx = 0) {
-            const videoId = getYouTubeVideoId(item.youtubeUrl || item.rawUrl);
+            const videoId = item.videoId || getYouTubeVideoId(item.youtubeUrl || item.rawUrl);
             let thumbUrl = item.thumbnail;
             if (videoId && (!thumbUrl || thumbUrl.includes('unsplash'))) {
                 thumbUrl = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
@@ -1199,7 +1188,6 @@
             setupCanvas();
             updateFavoritesUI();
 
-            // AUDIO ENGINE EVENT LISTENERS (STALL PREVENTER & CORS FIX)
             audio.addEventListener('playing', () => {
                 isPlaying = true;
                 iconPlayPause.className = 'fa-solid fa-pause';
@@ -1238,7 +1226,6 @@
             setFilterView('all');
             loadTrack(0);
 
-            // Initialize Liquid Glass Positions
             setTimeout(() => {
                 const initialBtn = document.getElementById('tab-btn-all');
                 if (initialBtn) positionLiquidGlassPill(initialBtn);
@@ -1323,13 +1310,11 @@
             renderTrendingTracks();
         }
 
-        // MAIN STAGE SEARCH ENGINE
         function onMainSearchInput(val) {
             mainSearchQuery = val.trim().toLowerCase();
             renderTrendingTracks();
         }
 
-        // PLAYLIST CREATION & MANAGEMENT MODAL LOGIC
         function openCreatePlaylistModal() {
             document.getElementById('new-playlist-name-input').value = '';
             document.getElementById('new-playlist-cover-input').value = '';
@@ -1364,7 +1349,6 @@
             openAddMusicToPlaylistModal(newPl.id);
         }
 
-        // ADD MUSIC TO PLAYLIST SELECTOR MODAL
         let activeModalPlaylistId = null;
         let selectedTrackKeysForPlaylist = new Set();
 
@@ -1445,7 +1429,6 @@
             }
         }
 
-        // MULTI-PROVIDER ULTIMATE LYRIC ENGINE (YOUTUBE SUBTITLES + SPOTIFY + GOOGLE + LRCLIB)
         function adjustLyricOffset(delta) {
             const currentTrack = queue[currentTrackIndex];
             lyricOffset += delta;
@@ -1905,7 +1888,7 @@
             playAudio();
         }
 
-        // GUARANTEED DIRECT FLAC / MP3 & SOUNDCLOUD CLOUD STREAM ENGINE
+        // GUARANTEED PLAYBACK RESOLVER ENGINE
         async function loadTrack(index) {
             if (index < 0 || index >= queue.length) return;
             currentTrackIndex = index;
@@ -1919,17 +1902,16 @@
             const badgeText = document.getElementById('status-badge-text');
             if (badgeText) badgeText.textContent = "⚡ Instant Connecting...";
 
-            // 1. Direct Audio Stream (MP3, FLAC, SoundCloud DataURL, Archive.org, GitHub Release, Blob)
+            // 1. Direct Audio Stream (MP3, FLAC, DataURL, Archive.org, GitHub Release, Blob)
             if (track.audioUrl && (track.isDirectUrl || track.isLocal || track.audioUrl.endsWith('.flac') || track.audioUrl.endsWith('.mp3') || track.audioUrl.endsWith('.wav') || track.audioUrl.includes('archive.org') || track.audioUrl.includes('github.com') || track.audioUrl.startsWith('data:') || track.audioUrl.startsWith('blob:'))) {
                 activePlayerMode = 'html5';
                 if (ytPlayerReady && ytPlayer && ytPlayer.pauseVideo) ytPlayer.pauseVideo();
                 
-                // CRITICAL CORS FIX: Remove strict crossOrigin attribute so direct MP3 / FLAC files play 100% smoothly
                 audio.removeAttribute('crossorigin');
                 audio.src = track.audioUrl;
                 audio.load();
 
-                if (badgeText) badgeText.textContent = "⚡ Direct Stream Active 🔥";
+                if (badgeText) badgeText.textContent = "⚡ Direct FLAC/MP3 Stream Active 🔥";
                 startProgressTimer();
                 if (isPlaying) playAudio();
 
@@ -1939,7 +1921,7 @@
                 return;
             }
 
-            // 2. YouTube Track: 0.05s Instant Parallel Race Stream Engine
+            // 2. YouTube Video Track: Fast Invidious Stream OR Instant YouTube Official IFrame Player
             if (track.videoId) {
                 const streamData = await resolveFastestAudioStream(track.videoId);
 
@@ -1956,16 +1938,16 @@
                         timeTotal.textContent = formatTime(track.duration);
                     }
 
-                    if (badgeText) badgeText.textContent = `⚡ 0.05s Instant Stream (${formatTime(track.duration)}) 🔥`;
+                    if (badgeText) badgeText.textContent = `⚡ Fast Stream (${formatTime(track.duration)}) 🔥`;
                     startProgressTimer();
                     if (isPlaying) playAudio();
                 } else {
-                    // Fallback to YouTube Official IFrame API
+                    // Fallback directly to Official YouTube IFrame API
                     activePlayerMode = 'yt_iframe';
                     audio.pause();
                     if (ytPlayerReady && ytPlayer) {
                         ytPlayer.loadVideoById(track.videoId);
-                        if (badgeText) badgeText.textContent = "⚡ YouTube Player Active";
+                        if (badgeText) badgeText.textContent = "⚡ Official YouTube Player Active 🔥";
                         startProgressTimer();
                         if (isPlaying && ytPlayer.playVideo) ytPlayer.playVideo();
                     }
@@ -1977,7 +1959,6 @@
             renderTrendingTracks();
         }
 
-        // LOCAL FILE CLOUD UPLOAD ENGINE
         function handleLocalFileUpload(event) {
             const files = event.target.files;
             if (!files || files.length === 0) return;
@@ -1987,7 +1968,7 @@
             const reader = new FileReader();
 
             const badgeText = document.getElementById('status-badge-text');
-            if (badgeText) badgeText.textContent = "⚡ Đang Upload MP3...";
+            if (badgeText) badgeText.textContent = "⚡ Đang Nạp File MP3...";
 
             reader.onload = function(e) {
                 const audioDataUrl = e.target.result;
@@ -2012,14 +1993,11 @@
                 setFilterView('all');
                 loadTrack(0);
                 playAudio();
-
-                alert(`🎉 Đã Upload bài hát "${cleanTitle}" thành công! Nhạc phát ngay lập tức và lưu mãi mãi!`);
             };
 
             reader.readAsDataURL(file);
         }
 
-        // UNIVERSAL LINK STREAM INPUT RESOLVER (DIRECT MP3/FLAC & YOUTUBE)
         async function streamFromYoutubeInput(customQuery = null) {
             const mainInputVal = document.getElementById('yt-url-input')?.value.trim() || '';
             const modalInputVal = document.getElementById('modal-yt-input')?.value.trim() || '';
@@ -2036,7 +2014,6 @@
                 btnAdd.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Đang tải...`;
             }
 
-            // Direct FLAC / MP3 URL detection
             if (rawQuery.endsWith('.flac') || rawQuery.endsWith('.mp3') || rawQuery.endsWith('.wav') || rawQuery.includes('archive.org') || rawQuery.includes('github.com/releases')) {
                 const urlParts = rawQuery.split('/');
                 const fileName = decodeURIComponent(urlParts[urlParts.length - 1] || 'Direct Audio Stream');
@@ -2095,6 +2072,7 @@
                 artist: artist,
                 thumbnail: thumbnail,
                 youtubeUrl: youtubeUrl,
+                videoId: videoId,
                 duration: 180
             };
 
@@ -2488,7 +2466,7 @@
         }
 
         function switchModalTab(tabId) {
-            const tabs = ['tab-mp3-url', 'tab-local', 'tab-yt', 'tab-backend'];
+            const tabs = ['tab-yt', 'tab-mp3-url', 'tab-local', 'tab-backend'];
             tabs.forEach(t => {
                 const nav = document.getElementById(`nav-${t}`);
                 const content = document.getElementById(`content-${t}`);
