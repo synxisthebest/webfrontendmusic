@@ -272,6 +272,46 @@
                 height: 120px;
             }
         }
+
+        /* iOS Liquid Glass Track Transition Animation */
+        .ios-liquid-transition {
+            animation: iosLiquidSpring 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        @keyframes iosLiquidSpring {
+            0% {
+                opacity: 0.25;
+                transform: scale(0.88) translateY(10px);
+                filter: blur(10px) brightness(1.2);
+            }
+            55% {
+                opacity: 0.9;
+                transform: scale(1.02) translateY(-2px);
+                filter: blur(1.5px) brightness(1.05);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+                filter: blur(0px) brightness(1);
+            }
+        }
+
+        .ios-text-transition {
+            animation: iosTextFadeUp 0.55s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+
+        @keyframes iosTextFadeUp {
+            0% {
+                opacity: 0;
+                transform: translateY(6px);
+                filter: blur(3px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+                filter: blur(0px);
+            }
+        }
     </style>
 </head>
 <body class="w-screen h-screen flex items-center justify-center p-2 sm:p-3 overflow-hidden">
@@ -280,8 +320,8 @@
     <audio id="audio-player" preload="auto"></audio>
     <input type="file" id="local-file-input" accept="audio/*" class="hidden" onchange="handleLocalFileUpload(event)">
 
-    <!-- Hidden Backup YouTube Player Instance Container -->
-    <div class="fixed -top-[9999px] -left-[9999px] w-1 h-1 opacity-0 pointer-events-none overflow-hidden z-0">
+    <!-- On-Viewport YouTube Player Container (Guarantees Chrome/Safari Unmuted Audio) -->
+    <div class="fixed bottom-2 left-2 w-4 h-4 opacity-[0.02] pointer-events-none overflow-hidden z-10">
         <div id="yt-player-container"></div>
     </div>
 
@@ -2367,6 +2407,25 @@
             if (index < 0 || index >= queue.length) return;
             currentTrackIndex = index;
             const track = queue[index];
+
+            // Trigger iOS Liquid Glass Spring Transition Animation
+            const coverWrapper = albumCoverImg ? albumCoverImg.parentElement : null;
+            if (coverWrapper) {
+                coverWrapper.classList.remove('ios-liquid-transition');
+                void coverWrapper.offsetWidth;
+                coverWrapper.classList.add('ios-liquid-transition');
+            }
+
+            if (currentTrackTitle) {
+                currentTrackTitle.classList.remove('ios-text-transition');
+                void currentTrackTitle.offsetWidth;
+                currentTrackTitle.classList.add('ios-text-transition');
+            }
+            if (currentTrackArtist) {
+                currentTrackArtist.classList.remove('ios-text-transition');
+                void currentTrackArtist.offsetWidth;
+                currentTrackArtist.classList.add('ios-text-transition');
+            }
 
             currentTrackTitle.textContent = track.title;
             currentTrackArtist.textContent = track.artist;
