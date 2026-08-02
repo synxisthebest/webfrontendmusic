@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aether | Web Music Player (GitHub Release Auto-Parser & FLAC Engine)</title>
+    <title>Aether | Web Music Player (Auto Multi-Track Splitter & FLAC Engine)</title>
     <!-- Tailwind CSS v3 CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons CDN -->
@@ -227,7 +227,7 @@
 </head>
 <body class="w-screen h-screen flex items-center justify-center p-2 sm:p-3 overflow-hidden">
 
-    <!-- Pure HTML5 Audio Element (Native Sound Stream) -->
+    <!-- Pure HTML5 Audio Element -->
     <audio id="audio-player" preload="auto"></audio>
     <input type="file" id="local-file-input" accept="audio/*" class="hidden" onchange="handleLocalFileUpload(event)">
 
@@ -295,17 +295,17 @@
                     <!-- Composition Cards Carousel -->
                     <div class="flex gap-2.5 overflow-x-auto pb-1">
                         <div onclick="playNextInQueue(1)" class="w-40 shrink-0 p-2 rounded-2xl dark-card dark-card-interactive cursor-pointer flex items-center gap-2.5">
-                            <img id="next-thumb-1" src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=400&auto=format&fit=crop" class="w-9 h-9 rounded-xl object-cover">
+                            <img id="next-thumb-1" src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=400&auto=format&fit=crop" class="w-9 h-9 rounded-xl object-cover">
                             <div class="overflow-hidden">
-                                <h4 id="next-title-1" class="text-xs font-bold truncate text-slate-100">30. Thật Lớn</h4>
-                                <p id="next-artist-1" class="text-[10px] text-slate-400 truncate">GitHub Release FLAC</p>
+                                <h4 id="next-title-1" class="text-xs font-bold truncate text-slate-100">Nguyễn Văn Mỗi</h4>
+                                <p id="next-artist-1" class="text-[10px] text-slate-400 truncate">Envy feat. ThanhDraw</p>
                             </div>
                         </div>
                         <div onclick="playNextInQueue(2)" class="w-40 shrink-0 p-2 rounded-2xl dark-card dark-card-interactive cursor-pointer flex items-center gap-2.5">
-                            <img id="next-thumb-2" src="https://i.ytimg.com/vi/L4dSipbZj8A/hqdefault.jpg" class="w-9 h-9 rounded-xl object-cover">
+                            <img id="next-thumb-2" src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=400&auto=format&fit=crop" class="w-9 h-9 rounded-xl object-cover">
                             <div class="overflow-hidden">
-                                <h4 id="next-title-2" class="text-xs font-bold truncate text-slate-100">Mắt Môi Tay Chân</h4>
-                                <p id="next-artist-2" class="text-[10px] text-slate-400 truncate">MCK ft. TAGE</p>
+                                <h4 id="next-title-2" class="text-xs font-bold truncate text-slate-100">Huh</h4>
+                                <p id="next-artist-2" class="text-[10px] text-slate-400 truncate">RPT Orijinn ft. THANHDRAW</p>
                             </div>
                         </div>
                     </div>
@@ -317,7 +317,7 @@
                     <div class="flex items-center justify-between z-10 mb-1 shrink-0">
                         <span id="stream-type-badge" class="px-2 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-[10px] font-semibold backdrop-blur-md flex items-center gap-1.5">
                             <span id="status-badge-dot" class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
-                            <span id="status-badge-text">⚡ GitHub Release FLAC Stream Active 🔥</span>
+                            <span id="status-badge-text">⚡ Direct FLAC Track Active 🔥</span>
                         </span>
                         <div class="flex items-center gap-2">
                             <button onclick="toggleFavoriteCurrent()" id="btn-fav" class="text-slate-400 hover:text-pink-400 text-base transition">
@@ -370,8 +370,8 @@
                     </div>
 
                     <div class="text-center mt-0.5 z-10 shrink-0">
-                        <h2 id="current-track-title" class="text-base sm:text-lg font-bold text-slate-100 truncate">30. Thật Lớn</h2>
-                        <p id="current-track-artist" class="text-xs text-purple-300 font-medium mt-0.5 truncate">GitHub Release FLAC</p>
+                        <h2 id="current-track-title" class="text-base sm:text-lg font-bold text-slate-100 truncate">Thật Lớn</h2>
+                        <p id="current-track-artist" class="text-xs text-purple-300 font-medium mt-0.5 truncate">Envy feat. ThanhDraw</p>
                     </div>
 
                     <div class="flex flex-col items-center gap-1.5 mt-2 z-10 shrink-0">
@@ -434,9 +434,9 @@
             <!-- Hero Banner Card -->
             <div class="relative w-full h-40 rounded-3xl overflow-hidden mb-4 bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-950 p-7 flex items-center justify-between text-white shadow-xl shrink-0">
                 <div class="z-10 max-w-[65%]">
-                    <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold uppercase tracking-wider backdrop-blur-md">⚡ GitHub Release Auto-Parser Active</span>
+                    <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold uppercase tracking-wider backdrop-blur-md">⚡ Clean Multi-Track Auto-Splitter Engine Active</span>
                     <h2 class="text-3xl sm:text-4xl font-black tracking-tighter mt-1 text-gradient">R&B NOW</h2>
-                    <p class="text-xs sm:text-sm text-slate-300 mt-1 line-clamp-2">Đã tự động nạp toàn bộ 5 file FLAC chất lượng cao từ GitHub Release tag `hvl`!</p>
+                    <p class="text-xs sm:text-sm text-slate-300 mt-1 line-clamp-2">Đã bóc tách 100% từng bài hát riêng biệt với tên ca sĩ & tiêu đề tiếng Việt chuẩn xác!</p>
                 </div>
                 <div class="relative w-48 h-full overflow-hidden shrink-0 flex items-center justify-center">
                     <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=500&auto=format&fit=crop" class="w-full h-full object-cover rounded-2xl opacity-90">
@@ -556,7 +556,6 @@
                 </button>
             </div>
 
-            <!-- Instant Search Bar in Modal -->
             <div class="py-3 border-b border-white/5 shrink-0">
                 <div class="flex items-center gap-2 bg-white/5 border border-white/10 rounded-xl px-3 py-2">
                     <i class="fa-solid fa-magnifying-glass text-slate-400 text-xs"></i>
@@ -579,18 +578,18 @@
         </div>
     </div>
 
-    <!-- USER ACCOUNT MODAL -->
+    <!-- USER ACCOUNT MODAL (AUTH & SESSION SYSTEM) -->
     <div id="account-modal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-xl z-50 flex items-center justify-center p-4 hidden">
         <div class="glass-panel w-full max-w-md rounded-3xl p-6 relative border border-white/15 shadow-2xl flex flex-col text-white">
             
-            <div class="flex items-center justify-between pb-4 border-b border-white/10 shrink-0">
+            <div class="flex items-center justify-between pb-3 border-b border-white/10 shrink-0">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-cyan-500 to-purple-600 text-white flex items-center justify-center shadow-lg shadow-cyan-500/30">
-                        <i class="fa-solid fa-user-check text-xl"></i>
+                    <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-cyan-500 via-purple-600 to-pink-500 text-white flex items-center justify-center shadow-lg shadow-purple-500/30">
+                        <i class="fa-solid fa-user-shield text-xl"></i>
                     </div>
                     <div>
-                        <h3 class="font-bold text-slate-100 text-base">Tài Khoản Người Dùng</h3>
-                        <p class="text-xs text-slate-400">Đăng nhập để lưu bài hát yêu thích & Playlist riêng</p>
+                        <h3 class="font-bold text-slate-100 text-base">Tài Khoản & Đăng Nhập</h3>
+                        <p class="text-xs text-slate-400">Đăng nhập lưu tài khoản, bài hát & quyền Admin</p>
                     </div>
                 </div>
                 <button onclick="closeAccountModal()" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white flex items-center justify-center">
@@ -598,27 +597,103 @@
                 </button>
             </div>
 
-            <div class="py-4 space-y-4">
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1.5">Tên Tài Khoản / Username</label>
-                    <input type="text" id="account-username-input" 
-                           placeholder="VD: synx" 
-                           class="w-full glass-input rounded-xl px-3.5 py-2.5 text-xs text-slate-100 focus:outline-none border border-white/15 bg-white/5">
-                </div>
+            <!-- Auth Mode Switch Tabs -->
+            <div class="flex items-center gap-2 mt-4 p-1 bg-white/5 rounded-2xl border border-white/10">
+                <button id="auth-tab-login" onclick="switchAuthTab('login')" class="flex-1 py-1.5 rounded-xl text-xs font-bold bg-purple-600 text-white shadow-md transition">Đăng Nhập</button>
+                <button id="auth-tab-register" onclick="switchAuthTab('register')" class="flex-1 py-1.5 rounded-xl text-xs font-bold text-slate-400 hover:text-white transition">Đăng Ký Mới</button>
+            </div>
 
+            <!-- LOGIN FORM -->
+            <div id="auth-form-login" class="py-4 space-y-3.5">
                 <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1.5">Tên Hiển Thị (Display Name)</label>
-                    <input type="text" id="account-displayname-input" 
-                           placeholder="VD: Synx Music Fan" 
-                           class="w-full glass-input rounded-xl px-3.5 py-2.5 text-xs text-slate-100 focus:outline-none border border-white/15 bg-white/5">
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Tên Đăng Nhập (Username)</label>
+                    <input type="text" id="login-username-input" placeholder="Nhập username... (VD: admin)" class="w-full glass-input rounded-xl px-3.5 py-2.5 text-xs text-slate-100 focus:outline-none border border-white/15 bg-white/5">
                 </div>
-
-                <button onclick="saveUserAccount()" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-bold text-xs shadow-lg shadow-cyan-500/25 flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-floppy-disk"></i> Đăng Nhập / Lưu Tài Khoản
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Mật Khẩu (Password)</label>
+                    <input type="password" id="login-password-input" placeholder="Nhập mật khẩu... (VD: admin123)" class="w-full glass-input rounded-xl px-3.5 py-2.5 text-xs text-slate-100 focus:outline-none border border-white/15 bg-white/5">
+                </div>
+                <button onclick="loginUserAccount()" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold text-xs shadow-lg shadow-purple-500/25 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-right-to-bracket"></i> Đăng Nhập Tài Khoản
                 </button>
+            </div>
 
-                <div class="pt-2 border-t border-white/10 text-center">
-                    <p class="text-[11px] text-slate-400">Đã đăng nhập: <b id="account-status-label" class="text-purple-300">Tài khoản mặc định</b></p>
+            <!-- REGISTER FORM -->
+            <div id="auth-form-register" class="py-4 space-y-3.5 hidden">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Tên Đăng Nhập (Username)</label>
+                    <input type="text" id="reg-username-input" placeholder="VD: user123" class="w-full glass-input rounded-xl px-3.5 py-2.5 text-xs text-slate-100 focus:outline-none border border-white/15 bg-white/5">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Mật Khẩu (Password)</label>
+                    <input type="password" id="reg-password-input" placeholder="Tối thiểu 3 ký tự..." class="w-full glass-input rounded-xl px-3.5 py-2.5 text-xs text-slate-100 focus:outline-none border border-white/15 bg-white/5">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Tên Hiển Thị (Display Name)</label>
+                    <input type="text" id="reg-displayname-input" placeholder="VD: Nhạc Việt Top 1" class="w-full glass-input rounded-xl px-3.5 py-2.5 text-xs text-slate-100 focus:outline-none border border-white/15 bg-white/5">
+                </div>
+                <button onclick="registerUserAccount()" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-bold text-xs shadow-lg shadow-cyan-500/25 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-user-plus"></i> Đăng Ký Tài Khoản Mới
+                </button>
+            </div>
+
+            <!-- CURRENT LOGGED IN STATUS & LOGOUT -->
+            <div class="pt-3 border-t border-white/10 flex items-center justify-between">
+                <div class="overflow-hidden">
+                    <p class="text-[11px] text-slate-400">Đang đăng nhập: <b id="account-status-label" class="text-purple-300">@guest</b></p>
+                </div>
+                <button onclick="logoutUserAccount()" class="px-3 py-1.5 rounded-xl bg-red-500/20 text-red-300 hover:bg-red-500/30 text-xs font-bold transition flex items-center gap-1">
+                    <i class="fa-solid fa-power-off text-[10px]"></i> Đăng Xuất
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- EDIT TRACK MODAL -->
+    <div id="edit-track-modal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-xl z-50 flex items-center justify-center p-4 hidden">
+        <div class="glass-panel w-full max-w-md rounded-3xl p-6 relative border border-white/15 shadow-2xl flex flex-col text-white">
+            
+            <div class="flex items-center justify-between pb-4 border-b border-white/10 shrink-0">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-purple-500 to-indigo-600 text-white flex items-center justify-center shadow-lg shadow-purple-500/30">
+                        <i class="fa-solid fa-pen-to-square text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-100 text-base">Chỉnh Sửa Bài Hát</h3>
+                        <p class="text-xs text-slate-400">Dành cho Tác giả & Tài khoản Admin</p>
+                    </div>
+                </div>
+                <button onclick="closeEditTrackModal()" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white flex items-center justify-center">
+                    <i class="fa-solid fa-xmark text-base"></i>
+                </button>
+            </div>
+
+            <div class="py-4 space-y-3.5">
+                <input type="hidden" id="edit-track-id">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Tên Bài Hát (Title)</label>
+                    <input type="text" id="edit-track-title" class="w-full glass-input rounded-xl px-3.5 py-2 text-xs text-slate-100 focus:outline-none border border-white/15 bg-white/5">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Ca Sĩ / Nghệ Sĩ (Artist)</label>
+                    <input type="text" id="edit-track-artist" class="w-full glass-input rounded-xl px-3.5 py-2 text-xs text-slate-100 focus:outline-none border border-white/15 bg-white/5">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Link Ảnh Bìa (Thumbnail URL)</label>
+                    <input type="text" id="edit-track-thumbnail" class="w-full glass-input rounded-xl px-3.5 py-2 text-xs text-slate-100 focus:outline-none border border-white/15 bg-white/5">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Link YouTube / Audio URL</label>
+                    <input type="text" id="edit-track-youtubeurl" class="w-full glass-input rounded-xl px-3.5 py-2 text-xs text-slate-100 focus:outline-none border border-white/15 bg-white/5">
+                </div>
+
+                <div class="pt-2 flex items-center justify-end gap-2">
+                    <button onclick="closeEditTrackModal()" class="px-4 py-2 rounded-xl bg-white/10 text-xs font-semibold text-slate-300 hover:bg-white/20">Hủy</button>
+                    <button onclick="saveEditTrack()" class="px-5 py-2 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold text-xs shadow-lg shadow-purple-500/25">Lưu Thay Đổi</button>
                 </div>
             </div>
 
@@ -636,7 +711,7 @@
                     </div>
                     <div>
                         <h3 class="font-bold text-slate-100 text-base">Quản Lý Playlist & Thêm Nhạc</h3>
-                        <p class="text-xs text-slate-400">Thêm bài hát mới từ Direct MP3/FLAC, GitHub Release link, hoặc YouTube</p>
+                        <p class="text-xs text-slate-400">Dán nhiều đường link (mỗi link 1 dòng) để tự động bóc tách từng bài hát!</p>
                     </div>
                 </div>
                 <button onclick="closeMusicManagerModal()" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white flex items-center justify-center">
@@ -664,23 +739,23 @@
                 <div id="content-tab-mp3-url" class="space-y-3">
                     <div class="p-3 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 text-xs text-cyan-200">
                         <i class="fa-solid fa-bolt text-base mr-1.5 text-amber-400"></i>
-                        <span>Dán link <b>GitHub Release tag (VD: releases/tag/hvl)</b> hoặc direct <b>.flac, .mp3, Archive.org</b>! Tự động nạp toàn bộ bài hát!</span>
+                        <span>Dán link <b>GitHub Release tag (VD: releases/tag/hvl)</b> hoặc dán <b>nhiều đường link MP3/FLAC (mỗi link 1 dòng)</b>! Tự động bóc tách từng bài!</span>
                     </div>
 
                     <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">Link Audio Trực Tiếp HOẶC Link GitHub Release Tag</label>
-                        <input type="text" id="modal-mp3url-input" 
+                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">Link Audio Trực Tiếp HOẶC Link GitHub Release Tag (Có thể dán nhiều link)</label>
+                        <textarea id="modal-mp3url-input" rows="3"
                                placeholder="https://github.com/synxisthebest/webfrontendmusic/releases/tag/hvl" 
-                               class="w-full glass-input rounded-xl px-3.5 py-2.5 text-xs text-slate-100 focus:outline-none border border-white/10 bg-white/5">
+                               class="w-full glass-input rounded-xl px-3.5 py-2.5 text-xs text-slate-100 focus:outline-none border border-white/10 bg-white/5 resize-none"></textarea>
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">Tên Bài Hát & Ca Sĩ (Tùy chọn)</label>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">Tên Bài Hát & Ca Sĩ (Tùy chọn cho 1 link)</label>
                         <input type="text" id="modal-mp3title-input" 
-                               placeholder="VD: 30. Thật Lớn - GitHub Release FLAC" 
+                               placeholder="VD: Thật Lớn - Envy feat. ThanhDraw" 
                                class="w-full glass-input rounded-xl px-3.5 py-2.5 text-xs text-slate-100 focus:outline-none border border-white/10 bg-white/5">
                     </div>
                     <button onclick="addTrackFromModal('mp3-url')" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-bold text-xs shadow-lg flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-plus"></i> Thêm Link & Đồng Bộ Tức Thì
+                        <i class="fa-solid fa-plus"></i> Bóc Tách Từng Bài & Đồng Bộ Tức Thì
                     </button>
                 </div>
 
@@ -731,8 +806,8 @@
             {
                 id: 'gh-hvl-30',
                 rank: '01',
-                title: "30. Thật Lớn",
-                artist: 'GitHub Release FLAC',
+                title: "Thật Lớn",
+                artist: 'Envy feat. ThanhDraw',
                 thumbnail: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=400&auto=format&fit=crop',
                 audioUrl: 'https://github.com/synxisthebest/webfrontendmusic/releases/download/hvl/30.Th.t.L.n.flac',
                 duration: 210,
@@ -742,8 +817,8 @@
             {
                 id: 'gh-hvl-29',
                 rank: '02',
-                title: "29. Nguyễn Văn Mỗi",
-                artist: 'GitHub Release FLAC',
+                title: "Nguyễn Văn Mỗi",
+                artist: 'Envy feat. ThanhDraw',
                 thumbnail: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=400&auto=format&fit=crop',
                 audioUrl: 'https://github.com/synxisthebest/webfrontendmusic/releases/download/hvl/29.Nguy.n.Van.M.i.flac',
                 duration: 210,
@@ -753,8 +828,8 @@
             {
                 id: 'gh-hvl-28',
                 rank: '03',
-                title: "28. Huh ft. RPT Orijinn THANHDRAW",
-                artist: 'GitHub Release FLAC',
+                title: "Huh",
+                artist: 'RPT Orijinn ft. THANHDRAW',
                 thumbnail: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=400&auto=format&fit=crop',
                 audioUrl: 'https://github.com/synxisthebest/webfrontendmusic/releases/download/hvl/28.Huh.feat.RPT.Orijinn.THANHDRAW.flac',
                 duration: 210,
@@ -764,8 +839,8 @@
             {
                 id: 'gh-hvl-27',
                 rank: '04',
-                title: "27. Không Cần Lo Cho Tạo",
-                artist: 'GitHub Release FLAC',
+                title: "Không Cần Lo Cho Tạo",
+                artist: 'Envy feat. ThanhDraw',
                 thumbnail: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=400&auto=format&fit=crop',
                 audioUrl: 'https://github.com/synxisthebest/webfrontendmusic/releases/download/hvl/27.Khong.C.n.Lo.Cho.Tao.flac',
                 duration: 210,
@@ -775,8 +850,8 @@
             {
                 id: 'gh-hvl-26',
                 rank: '05',
-                title: "26. Cảm Ơn",
-                artist: 'GitHub Release FLAC',
+                title: "Cảm Ơn",
+                artist: 'Envy feat. ThanhDraw',
                 thumbnail: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=400&auto=format&fit=crop',
                 audioUrl: 'https://github.com/synxisthebest/webfrontendmusic/releases/download/hvl/26.C.m.n.flac',
                 duration: 210,
@@ -1204,9 +1279,12 @@
                 duration: item.duration || 180,
                 plays: item.plays || (item.audioUrl ? 'Direct Audio Stream' : '0.1s Stream'),
                 audioUrl: item.audioUrl || item.rawUrl,
+                youtubeUrl: item.youtubeUrl || (videoId ? `https://www.youtube.com/watch?v=${videoId}` : item.rawUrl),
                 isYoutube: !!(item.youtubeUrl || item.rawUrl || videoId),
                 isDirectUrl: item.isDirectUrl || !!item.audioUrl,
-                rawUrl: item.youtubeUrl || item.rawUrl || item.audioUrl
+                rawUrl: item.youtubeUrl || item.rawUrl || item.audioUrl,
+                addedBy: item.addedBy || 'admin',
+                addedByDisplayName: item.addedByDisplayName || item.addedBy || 'Administrator'
             };
             trackObj.key = getTrackKey(trackObj);
             return trackObj;
@@ -1218,8 +1296,9 @@
                 if (res.ok) {
                     const data = await res.json();
                     if (data.playlist && data.playlist.length > 0) {
-                        data.playlist.forEach(t => addCustomTrackToMemory(t));
-                        queue = buildFullQueue();
+                        const serverTracks = data.playlist.map((t, idx) => buildTrackObject(t, idx));
+                        const localOnly = queue.filter(q => q.isLocal);
+                        queue = [...serverTracks, ...localOnly];
                         updateFavoritesUI();
                         renderTrendingTracks();
                         updateNextCompositionCards();
@@ -1228,7 +1307,20 @@
             } catch (e) {}
         }
 
+        function loadActiveUserSession() {
+            try {
+                const saved = localStorage.getItem('aether_active_user');
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    if (parsed && parsed.username) {
+                        currentUser = parsed;
+                    }
+                }
+            } catch(e) {}
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
+            loadActiveUserSession();
             updateBackendUI();
             updateUserBadgeUI();
             setupCanvas();
@@ -1816,40 +1908,201 @@
             const avatarEl = document.getElementById('user-avatar-badge');
             const statusLabel = document.getElementById('account-status-label');
 
-            if (nameEl) nameEl.textContent = currentUser.displayName || currentUser.username;
-            if (avatarEl) avatarEl.src = currentUser.avatar;
-            if (statusLabel) statusLabel.textContent = `@${currentUser.username} (${currentUser.displayName})`;
+            if (nameEl) {
+                const roleBadge = currentUser.role === 'admin' ? ' [ADMIN]' : '';
+                nameEl.textContent = `${currentUser.displayName || currentUser.username}${roleBadge}`;
+            }
+            if (avatarEl) {
+                avatarEl.src = currentUser.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${currentUser.username}`;
+            }
+            if (statusLabel) {
+                const roleText = currentUser.role === 'admin' ? '👑 Admin' : '👤 User';
+                statusLabel.textContent = `@${currentUser.username} (${currentUser.displayName || currentUser.username}) - ${roleText}`;
+            }
         }
 
-        function saveUserAccount() {
-            const usernameInput = document.getElementById('account-username-input').value.trim();
-            const displayNameInput = document.getElementById('account-displayname-input').value.trim();
+        async function loginUserAccount() {
+            const username = document.getElementById('login-username-input').value.trim();
+            const password = document.getElementById('login-password-input').value.trim();
 
-            if (usernameInput) {
-                currentUser.username = usernameInput.toLowerCase().replace(/[^a-z0-9_]/g, '');
-                currentUser.displayName = displayNameInput || usernameInput;
-                localStorage.setItem('aether_active_user', JSON.stringify(currentUser));
-                
-                loadUserFavorites();
-                loadUserPlaylists();
-                loadUserCustomTracks();
-                queue = buildFullQueue();
-                updateUserBadgeUI();
-                updateFavoritesUI();
-                setFilterView('all');
-                closeAccountModal();
-                alert(`Đã lưu tài khoản @${currentUser.username} thành công!`);
+            if (!username || !password) {
+                alert("Vui lòng nhập Tên đăng nhập và Mật khẩu!");
+                return;
+            }
+
+            try {
+                const res = await fetch(`${backendUrl.replace(/\/$/, '')}/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await res.json();
+                if (res.ok && data.status === 'success') {
+                    currentUser = data.user;
+                    localStorage.setItem('aether_active_user', JSON.stringify(currentUser));
+                    updateUserBadgeUI();
+                    closeAccountModal();
+                    renderTrendingTracks();
+                    alert(`🎉 ${data.message}`);
+                } else {
+                    alert(`❌ ${data.detail || 'Đăng nhập thất bại!'}`);
+                }
+            } catch (e) {
+                alert("Không thể kết nối đến Backend Server!");
+            }
+        }
+
+        async function registerUserAccount() {
+            const username = document.getElementById('reg-username-input').value.trim();
+            const password = document.getElementById('reg-password-input').value.trim();
+            const displayName = document.getElementById('reg-displayname-input').value.trim();
+
+            if (!username || !password) {
+                alert("Vui lòng nhập Tên đăng nhập và Mật khẩu!");
+                return;
+            }
+
+            try {
+                const res = await fetch(`${backendUrl.replace(/\/$/, '')}/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password, displayName })
+                });
+
+                const data = await res.json();
+                if (res.ok && data.status === 'success') {
+                    currentUser = data.user;
+                    localStorage.setItem('aether_active_user', JSON.stringify(currentUser));
+                    updateUserBadgeUI();
+                    closeAccountModal();
+                    renderTrendingTracks();
+                    alert(`🎉 ${data.message}`);
+                } else {
+                    alert(`❌ ${data.detail || 'Đăng ký thất bại!'}`);
+                }
+            } catch (e) {
+                alert("Không thể kết nối đến Backend Server!");
+            }
+        }
+
+        function logoutUserAccount() {
+            currentUser = {
+                username: 'guest',
+                displayName: 'Khách',
+                role: 'user',
+                avatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=guest'
+            };
+            localStorage.removeItem('aether_active_user');
+            updateUserBadgeUI();
+            closeAccountModal();
+            renderTrendingTracks();
+            alert("Đã đăng xuất tài khoản!");
+        }
+
+        function switchAuthTab(tab) {
+            const loginBtn = document.getElementById('auth-tab-login');
+            const regBtn = document.getElementById('auth-tab-register');
+            const loginForm = document.getElementById('auth-form-login');
+            const regForm = document.getElementById('auth-form-register');
+
+            if (tab === 'login') {
+                if (loginBtn) loginBtn.className = "flex-1 py-1.5 rounded-xl text-xs font-bold bg-purple-600 text-white shadow-md transition";
+                if (regBtn) regBtn.className = "flex-1 py-1.5 rounded-xl text-xs font-bold text-slate-400 hover:text-white transition";
+                if (loginForm) loginForm.classList.remove('hidden');
+                if (regForm) regForm.classList.add('hidden');
+            } else {
+                if (regBtn) regBtn.className = "flex-1 py-1.5 rounded-xl text-xs font-bold bg-purple-600 text-white shadow-md transition";
+                if (loginBtn) loginBtn.className = "flex-1 py-1.5 rounded-xl text-xs font-bold text-slate-400 hover:text-white transition";
+                if (regForm) regForm.classList.remove('hidden');
+                if (loginForm) loginForm.classList.add('hidden');
             }
         }
 
         function openAccountModal() {
-            document.getElementById('account-username-input').value = currentUser.username;
-            document.getElementById('account-displayname-input').value = currentUser.displayName;
             document.getElementById('account-modal').classList.remove('hidden');
         }
 
         function closeAccountModal() {
             document.getElementById('account-modal').classList.add('hidden');
+        }
+
+        function openEditTrackModal(trackId) {
+            const track = queue.find(q => q.id === trackId);
+            if (!track) return;
+
+            document.getElementById('edit-track-id').value = track.id;
+            document.getElementById('edit-track-title').value = track.title || '';
+            document.getElementById('edit-track-artist').value = track.artist || '';
+            document.getElementById('edit-track-thumbnail').value = track.thumbnail || '';
+            document.getElementById('edit-track-youtubeurl').value = track.youtubeUrl || track.audioUrl || '';
+            document.getElementById('edit-track-modal').classList.remove('hidden');
+        }
+
+        function closeEditTrackModal() {
+            document.getElementById('edit-track-modal').classList.add('hidden');
+        }
+
+        async function saveEditTrack() {
+            const trackId = document.getElementById('edit-track-id').value;
+            const title = document.getElementById('edit-track-title').value.trim();
+            const artist = document.getElementById('edit-track-artist').value.trim();
+            const thumbnail = document.getElementById('edit-track-thumbnail').value.trim();
+            const youtubeUrl = document.getElementById('edit-track-youtubeurl').value.trim();
+
+            try {
+                const res = await fetch(`${backendUrl.replace(/\/$/, '')}/edit-track`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        id: trackId,
+                        title: title,
+                        artist: artist,
+                        thumbnail: thumbnail,
+                        youtubeUrl: youtubeUrl,
+                        username: currentUser.username
+                    })
+                });
+
+                const data = await res.json();
+                if (res.ok && data.status === 'success') {
+                    closeEditTrackModal();
+                    fetchGlobalPlaylistFromServer();
+                    alert("🎉 Đã cập nhật thông tin bài hát thành công!");
+                } else {
+                    alert(`❌ ${data.detail || 'Cập nhật thất bại!'}`);
+                }
+            } catch (e) {
+                alert("Không thể kết nối đến Backend Server!");
+            }
+        }
+
+        async function deleteTrackAction(trackId) {
+            const track = queue.find(q => q.id === trackId);
+            if (!track) return;
+
+            if (!confirm(`Bạn có chắc chắn muốn xóa bài hát "${track.title}"?`)) return;
+
+            try {
+                const res = await fetch(`${backendUrl.replace(/\/$/, '')}/delete-track`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        id: trackId,
+                        username: currentUser.username
+                    })
+                });
+
+                const data = await res.json();
+                if (res.ok && data.status === 'success') {
+                    fetchGlobalPlaylistFromServer();
+                    alert("🎉 Đã xóa bài hát khỏi danh sách!");
+                } else {
+                    alert(`❌ ${data.detail || 'Xóa thất bại!'}`);
+                }
+            } catch (e) {
+                alert("Không thể kết nối đến Backend Server!");
+            }
         }
 
         function updateBackendUI() {
@@ -1975,37 +2228,28 @@
                 return;
             }
 
-            // 2. YouTube Video Track: Fast Invidious Stream OR Instant YouTube Official IFrame Player
-            if (track.videoId) {
-                const streamData = await resolveFastestAudioStream(track.videoId);
+            // 2. YouTube Video Track via Backend Stream Proxy
+            if (track.videoId || track.youtubeUrl) {
+                activePlayerMode = 'html5';
+                if (ytPlayerReady && ytPlayer && ytPlayer.pauseVideo) ytPlayer.pauseVideo();
 
-                if (streamData && streamData.url) {
-                    activePlayerMode = 'html5';
-                    if (ytPlayerReady && ytPlayer && ytPlayer.pauseVideo) ytPlayer.pauseVideo();
-                    
-                    audio.removeAttribute('crossorigin');
-                    audio.src = streamData.url;
-                    audio.load();
+                const targetUrl = track.youtubeUrl || `https://www.youtube.com/watch?v=${track.videoId}`;
+                const backendStreamUrl = `${backendUrl.replace(/\/$/, '')}/play-audio?url=${encodeURIComponent(targetUrl)}`;
 
-                    if (streamData.duration) {
-                        track.duration = streamData.duration;
-                        timeTotal.textContent = formatTime(track.duration);
-                    }
+                audio.removeAttribute('crossorigin');
+                audio.src = backendStreamUrl;
+                audio.load();
 
-                    if (badgeText) badgeText.textContent = `⚡ Fast Stream (${formatTime(track.duration)}) 🔥`;
-                    startProgressTimer();
-                    if (isPlaying) playAudio();
-                } else {
-                    activePlayerMode = 'yt_iframe';
-                    audio.pause();
-                    if (ytPlayerReady && ytPlayer) {
-                        ytPlayer.loadVideoById(track.videoId);
-                        if (badgeText) badgeText.textContent = "⚡ Official YouTube Player Active 🔥";
-                        startProgressTimer();
-                        if (isPlaying && ytPlayer.playVideo) ytPlayer.playVideo();
-                    }
-                }
+                if (badgeText) badgeText.textContent = "⚡ YouTube Proxy Stream Active 🔥";
+                startProgressTimer();
+                if (isPlaying) playAudio();
+
+                fetchTrackLyrics(track);
+                updateCurrentFavIcon();
+                renderTrendingTracks();
+                return;
             }
+        }
 
             fetchTrackLyrics(track);
             updateCurrentFavIcon();
@@ -2015,45 +2259,50 @@
         function handleLocalFileUpload(event) {
             const files = event.target.files;
             if (!files || files.length === 0) return;
-            const file = files[0];
             
-            const cleanTitle = file.name.replace(/\.[^/.]+$/, "");
-            const reader = new FileReader();
+            let addedCount = 0;
 
-            const badgeText = document.getElementById('status-badge-text');
-            if (badgeText) badgeText.textContent = "⚡ Đang Nạp File MP3...";
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const cleanTitle = file.name.replace(/\.[^/.]+$/, "");
+                const reader = new FileReader();
 
-            reader.onload = function(e) {
-                const audioDataUrl = e.target.result;
+                reader.onload = function(e) {
+                    const audioDataUrl = e.target.result;
 
-                const localTrack = {
-                    id: 'local-' + Date.now(),
-                    rank: '00',
-                    title: cleanTitle,
-                    artist: currentUser.displayName || 'File Máy Tính',
-                    thumbnail: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=400&auto=format&fit=crop',
-                    duration: 210,
-                    plays: 'File MP3 Upload',
-                    audioUrl: audioDataUrl,
-                    isLocal: true,
-                    isDirectUrl: true
+                    const localTrack = {
+                        id: 'local-' + Date.now() + '-' + i,
+                        rank: '00',
+                        title: cleanTitle,
+                        artist: currentUser.displayName || 'File Máy Tính',
+                        thumbnail: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=400&auto=format&fit=crop',
+                        duration: 210,
+                        plays: 'File MP3 Upload',
+                        audioUrl: audioDataUrl,
+                        isLocal: true,
+                        isDirectUrl: true
+                    };
+
+                    addCustomTrackToMemory(localTrack);
+                    addedCount++;
+
+                    if (addedCount === files.length) {
+                        queue = buildFullQueue();
+                        currentTrackIndex = 0;
+                        setFilterView('all');
+                        loadTrack(0);
+                        playAudio();
+                        alert(`🎉 Đã bóc tách thành công ${files.length} file MP3 từ máy tính!`);
+                    }
                 };
 
-                addCustomTrackToMemory(localTrack);
-                queue = buildFullQueue();
-                currentTrackIndex = 0;
-
-                setFilterView('all');
-                loadTrack(0);
-                playAudio();
-            };
-
-            reader.readAsDataURL(file);
+                reader.readAsDataURL(file);
+            }
         }
 
         async function streamFromYoutubeInput(customQuery = null) {
             const mainInputVal = document.getElementById('yt-url-input')?.value.trim() || '';
-            const modalInputVal = document.getElementById('modal-yt-input')?.value.trim() || '';
+            const modalInputVal = document.getElementById('modal-mp3url-input')?.value || document.getElementById('modal-yt-input')?.value || '';
             const rawQuery = (customQuery || mainInputVal || modalInputVal).trim();
 
             if (!rawQuery) {
@@ -2067,118 +2316,34 @@
                 btnAdd.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Đang tải...`;
             }
 
-            // GitHub Release Tag Auto-Parser
-            if (rawQuery.includes('github.com') && rawQuery.includes('/releases/tag/')) {
-                const tagMatch = rawQuery.match(/github\.com\/([^\/]+)\/([^\/]+)\/releases\/tag\/([^\/]+)/);
-                if (tagMatch) {
-                    const owner = tagMatch[1];
-                    const repo = tagMatch[2];
-                    const tag = tagMatch[3];
-
-                    // Direct release assets for tag hvl
-                    if (tag === 'hvl' && owner === 'synxisthebest') {
-                        const hvlTracks = [
-                            { id: 'gh-hvl-30', title: '30. Thật Lớn', audioUrl: 'https://github.com/synxisthebest/webfrontendmusic/releases/download/hvl/30.Th.t.L.n.flac' },
-                            { id: 'gh-hvl-29', title: '29. Nguyễn Văn Mỗi', audioUrl: 'https://github.com/synxisthebest/webfrontendmusic/releases/download/hvl/29.Nguy.n.Van.M.i.flac' },
-                            { id: 'gh-hvl-28', title: '28. Huh ft. RPT Orijinn THANHDRAW', audioUrl: 'https://github.com/synxisthebest/webfrontendmusic/releases/download/hvl/28.Huh.feat.RPT.Orijinn.THANHDRAW.flac' },
-                            { id: 'gh-hvl-27', title: '27. Không Cần Lo Cho Tạo', audioUrl: 'https://github.com/synxisthebest/webfrontendmusic/releases/download/hvl/27.Khong.C.n.Lo.Cho.Tao.flac' },
-                            { id: 'gh-hvl-26', title: '26. Cảm Ơn', audioUrl: 'https://github.com/synxisthebest/webfrontendmusic/releases/download/hvl/26.C.m.n.flac' }
-                        ];
-
-                        hvlTracks.forEach(t => {
-                            addCustomTrackToMemory({
-                                id: t.id,
-                                title: t.title,
-                                artist: 'GitHub Release FLAC',
-                                audioUrl: t.audioUrl,
-                                thumbnail: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=400&auto=format&fit=crop',
-                                duration: 210,
-                                plays: 'GitHub Release FLAC',
-                                isDirectUrl: true
-                            });
-                        });
-
-                        queue = buildFullQueue();
-                        currentTrackIndex = 0;
-                        setFilterView('all');
-                        loadTrack(0);
-                        playAudio();
-
-                        alert(`🎉 Đã nạp thành công toàn bộ 5 bài hát FLAC từ GitHub Release tag "${tag}"!`);
-                        if (btnAdd) { btnAdd.disabled = false; btnAdd.innerHTML = `Thêm Nhạc`; }
-                        return;
+            // MULTI-LINE PASTE SPLITTER ENGINE
+            const lines = rawQuery.split('\n').map(l => l.trim()).filter(l => l !== '');
+            if (lines.length > 1) {
+                let addedCount = 0;
+                for (const line of lines) {
+                    if (line) {
+                        await processSingleInput(line);
+                        addedCount++;
                     }
                 }
-            }
-
-            if (rawQuery.endsWith('.flac') || rawQuery.endsWith('.mp3') || rawQuery.endsWith('.wav') || rawQuery.includes('archive.org') || rawQuery.includes('github.com/releases')) {
-                const urlParts = rawQuery.split('/');
-                const fileName = decodeURIComponent(urlParts[urlParts.length - 1] || 'Direct Audio Stream');
-                const directTrack = {
-                    id: 'direct-' + Date.now(),
-                    rank: '00',
-                    title: fileName.replace(/\.[^/.]+$/, ""),
-                    artist: 'Direct Stream',
-                    thumbnail: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=400&auto=format&fit=crop',
-                    duration: 210,
-                    plays: 'Direct FLAC/MP3',
-                    audioUrl: rawQuery,
-                    isDirectUrl: true
-                };
-
-                addCustomTrackToMemory(directTrack);
                 queue = buildFullQueue();
                 currentTrackIndex = 0;
-
                 setFilterView('all');
                 loadTrack(0);
                 playAudio();
 
-                if (btnAdd) {
-                    btnAdd.disabled = false;
-                    btnAdd.innerHTML = `Thêm Nhạc`;
-                }
+                if (btnAdd) { btnAdd.disabled = false; btnAdd.innerHTML = `Thêm Nhạc`; }
+                alert(`🎉 Đã bóc tách & nạp thành công ${addedCount} bài hát riêng biệt!`);
                 return;
             }
 
-            let title = 'YouTube Track';
-            let artist = 'YouTube Artist';
-            let videoId = getYouTubeVideoId(rawQuery);
-            let thumbnail = videoId ? `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg` : 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=400&auto=format&fit=crop';
-            let youtubeUrl = videoId ? `https://www.youtube.com/watch?v=${videoId}` : rawQuery;
-
-            if (videoId || rawQuery.startsWith('http://') || rawQuery.startsWith('https://')) {
-                try {
-                    const targetUrl = youtubeUrl;
-                    const oembedUrl = `https://www.youtube.com/oembed?url=${encodeURIComponent(targetUrl)}&format=json`;
-                    const ores = await fetch(oembedUrl);
-                    if (ores.ok) {
-                        const odata = await ores.json();
-                        title = odata.title || title;
-                        artist = odata.author_name || artist;
-                    }
-                } catch(e) {}
-            } else {
-                title = rawQuery;
-                artist = 'YouTube Search';
-            }
-
-            const newTrackItem = {
-                id: 'yt-' + Date.now(),
-                title: title,
-                artist: artist,
-                thumbnail: thumbnail,
-                youtubeUrl: youtubeUrl,
-                videoId: videoId,
-                duration: 180
-            };
-
-            addCustomTrackToMemory(newTrackItem);
+            await processSingleInput(rawQuery);
             queue = buildFullQueue();
             currentTrackIndex = 0;
 
             if (document.getElementById('yt-url-input')) document.getElementById('yt-url-input').value = '';
             if (document.getElementById('modal-yt-input')) document.getElementById('modal-yt-input').value = '';
+            if (document.getElementById('modal-mp3url-input')) document.getElementById('modal-mp3url-input').value = '';
 
             setFilterView('all');
             updateNextCompositionCards();
@@ -2191,6 +2356,125 @@
             }
         }
 
+        async function processSingleInput(rawQuery) {
+            if (rawQuery.includes('github.com') && rawQuery.includes('/releases/tag/')) {
+                const tagMatch = rawQuery.match(/github\.com\/([^\/]+)\/([^\/]+)\/releases\/tag\/([^\/]+)/);
+                if (tagMatch) {
+                    const owner = tagMatch[1];
+                    const repo = tagMatch[2];
+                    const tag = tagMatch[3];
+
+                    if (tag === 'hvl' && owner === 'synxisthebest') {
+                        const hvlTracks = [
+                            { id: 'gh-hvl-30', title: 'Thật Lớn', artist: 'Envy feat. ThanhDraw', audioUrl: 'https://github.com/synxisthebest/webfrontendmusic/releases/download/hvl/30.Th.t.L.n.flac' },
+                            { id: 'gh-hvl-29', title: 'Nguyễn Văn Mỗi', artist: 'Envy feat. ThanhDraw', audioUrl: 'https://github.com/synxisthebest/webfrontendmusic/releases/download/hvl/29.Nguy.n.Van.M.i.flac' },
+                            { id: 'gh-hvl-28', title: 'Huh', artist: 'RPT Orijinn ft. THANHDRAW', audioUrl: 'https://github.com/synxisthebest/webfrontendmusic/releases/download/hvl/28.Huh.feat.RPT.Orijinn.THANHDRAW.flac' },
+                            { id: 'gh-hvl-27', title: 'Không Cần Lo Cho Tạo', artist: 'Envy feat. ThanhDraw', audioUrl: 'https://github.com/synxisthebest/webfrontendmusic/releases/download/hvl/27.Khong.C.n.Lo.Cho.Tao.flac' },
+                            { id: 'gh-hvl-26', title: 'Cảm Ơn', artist: 'Envy feat. ThanhDraw', audioUrl: 'https://github.com/synxisthebest/webfrontendmusic/releases/download/hvl/26.C.m.n.flac' }
+                        ];
+
+                        hvlTracks.forEach(t => {
+                            addCustomTrackToMemory({
+                                id: t.id,
+                                title: t.title,
+                                artist: t.artist,
+                                audioUrl: t.audioUrl,
+                                thumbnail: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=400&auto=format&fit=crop',
+                                duration: 210,
+                                plays: 'GitHub Release FLAC',
+                                isDirectUrl: true,
+                                addedBy: currentUser.username,
+                                addedByDisplayName: currentUser.displayName
+                            });
+                        });
+                        return;
+                    }
+                }
+            }
+
+            if (rawQuery.endsWith('.flac') || rawQuery.endsWith('.mp3') || rawQuery.endsWith('.wav') || rawQuery.includes('archive.org') || rawQuery.includes('github.com/releases')) {
+                const urlParts = rawQuery.split('/');
+                const rawFileName = decodeURIComponent(urlParts[urlParts.length - 1] || 'Direct Audio Stream');
+                const cleanName = rawFileName.replace(/\.[^/.]+$/, "").replace(/\./g, " ");
+
+                const directTrack = {
+                    id: 'direct-' + Date.now() + '-' + Math.random().toString(36).substr(2, 4),
+                    rank: '00',
+                    title: cleanName,
+                    artist: 'Direct Stream',
+                    thumbnail: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=400&auto=format&fit=crop',
+                    duration: 210,
+                    plays: 'Direct FLAC/MP3',
+                    audioUrl: rawQuery,
+                    isDirectUrl: true,
+                    addedBy: currentUser.username,
+                    addedByDisplayName: currentUser.displayName
+                };
+
+                addCustomTrackToMemory(directTrack);
+                return;
+            }
+
+            // Call Backend /add-track to auto-extract title, artist, thumbnail, duration & persist track
+            try {
+                const res = await fetch(`${backendUrl.replace(/\/$/, '')}/add-track`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        youtubeUrl: rawQuery,
+                        addedBy: currentUser.username,
+                        addedByDisplayName: currentUser.displayName
+                    })
+                });
+
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.playlist) {
+                        fetchGlobalPlaylistFromServer();
+                        return;
+                    }
+                }
+            } catch (e) {
+                console.warn("Backend add-track notice:", e);
+            }
+
+            // Fallback local addition with noembed API if backend is unreachable
+            let title = 'YouTube Track';
+            let artist = 'YouTube Artist';
+            let videoId = getYouTubeVideoId(rawQuery);
+            let thumbnail = videoId ? `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg` : 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=400&auto=format&fit=crop';
+            let youtubeUrl = videoId ? `https://www.youtube.com/watch?v=${videoId}` : rawQuery;
+
+            if (videoId || rawQuery.startsWith('http://') || rawQuery.startsWith('https://')) {
+                try {
+                    const noembedUrl = `https://noembed.com/embed?url=${encodeURIComponent(youtubeUrl)}`;
+                    const ores = await fetch(noembedUrl);
+                    if (ores.ok) {
+                        const odata = await ores.json();
+                        title = odata.title || title;
+                        artist = odata.author_name || artist;
+                    }
+                } catch(e) {}
+            } else {
+                title = rawQuery;
+                artist = 'YouTube Search';
+            }
+
+            const newTrackItem = {
+                id: 'yt-' + Date.now() + '-' + Math.random().toString(36).substr(2, 4),
+                title: title,
+                artist: artist,
+                thumbnail: thumbnail,
+                youtubeUrl: youtubeUrl,
+                videoId: videoId,
+                duration: 180,
+                addedBy: currentUser.username,
+                addedByDisplayName: currentUser.displayName
+            };
+
+            addCustomTrackToMemory(newTrackItem);
+        }
+
         async function addTrackFromModal(type) {
             if (type === 'yt') {
                 const url = document.getElementById('modal-yt-input').value.trim();
@@ -2201,50 +2485,11 @@
                     alert("Vui lòng dán Link YouTube!");
                 }
             } else if (type === 'mp3-url') {
-                const url = document.getElementById('modal-mp3url-input').value.trim();
+                const urlText = document.getElementById('modal-mp3url-input').value.trim();
                 const customTitle = document.getElementById('modal-mp3title-input')?.value.trim();
 
-                if (url) {
-                    if (url.includes('github.com') && url.includes('/releases/tag/')) {
-                        await streamFromYoutubeInput(url);
-                        closeMusicManagerModal();
-                        return;
-                    }
-
-                    let title = 'Direct Audio Track';
-                    let artist = 'Online Stream';
-
-                    if (customTitle) {
-                        const parts = customTitle.split('-');
-                        if (parts.length > 1) {
-                            title = parts[0].trim();
-                            artist = parts.slice(1).join('-').trim();
-                        } else {
-                            title = customTitle;
-                        }
-                    } else {
-                        const urlParts = url.split('/');
-                        title = decodeURIComponent(urlParts[urlParts.length - 1] || 'Direct Audio Stream').replace(/\.[^/.]+$/, "");
-                    }
-
-                    const directTrack = {
-                        id: 'direct-' + Date.now(),
-                        rank: '00',
-                        title: title,
-                        artist: artist,
-                        thumbnail: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=400&auto=format&fit=crop',
-                        duration: 210,
-                        plays: 'Direct FLAC/MP3',
-                        audioUrl: url,
-                        isDirectUrl: true
-                    };
-                    addCustomTrackToMemory(directTrack);
-                    queue = buildFullQueue();
-                    currentTrackIndex = 0;
-
-                    setFilterView('all');
-                    loadTrack(0);
-                    playAudio();
+                if (urlText) {
+                    await streamFromYoutubeInput(urlText);
                     closeMusicManagerModal();
                 }
             }
@@ -2279,7 +2524,7 @@
                         console.warn("Audio play blocked by browser policy:", err);
                         const banner = document.getElementById('autoplay-banner');
                         if (banner) banner.classList.remove('hidden');
-                        
+
                         const currentTrack = queue[currentTrackIndex];
                         if (currentTrack && currentTrack.videoId && ytPlayerReady && ytPlayer) {
                             activePlayerMode = 'yt_iframe';
@@ -2412,7 +2657,7 @@
 
                 userPlaylists.forEach(pl => {
                     let cover = pl.coverImage;
-                    
+
                     if (!cover) {
                         if (pl.trackKeys && pl.trackKeys.length > 0) {
                             const lastKey = pl.trackKeys[pl.trackKeys.length - 1];
@@ -2522,6 +2767,9 @@
                 const trackKey = getTrackKey(track);
                 const isFav = favoritesSet.has(trackKey);
 
+                const addedByText = track.addedByDisplayName || track.addedBy || 'admin';
+                const canEdit = currentUser.role === 'admin' || (track.addedBy && track.addedBy.toLowerCase() === currentUser.username.toLowerCase());
+
                 const row = document.createElement('div');
                 row.className = `p-3 rounded-2xl flex items-center justify-between gap-4 cursor-pointer transition ${
                     isCurrent 
@@ -2544,17 +2792,31 @@
                             ${isCurrent && isPlaying ? '<div class="absolute inset-0 bg-purple-900/60 flex items-center justify-center"><i class="fa-solid fa-wave-square text-white text-xs animate-pulse"></i></div>' : ''}
                         </div>
                         <div class="overflow-hidden">
-                            <h4 class="text-xs sm:text-sm font-bold text-slate-900 truncate ${isCurrent ? 'text-purple-700' : ''}">${track.title}</h4>
+                            <div class="flex items-center gap-2">
+                                <h4 class="text-xs sm:text-sm font-bold text-slate-900 truncate ${isCurrent ? 'text-purple-700' : ''}">${track.title}</h4>
+                                <span class="text-[9px] text-purple-600 bg-purple-100/70 px-2 py-0.5 rounded-full font-semibold shrink-0" title="Người thêm nhạc">
+                                    <i class="fa-solid fa-user text-[8px] mr-1"></i>@${addedByText}
+                                </span>
+                            </div>
                             <p class="text-[11px] sm:text-xs text-slate-400 truncate mt-0.5">${track.artist}</p>
                         </div>
                     </div>
-                    <div class="flex items-center gap-6 shrink-0">
+                    <div class="flex items-center gap-3.5 shrink-0">
                         <span class="text-[11px] text-slate-400 font-mono hidden sm:inline">${track.plays || '0.1s Stream'}</span>
                         <span class="text-[11px] sm:text-xs text-slate-500 font-mono font-medium">${formatTime(track.duration || 180)}</span>
                         <button onclick="event.stopPropagation(); toggleFavoriteKey('${trackKey}');" class="text-xs sm:text-sm transition ${isFav ? 'text-pink-500' : 'text-slate-300 hover:text-pink-500'}" title="Thêm/Xóa Yêu Thích">
                             <i class="${isFav ? 'fa-solid text-pink-500' : 'fa-regular'} fa-heart"></i>
                         </button>
-                        <button onclick="event.stopPropagation(); openMusicManagerModal('tab-mp3-url');" class="text-slate-400 hover:text-slate-700 text-xs"><i class="fa-solid fa-ellipsis"></i></button>
+                        ${canEdit ? `
+                            <button onclick="event.stopPropagation(); openEditTrackModal('${track.id}')" class="text-slate-400 hover:text-purple-600 text-xs p-1" title="Chỉnh sửa bài hát (Admin / Tác giả)">
+                                <i class="fa-solid fa-pen"></i>
+                            </button>
+                            <button onclick="event.stopPropagation(); deleteTrackAction('${track.id}')" class="text-slate-400 hover:text-red-500 text-xs p-1" title="Xóa bài hát">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        ` : `
+                            <button onclick="event.stopPropagation(); openMusicManagerModal('tab-mp3-url');" class="text-slate-400 hover:text-slate-700 text-xs p-1"><i class="fa-solid fa-ellipsis"></i></button>
+                        `}
                     </div>
                 `;
                 trendingTracksContainer.appendChild(row);
