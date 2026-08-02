@@ -1297,8 +1297,23 @@
                     const data = await res.json();
                     if (data.playlist && data.playlist.length > 0) {
                         const serverTracks = data.playlist.map((t, idx) => buildTrackObject(t, idx));
-                        const localOnly = queue.filter(q => q.isLocal);
-                        queue = [...serverTracks, ...localOnly];
+                        const defaultTrackObjs = DEFAULT_POPULAR_PLAYLIST.map((t, idx) => buildTrackObject(t, idx));
+                        const customTrackObjs = userCustomTracks.map((t, idx) => buildTrackObject(t, idx));
+
+                        const mergedMap = new Map();
+                        serverTracks.forEach(t => mergedMap.set(getTrackKey(t), t));
+                        customTrackObjs.forEach(t => {
+                            if (!mergedMap.has(getTrackKey(t))) {
+                                mergedMap.set(getTrackKey(t), t);
+                            }
+                        });
+                        defaultTrackObjs.forEach(t => {
+                            if (!mergedMap.has(getTrackKey(t))) {
+                                mergedMap.set(getTrackKey(t), t);
+                            }
+                        });
+
+                        queue = Array.from(mergedMap.values());
                         updateFavoritesUI();
                         renderTrendingTracks();
                         updateNextCompositionCards();
@@ -1317,6 +1332,10 @@
                     }
                 }
             } catch(e) {}
+            loadUserFavorites();
+            loadUserPlaylists();
+            loadUserCustomTracks();
+            queue = buildFullQueue();
         }
 
         window.addEventListener('DOMContentLoaded', () => {
@@ -1921,6 +1940,17 @@
             }
         }
 
+        function onUserDataChanged() {
+            loadUserFavorites();
+            loadUserPlaylists();
+            loadUserCustomTracks();
+            queue = buildFullQueue();
+            updateUserBadgeUI();
+            updateFavoritesUI();
+            fetchGlobalPlaylistFromServer();
+            renderTrendingTracks();
+        }
+
         async function loginUserAccount() {
             const username = document.getElementById('login-username-input').value.trim();
             const password = document.getElementById('login-password-input').value.trim();
@@ -1941,9 +1971,8 @@
                 if (res.ok && data.status === 'success') {
                     currentUser = data.user;
                     localStorage.setItem('aether_active_user', JSON.stringify(currentUser));
-                    updateUserBadgeUI();
+                    onUserDataChanged();
                     closeAccountModal();
-                    renderTrendingTracks();
                     alert(`🎉 ${data.message}`);
                 } else {
                     alert(`❌ ${data.detail || 'Đăng nhập thất bại!'}`);
@@ -1974,9 +2003,8 @@
                 if (res.ok && data.status === 'success') {
                     currentUser = data.user;
                     localStorage.setItem('aether_active_user', JSON.stringify(currentUser));
-                    updateUserBadgeUI();
+                    onUserDataChanged();
                     closeAccountModal();
-                    renderTrendingTracks();
                     alert(`🎉 ${data.message}`);
                 } else {
                     alert(`❌ ${data.detail || 'Đăng ký thất bại!'}`);
@@ -1994,9 +2022,8 @@
                 avatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=guest'
             };
             localStorage.removeItem('aether_active_user');
-            updateUserBadgeUI();
+            onUserDataChanged();
             closeAccountModal();
-            renderTrendingTracks();
             alert("Đã đăng xuất tài khoản!");
         }
 
