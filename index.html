@@ -312,6 +312,49 @@
                 filter: blur(0px);
             }
         }
+
+        /* Liquid Glass Active Track Row Morphing Highlight */
+        .is-active-row {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.15) 0%, rgba(99, 102, 241, 0.12) 100%) !important;
+            backdrop-filter: blur(20px) saturate(180%) !important;
+            -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+            border: 1px solid rgba(56, 189, 248, 0.5) !important;
+            box-shadow: 0 8px 32px rgba(6, 182, 212, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.3) !important;
+            animation: liquidRowGlow 3.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes liquidRowGlow {
+            0% {
+                border-color: rgba(56, 189, 248, 0.45);
+                box-shadow: 0 8px 25px rgba(6, 182, 212, 0.18), inset 0 1px 1px rgba(255, 255, 255, 0.25);
+            }
+            100% {
+                border-color: rgba(168, 85, 247, 0.65);
+                box-shadow: 0 8px 35px rgba(168, 85, 247, 0.28), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+            }
+        }
+
+        .liquid-row-transition {
+            animation: iosRowSpring 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        @keyframes iosRowSpring {
+            0% {
+                opacity: 0.4;
+                transform: scale(0.97) translateX(-4px);
+                filter: blur(4px);
+            }
+            60% {
+                opacity: 0.95;
+                transform: scale(1.01) translateX(2px);
+                filter: blur(1px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateX(0);
+                filter: blur(0px);
+            }
+        }
     </style>
 </head>
 <body class="w-screen h-screen flex items-center justify-center p-2 sm:p-3 overflow-hidden">
@@ -2427,6 +2470,15 @@
                 currentTrackArtist.classList.add('ios-text-transition');
             }
 
+            setTimeout(() => {
+                const activeRow = document.querySelector('.is-active-row');
+                if (activeRow) {
+                    activeRow.classList.remove('liquid-row-transition');
+                    void activeRow.offsetWidth;
+                    activeRow.classList.add('liquid-row-transition');
+                }
+            }, 30);
+
             currentTrackTitle.textContent = track.title;
             currentTrackArtist.textContent = track.artist;
             albumCoverImg.src = track.thumbnail;
@@ -3023,9 +3075,9 @@
                 const canEdit = currentUser.role === 'admin' || (track.addedBy && track.addedBy.toLowerCase() === currentUser.username.toLowerCase());
 
                 const row = document.createElement('div');
-                row.className = `p-3 rounded-2xl flex items-center justify-between gap-4 cursor-pointer transition ${
+                row.className = `track-row-item p-3 rounded-2xl flex items-center justify-between gap-4 cursor-pointer transition ${
                     isCurrent 
-                        ? 'bg-slate-800/90 border border-cyan-500/50 shadow-md shadow-cyan-950/40' 
+                        ? 'is-active-row' 
                         : 'hover:bg-slate-800/50 border border-transparent'
                 }`;
 
