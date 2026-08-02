@@ -2552,28 +2552,34 @@
                 return;
             }
 
-            // 2. YouTube Video Track via Hybrid Stream (Direct IFrame & Backend Proxy)
+            // 2. YouTube Video Track via 100% Ad-Free HTML5 Audio Stream (Pure Stream Proxy)
             if (track.videoId || track.youtubeUrl) {
                 const vidId = track.videoId || getYouTubeVideoId(track.youtubeUrl);
                 const targetUrl = track.youtubeUrl || `https://www.youtube.com/watch?v=${vidId}`;
 
-                if (vidId && ytPlayerReady && ytPlayer && ytPlayer.loadVideoById) {
-                    activePlayerMode = 'yt_iframe';
-                    audio.pause();
-                    ytPlayer.loadVideoById(vidId);
-                    if (isPlaying) ytPlayer.playVideo();
-                    if (badgeText) badgeText.textContent = "⚡ YouTube Direct Stream Active 🔥";
-                } else {
-                    activePlayerMode = 'html5';
-                    const backendStreamUrl = `${backendUrl.replace(/\/$/, '')}/play-audio?url=${encodeURIComponent(targetUrl)}`;
-                    audio.removeAttribute('crossorigin');
-                    audio.src = backendStreamUrl;
-                    audio.load();
-                    if (badgeText) badgeText.textContent = "⚡ YouTube Proxy Stream Active 🔥";
-                    if (isPlaying) playAudio();
-                }
+                activePlayerMode = 'html5';
+                if (ytPlayerReady && ytPlayer && ytPlayer.pauseVideo) ytPlayer.pauseVideo();
 
+                const backendStreamUrl = `${backendUrl.replace(/\/$/, '')}/play-audio?url=${encodeURIComponent(targetUrl)}`;
+                
+                audio.removeAttribute('crossorigin');
+                audio.src = backendStreamUrl;
+                audio.load();
+
+                if (badgeText) badgeText.textContent = "⚡ 100% Ad-Free Pure Audio Active 🔥";
                 startProgressTimer();
+                if (isPlaying) playAudio();
+
+                // If pure stream proxy encounters network error, use fallback player
+                audio.onerror = () => {
+                    if (vidId && ytPlayerReady && ytPlayer && ytPlayer.loadVideoById) {
+                        activePlayerMode = 'yt_iframe';
+                        ytPlayer.loadVideoById(vidId);
+                        if (isPlaying) ytPlayer.playVideo();
+                        if (badgeText) badgeText.textContent = "⚡ Direct Stream Active 🔥";
+                    }
+                };
+
                 fetchTrackLyrics(track);
                 updateCurrentFavIcon();
                 renderTrendingTracks();
@@ -2973,7 +2979,7 @@
                     try {
                         webAudioCtx = new AudioCtxClass();
                         webAudioGainNode = webAudioCtx.createGain();
-                        webAudioGainNode.gain.value = 3.5; // Super 350% Loud Volume Booster
+                        webAudioGainNode.gain.value = 5.0; // Ultra 500% Loud Volume Booster
 
                         webAudioMediaSource = webAudioCtx.createMediaElementSource(audio);
                         webAudioMediaSource.connect(webAudioGainNode);
@@ -2991,7 +2997,7 @@
             const vol = Math.floor(parsedVal * 100);
 
             if (ytPlayerReady && ytPlayer && ytPlayer.setVolume) {
-                ytPlayer.setVolume(100); // Keep YouTube iframe at max volume
+                ytPlayer.setVolume(100);
                 if (ytPlayer.unMute) ytPlayer.unMute();
             }
 
@@ -2999,8 +3005,8 @@
 
             initWebAudioGainBoost();
             if (webAudioGainNode) {
-                // Super boost audio signal gain up to 3.5x (350% volume output)
-                webAudioGainNode.gain.value = parsedVal * 3.5;
+                // Ultra boost audio signal gain up to 5.0x (500% volume output)
+                webAudioGainNode.gain.value = parsedVal * 5.0;
             }
 
             if (parsedVal == 0) iconVolume.className = 'fa-solid fa-volume-xmark';
