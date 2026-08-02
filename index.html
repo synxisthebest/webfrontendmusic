@@ -1343,6 +1343,7 @@
             updateBackendUI();
             updateUserBadgeUI();
             setupCanvas();
+            drawVisualizer();
             updateFavoritesUI();
 
             document.body.addEventListener('click', () => {
@@ -1838,14 +1839,9 @@
         }
 
         function generateFallbackLyrics(track) {
-            currentLyricsList = [
-                { time: 0, text: `🎵 ${track.title}` },
-                { time: 4, text: `🎤 Ca sĩ: ${track.artist}` },
-                { time: 8, text: "✨ [Music Instrumental Beat & Melody] ✨" },
-                { time: 14, text: "🎶 Đang phát giai điệu tuyệt vời..." },
-                { time: 22, text: "🔥 Năng lượng âm nhạc tràn đầy 🎵" },
-                { time: 32, text: "✨ Enjoying the vibe with Synx Music Player ✨" }
-            ];
+            currentLyricsList = [];
+            const sourceBadge = document.getElementById('lyrics-source-badge');
+            if (sourceBadge) sourceBadge.innerHTML = `<i class="fa-solid fa-music text-slate-500"></i> Không tìm thấy lời bài hát`;
             renderLyricsContainer();
         }
 
@@ -1854,7 +1850,10 @@
             if (!container) return;
 
             if (currentLyricsList.length === 0) {
-                container.innerHTML = `<p class="text-sm text-slate-400 italic">Không tìm thấy lời bài hát.</p>`;
+                container.innerHTML = `<div class="p-8 text-center text-slate-500/70 font-semibold text-xs italic space-y-1">
+                    <i class="fa-solid fa-align-left text-2xl text-purple-400/40 mb-1"></i>
+                    <p>Bài hát này chưa có lời bài hát (Hoặc là Nhạc không lời Instrumental)</p>
+                </div>`;
                 return;
             }
 
@@ -2233,11 +2232,65 @@
         }
 
         function setupCanvas() {
+            if (!canvas) return;
             const dpr = window.devicePixelRatio || 1;
             const rect = canvas.getBoundingClientRect();
-            canvas.width = rect.width * dpr;
-            canvas.height = rect.height * dpr;
-            canvasCtx.scale(dpr, dpr);
+            if (rect.width > 0 && rect.height > 0) {
+                canvas.width = rect.width * dpr;
+                canvas.height = rect.height * dpr;
+                canvasCtx = canvas.getContext('2d');
+                canvasCtx.scale(dpr, dpr);
+            }
+        }
+
+        function drawVisualizer() {
+            if (!canvasCtx || !canvas) return;
+            const dpr = window.devicePixelRatio || 1;
+            const width = canvas.width / dpr;
+            const height = canvas.height / dpr;
+
+            if (width === 0 || height === 0) {
+                requestAnimationFrame(drawVisualizer);
+                return;
+            }
+
+            canvasCtx.clearRect(0, 0, width, height);
+
+            const numBars = 36;
+            const gap = 3;
+            const barWidth = Math.max(2, (width - (numBars - 1) * gap) / numBars);
+            const time = Date.now() * 0.006;
+
+            for (let i = 0; i < numBars; i++) {
+                let barHeight = 4;
+                if (isPlaying) {
+                    const sinVal = Math.sin(time * 2.5 + i * 0.35);
+                    const cosVal = Math.cos(time * 3.8 - i * 0.25);
+                    const noise = Math.abs(sinVal + cosVal);
+                    barHeight = Math.max(4, Math.min(height - 2, noise * (height * 0.45) + 6 + (i % 6) * 2.5));
+                } else {
+                    barHeight = 4;
+                }
+
+                const x = i * (barWidth + gap);
+                const y = (height - barHeight) / 2;
+
+                const gradient = canvasCtx.createLinearGradient(x, y, x + barWidth, y + barHeight);
+                gradient.addColorStop(0, '#ec4899');
+                gradient.addColorStop(0.5, '#a855f7');
+                gradient.addColorStop(1, '#06b6d4');
+
+                canvasCtx.fillStyle = gradient;
+                canvasCtx.beginPath();
+                if (canvasCtx.roundRect) {
+                    canvasCtx.roundRect(x, y, barWidth, barHeight, 3);
+                } else {
+                    canvasCtx.rect(x, y, barWidth, barHeight);
+                }
+                canvasCtx.fill();
+            }
+
+            requestAnimationFrame(drawVisualizer);
         }
 
         function playNextInQueue(offsetIndex) {
@@ -2404,37 +2457,62 @@
 
         async function processSingleInput(rawQuery) {
             if (rawQuery.includes('github.com') && rawQuery.includes('/releases/tag/')) {
+                // 1. Try Backend /add-track or /github-release for full server-side parsing
+                try {
+                    const res = await fetch(`${backendUrl.replace(/\/$/, '')}/github-release?url=${encodeURIComponent(rawQuery)}`);
+                    if (res.ok) {
+                        const data = await res.json();
+                        if (data.tracks && data.tracks.length > 0) {
+                            data.tracks.forEach(t => {
+                                addCustomTrackToMemory({
+                                    ...t,
+                                    addedBy: currentUser.username,
+                                    addedByDisplayName: currentUser.displayName
+                                });
+                            });
+                            return;
+                        }
+                    }
+                } catch(e) {}
+
+                // 2. Fallback: Parse via GitHub expanded_assets CORS proxy
                 const tagMatch = rawQuery.match(/github\.com\/([^\/]+)\/([^\/]+)\/releases\/tag\/([^\/]+)/);
                 if (tagMatch) {
                     const owner = tagMatch[1];
                     const repo = tagMatch[2];
                     const tag = tagMatch[3];
 
-                    if (tag === 'hvl' && owner === 'synxisthebest') {
-                        const hvlTracks = [
-                            { id: 'gh-hvl-30', title: 'Thật Lớn', artist: 'Envy feat. ThanhDraw', audioUrl: 'https://github.com/synxisthebest/webfrontendmusic/releases/download/hvl/30.Th.t.L.n.flac' },
-                            { id: 'gh-hvl-29', title: 'Nguyễn Văn Mỗi', artist: 'Envy feat. ThanhDraw', audioUrl: 'https://github.com/synxisthebest/webfrontendmusic/releases/download/hvl/29.Nguy.n.Van.M.i.flac' },
-                            { id: 'gh-hvl-28', title: 'Huh', artist: 'RPT Orijinn ft. THANHDRAW', audioUrl: 'https://github.com/synxisthebest/webfrontendmusic/releases/download/hvl/28.Huh.feat.RPT.Orijinn.THANHDRAW.flac' },
-                            { id: 'gh-hvl-27', title: 'Không Cần Lo Cho Tạo', artist: 'Envy feat. ThanhDraw', audioUrl: 'https://github.com/synxisthebest/webfrontendmusic/releases/download/hvl/27.Khong.C.n.Lo.Cho.Tao.flac' },
-                            { id: 'gh-hvl-26', title: 'Cảm Ơn', artist: 'Envy feat. ThanhDraw', audioUrl: 'https://github.com/synxisthebest/webfrontendmusic/releases/download/hvl/26.C.m.n.flac' }
-                        ];
+                    try {
+                        const expandedUrl = `https://corsproxy.io/?https://github.com/${owner}/${repo}/releases/expanded_assets/${tag}`;
+                        const cres = await fetch(expandedUrl);
+                        if (cres.ok) {
+                            const htmlText = await cres.text();
+                            const linkMatches = [...htmlText.matchAll(/href="([^"]+\/releases\/download\/[^"]+)"/g)];
+                            const uniqueLinks = [...new Set(linkMatches.map(m => m[1]))];
 
-                        hvlTracks.forEach(t => {
-                            addCustomTrackToMemory({
-                                id: t.id,
-                                title: t.title,
-                                artist: t.artist,
-                                audioUrl: t.audioUrl,
-                                thumbnail: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=400&auto=format&fit=crop',
-                                duration: 210,
-                                plays: 'GitHub Release FLAC',
-                                isDirectUrl: true,
-                                addedBy: currentUser.username,
-                                addedByDisplayName: currentUser.displayName
-                            });
-                        });
-                        return;
-                    }
+                            if (uniqueLinks.length > 0) {
+                                uniqueLinks.sort().forEach((link, idx) => {
+                                    const fullUrl = link.startsWith('http') ? link : `https://github.com${link}`;
+                                    const rawFilename = fullUrl.split('/').pop();
+                                    let cleanName = decodeURIComponent(rawFilename).replace(/\.(flac|mp3|wav|m4a|ogg)$/i, '').replace(/\./g, ' ');
+
+                                    addCustomTrackToMemory({
+                                        id: `gh-${tag}-${idx + 1}`,
+                                        title: cleanName,
+                                        artist: `${owner} (GitHub Release)`,
+                                        audioUrl: fullUrl,
+                                        thumbnail: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=400&auto=format&fit=crop',
+                                        duration: 210,
+                                        plays: 'GitHub Release FLAC',
+                                        isDirectUrl: true,
+                                        addedBy: currentUser.username,
+                                        addedByDisplayName: currentUser.displayName
+                                    });
+                                });
+                                return;
+                            }
+                        }
+                    } catch(e) {}
                 }
             }
 
