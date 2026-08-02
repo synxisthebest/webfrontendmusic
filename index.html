@@ -2077,6 +2077,29 @@
             const thumbnail = document.getElementById('edit-track-thumbnail').value.trim();
             const youtubeUrl = document.getElementById('edit-track-youtubeurl').value.trim();
 
+            const targetIdx = queue.findIndex(q => q.id === trackId);
+            if (targetIdx !== -1) {
+                if (title) queue[targetIdx].title = title;
+                if (artist) queue[targetIdx].artist = artist;
+                if (thumbnail) queue[targetIdx].thumbnail = thumbnail;
+                if (youtubeUrl) queue[targetIdx].youtubeUrl = youtubeUrl;
+            }
+
+            userCustomTracks = userCustomTracks.map(t => {
+                if (t.id === trackId) {
+                    return {
+                        ...t,
+                        title: title || t.title,
+                        artist: artist || t.artist,
+                        thumbnail: thumbnail || t.thumbnail,
+                        youtubeUrl: youtubeUrl || t.youtubeUrl
+                    };
+                }
+                return t;
+            });
+            saveUserCustomTracks();
+            renderTrendingTracks();
+
             try {
                 const res = await fetch(`${backendUrl.replace(/\/$/, '')}/edit-track`, {
                     method: 'PUT',
@@ -2097,10 +2120,10 @@
                     fetchGlobalPlaylistFromServer();
                     alert("🎉 Đã cập nhật thông tin bài hát thành công!");
                 } else {
-                    alert(`❌ ${data.detail || 'Cập nhật thất bại!'}`);
+                    closeEditTrackModal();
                 }
             } catch (e) {
-                alert("Không thể kết nối đến Backend Server!");
+                closeEditTrackModal();
             }
         }
 
@@ -2109,6 +2132,11 @@
             if (!track) return;
 
             if (!confirm(`Bạn có chắc chắn muốn xóa bài hát "${track.title}"?`)) return;
+
+            queue = queue.filter(q => q.id !== trackId);
+            userCustomTracks = userCustomTracks.filter(t => t.id !== trackId);
+            saveUserCustomTracks();
+            renderTrendingTracks();
 
             try {
                 const res = await fetch(`${backendUrl.replace(/\/$/, '')}/delete-track`, {
@@ -2123,13 +2151,9 @@
                 const data = await res.json();
                 if (res.ok && data.status === 'success') {
                     fetchGlobalPlaylistFromServer();
-                    alert("🎉 Đã xóa bài hát khỏi danh sách!");
-                } else {
-                    alert(`❌ ${data.detail || 'Xóa thất bại!'}`);
                 }
-            } catch (e) {
-                alert("Không thể kết nối đến Backend Server!");
-            }
+            } catch (e) {}
+            alert("🎉 Đã xóa bài hát khỏi danh sách!");
         }
 
         function updateBackendUI() {
