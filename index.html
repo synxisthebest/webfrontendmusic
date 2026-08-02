@@ -1263,7 +1263,7 @@
             });
         });
 
-        // VERTICAL SIDEBAR LIQUID GLASS ENGINE
+        // VERTICAL SIDEBAR LIQUID GLASS ENGINE (GPU Accelerated)
         function moveVerticalLiquidPill(targetBtn) {
             const pill = document.getElementById('liquid-glass-vertical-pill');
             if (!pill || !targetBtn) return;
@@ -1273,10 +1273,10 @@
             const btnRect = targetBtn.getBoundingClientRect();
 
             const topOffset = btnRect.top - containerRect.top;
-            pill.style.top = `${topOffset}px`;
+            pill.style.transform = `translate3d(-50%, ${topOffset}px, 0)`;
         }
 
-        // HORIZONTAL LIQUID GLASS TAB ENGINE
+        // HORIZONTAL LIQUID GLASS TAB ENGINE (GPU Accelerated)
         function positionLiquidGlassPill(targetBtn) {
             const pill = document.getElementById('liquid-glass-pill');
             if (!pill || !targetBtn) return;
@@ -1288,7 +1288,7 @@
             const leftOffset = btnRect.left - containerRect.left;
             const width = btnRect.width;
 
-            pill.style.left = `${leftOffset}px`;
+            pill.style.transform = `translate3d(${leftOffset}px, 0, 0)`;
             pill.style.width = `${width}px`;
         }
 
