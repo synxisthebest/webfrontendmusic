@@ -147,23 +147,26 @@ function initParticleBackground() {
     particleContainer.className = 'fixed inset-0 pointer-events-none z-0 overflow-hidden opacity-40';
     document.body.prepend(particleContainer);
 
-    const icons = ['fa-music', 'fa-note-sticky', 'fa-compact-disc', 'fa-heart', 'fa-sparkles'];
+    const icons = ['fa-music', 'fa-note-sticky', 'fa-compact-disc', 'fa-heart', 'fa-headphones', 'fa-record-vinyl', 'fa-bolt'];
+    const colors = ['text-pink-400/40', 'text-purple-400/40', 'text-cyan-400/40', 'text-indigo-400/40', 'text-white/30'];
 
-    for (let i = 0; i < 18; i++) {
+    for (let i = 0; i < 28; i++) {
         const particle = document.createElement('i');
         const randomIcon = icons[Math.floor(Math.random() * icons.length)];
-        particle.className = `fa-solid ${randomIcon} absolute text-white/30 text-xs animate-float`;
+        const randomColor = colors[Math.floor(Math.random() * colors.length)];
+        particle.className = `fa-solid ${randomIcon} absolute ${randomColor} text-xs`;
         
         const startLeft = Math.random() * 100;
         const startTop = Math.random() * 100;
-        const duration = 12 + Math.random() * 18;
-        const delay = Math.random() * 10;
-        const scale = 0.6 + Math.random() * 0.8;
+        const duration = 10 + Math.random() * 20;
+        const delay = Math.random() * 8;
+        const scale = 0.5 + Math.random() * 0.9;
 
         particle.style.left = `${startLeft}%`;
         particle.style.top = `${startTop}%`;
-        particle.style.animation = `floatParticle ${duration}s ease-in-out ${delay}s infinite alternate`;
+        particle.style.animation = `floatParticle ${duration}s cubic-bezier(0.4, 0, 0.2, 1) ${delay}s infinite alternate`;
         particle.style.transform = `scale(${scale})`;
+        particle.style.filter = 'drop-shadow(0 0 6px currentColor)';
 
         particleContainer.appendChild(particle);
     }
@@ -173,16 +176,16 @@ function initParticleBackground() {
     style.textContent = `
         @keyframes floatParticle {
             0% {
-                transform: translateY(0px) rotate(0deg) scale(0.8);
-                opacity: 0.2;
+                transform: translateY(0px) rotate(0deg) scale(0.7);
+                opacity: 0.15;
             }
             50% {
-                transform: translateY(-40px) rotate(180deg) scale(1.1);
-                opacity: 0.6;
+                transform: translateY(-50px) rotate(180deg) scale(1.2);
+                opacity: 0.7;
             }
             100% {
-                transform: translateY(-80px) rotate(360deg) scale(0.8);
-                opacity: 0.2;
+                transform: translateY(-100px) rotate(360deg) scale(0.7);
+                opacity: 0.15;
             }
         }
     `;

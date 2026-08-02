@@ -1,0 +1,530 @@
+/**
+ * Aether Web Music Player - Core Design System & Advanced Animations
+ * (c) 2026 Synx Music Studio. All rights reserved.
+ */
+
+body {
+    background: #07080c;
+    width: 100vw;
+    height: 100vh;
+    color: #f8fafc;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+.app-shell {
+    background: #0f1118;
+    backdrop-filter: blur(40px) saturate(180%);
+    -webkit-backdrop-filter: blur(40px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    box-shadow: 0 35px 80px rgba(0, 0, 0, 0.75), 0 0 40px rgba(0, 0, 0, 0.5);
+    border-radius: 28px;
+    width: 98vw;
+    height: 96vh;
+}
+
+.dark-card {
+    background: #161822;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(16px);
+}
+.dark-card-interactive {
+    transition: all 0.25s ease;
+}
+.dark-card-interactive:hover {
+    background: #1f2230;
+    border-color: rgba(255, 255, 255, 0.12);
+    transform: translateY(-2px);
+}
+
+.white-stage {
+    background: #12141e;
+    color: #f8fafc;
+    border-radius: 24px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* Horizontal Liquid Glass Tab Morphing Indicator */
+.liquid-glass-tab-container {
+    position: relative;
+    background: rgba(30, 35, 50, 0.6);
+    backdrop-filter: blur(12px);
+    border-radius: 9999px;
+    padding: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.liquid-glass-pill {
+    position: absolute;
+    top: 4px;
+    bottom: 4px;
+    left: 4px;
+    background: linear-gradient(135deg, #38bdf8 0%, #6366f1 100%);
+    border-radius: 9999px;
+    box-shadow: 0 4px 15px rgba(56, 189, 248, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Vertical Sidebar Liquid Glass Indicator */
+.liquid-glass-vertical-container {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.liquid-glass-vertical-pill {
+    position: absolute;
+    width: 42px;
+    height: 42px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.5) 0%, rgba(236, 72, 153, 0.5) 100%);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(168, 85, 247, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.5);
+    transition: top 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.side-nav-btn {
+    position: relative;
+    z-index: 2;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16px;
+    transition: color 0.3s ease;
+}
+
+.tab-btn-item {
+    position: relative;
+    z-index: 2;
+    transition: color 0.3s ease;
+}
+
+/* Synced Karaoke Lyric Active Highlight */
+.lyric-line {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0.35;
+    transform: scale(0.96);
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(100, 116, 139, 0.3);
+    border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(168, 85, 247, 0.6);
+}
+
+input[type=range] {
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+}
+input[type=range]:focus {
+    outline: none;
+}
+input[type=range]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 5px;
+    cursor: pointer;
+    border-radius: 9999px;
+    background: rgba(148, 163, 184, 0.25);
+}
+input[type=range]::-webkit-slider-thumb {
+    height: 12px;
+    width: 12px;
+    border-radius: 50%;
+    background: #ffffff;
+    box-shadow: 0 0 10px rgba(168, 85, 247, 0.8);
+    cursor: pointer;
+    -webkit-appearance: none;
+    margin-top: -3.5px;
+    transition: transform 0.15s ease;
+}
+input[type=range]:hover::-webkit-slider-thumb {
+    transform: scale(1.3);
+    background: #a855f7;
+}
+
+canvas#visualizer {
+    filter: drop-shadow(0 0 8px rgba(168, 85, 247, 0.4));
+}
+
+.text-gradient {
+    background: linear-gradient(135deg, #ec4899 0%, #a855f7 50%, #06b6d4 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* MOBILE RESPONSIVE OPTIMIZATIONS */
+@media (max-width: 768px) {
+    body {
+        overflow-x: hidden;
+        overflow-y: auto;
+        height: auto;
+        min-height: 100vh;
+        padding: 0;
+    }
+
+    .app-shell {
+        width: 100vw;
+        min-height: 100vh;
+        height: auto;
+        border-radius: 0;
+        border: none;
+        flex-direction: column;
+        padding: 10px 10px 85px 10px;
+        overflow-y: auto;
+        box-shadow: none;
+    }
+
+    .white-stage {
+        border-radius: 20px;
+        padding: 12px;
+    }
+
+    .liquid-glass-tab-container {
+        overflow-x: auto;
+        max-width: 100%;
+        white-space: nowrap;
+    }
+
+    .tab-btn-item {
+        font-size: 11px;
+        padding: 6px 12px;
+    }
+
+    #player-view-artwork {
+        padding: 4px 0;
+    }
+
+    #album-cover-img {
+        width: 120px;
+        height: 120px;
+    }
+}
+
+/* iOS Liquid Glass Track Transition Animation */
+.ios-liquid-transition {
+    animation: iosLiquidSpring 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes iosLiquidSpring {
+    0% {
+        opacity: 0.25;
+        transform: scale(0.88) translateY(10px);
+        filter: blur(10px) brightness(1.2);
+    }
+    55% {
+        opacity: 0.9;
+        transform: scale(1.02) translateY(-2px);
+        filter: blur(1.5px) brightness(1.05);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+        filter: blur(0px) brightness(1);
+    }
+}
+
+.ios-text-transition {
+    animation: iosTextFadeUp 0.55s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+@keyframes iosTextFadeUp {
+    0% {
+        opacity: 0;
+        transform: translateY(6px);
+        filter: blur(3px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0px);
+    }
+}
+
+/* Liquid Glass Active Track Row Morphing Highlight */
+.is-active-row {
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.15) 0%, rgba(99, 102, 241, 0.12) 100%) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    border: 1px solid rgba(56, 189, 248, 0.5) !important;
+    box-shadow: 0 8px 32px rgba(6, 182, 212, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.3) !important;
+    animation: liquidRowGlow 3.5s ease-in-out infinite alternate;
+}
+
+@keyframes liquidRowGlow {
+    0% {
+        border-color: rgba(56, 189, 248, 0.45);
+        box-shadow: 0 8px 25px rgba(6, 182, 212, 0.18), inset 0 1px 1px rgba(255, 255, 255, 0.25);
+    }
+    100% {
+        border-color: rgba(168, 85, 247, 0.65);
+        box-shadow: 0 8px 35px rgba(168, 85, 247, 0.28), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+    }
+}
+
+.liquid-row-transition {
+    animation: iosRowSpring 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes iosRowSpring {
+    0% {
+        opacity: 0.4;
+        transform: scale(0.97) translateX(-4px);
+        filter: blur(4px);
+    }
+    60% {
+        opacity: 0.95;
+        transform: scale(1.01) translateX(2px);
+        filter: blur(1px);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) translateX(0);
+        filter: blur(0px);
+    }
+}
+
+/* =========================================================
+   ADVANCED HIGH-END CSS ANIMATIONS & MICRO-INTERACTIONS
+   ========================================================= */
+
+/* 1. Ambient Background Glowing Orbs (Aurora Flow) */
+.ambient-orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(90px);
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.5;
+    will-change: transform;
+}
+.ambient-orb-1 {
+    width: 480px;
+    height: 480px;
+    top: -120px;
+    left: -100px;
+    background: radial-gradient(circle, rgba(236,72,153,0.55) 0%, rgba(168,85,247,0.25) 70%, transparent 100%);
+    animation: orbFloat1 20s ease-in-out infinite alternate;
+}
+.ambient-orb-2 {
+    width: 520px;
+    height: 520px;
+    bottom: -150px;
+    right: -100px;
+    background: radial-gradient(circle, rgba(6,182,212,0.55) 0%, rgba(99,102,241,0.25) 70%, transparent 100%);
+    animation: orbFloat2 24s ease-in-out infinite alternate;
+}
+.ambient-orb-3 {
+    width: 380px;
+    height: 380px;
+    top: 35%;
+    left: 35%;
+    background: radial-gradient(circle, rgba(168,85,247,0.4) 0%, rgba(236,72,153,0.2) 70%, transparent 100%);
+    animation: orbFloat3 28s ease-in-out infinite alternate;
+}
+@keyframes orbFloat1 {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(100px, 80px) scale(1.15); }
+    100% { transform: translate(-50px, 110px) scale(0.95); }
+}
+@keyframes orbFloat2 {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(-110px, -60px) scale(1.2); }
+    100% { transform: translate(70px, -90px) scale(0.9); }
+}
+@keyframes orbFloat3 {
+    0% { transform: translate(0, 0) scale(0.9); }
+    50% { transform: translate(60px, -80px) scale(1.1); }
+    100% { transform: translate(-70px, 50px) scale(1); }
+}
+
+/* 2. Rotating Vinyl Disc & Album Art Glow */
+.vinyl-disc {
+    position: relative;
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.5s ease;
+}
+.vinyl-disc::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 24px;
+    background: linear-gradient(135deg, rgba(236, 72, 153, 0.8), rgba(168, 85, 247, 0.8), rgba(6, 182, 212, 0.8));
+    z-index: -1;
+    opacity: 0.35;
+    filter: blur(14px);
+    transition: opacity 0.5s ease, filter 0.5s ease;
+}
+.vinyl-disc.is-playing::before {
+    opacity: 0.95;
+    filter: blur(20px);
+    animation: vinylAuraPulse 3s ease-in-out infinite alternate;
+}
+.vinyl-disc #album-cover-img {
+    transition: border-radius 0.6s ease, transform 0.6s ease;
+}
+.vinyl-disc.is-playing #album-cover-img {
+    animation: vinylSpin 18s linear infinite;
+    border-radius: 50%;
+    box-shadow: 0 0 25px rgba(0,0,0,0.6), inset 0 0 0 10px rgba(0,0,0,0.8);
+}
+@keyframes vinylSpin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+@keyframes vinylAuraPulse {
+    0% {
+        filter: blur(14px);
+        opacity: 0.7;
+    }
+    100% {
+        filter: blur(26px);
+        opacity: 1;
+    }
+}
+
+/* 3. Play Button Pulse Ring Animation */
+.play-btn-playing {
+    animation: playPulseRing 2s cubic-bezier(0.4, 0, 0.6, 1) infinite !important;
+}
+@keyframes playPulseRing {
+    0% {
+        box-shadow: 0 0 0 0 rgba(236, 72, 153, 0.6), 0 0 25px rgba(168, 85, 247, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 0 16px rgba(236, 72, 153, 0), 0 0 40px rgba(6, 182, 212, 0.7);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(236, 72, 153, 0), 0 0 25px rgba(168, 85, 247, 0.5);
+    }
+}
+
+/* 4. Live Playing Track Soundwave Equalizer Indicator */
+.sound-wave-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 2.5px;
+    height: 14px;
+    padding: 0 2px;
+}
+.sound-wave-bar {
+    width: 3px;
+    background: linear-gradient(to top, #ec4899, #06b6d4);
+    border-radius: 9999px;
+    animation: waveBarBounce 0.85s ease-in-out infinite alternate;
+}
+.sound-wave-bar:nth-child(1) { height: 35%; animation-delay: 0.0s; }
+.sound-wave-bar:nth-child(2) { height: 100%; animation-delay: 0.25s; }
+.sound-wave-bar:nth-child(3) { height: 60%; animation-delay: 0.45s; }
+.sound-wave-bar:nth-child(4) { height: 85%; animation-delay: 0.15s; }
+@keyframes waveBarBounce {
+    0% { height: 25%; opacity: 0.6; }
+    100% { height: 100%; opacity: 1; }
+}
+
+/* 5. Glassmorphic Light Sweep Shimmer Effect on Hover */
+.glass-shimmer {
+    position: relative;
+    overflow: hidden;
+}
+.glass-shimmer::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -75%;
+    width: 50%;
+    height: 200%;
+    background: linear-gradient(
+        60deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.12) 50%,
+        transparent 100%
+    );
+    transform: rotate(25deg);
+    transition: all 0.75s ease;
+    pointer-events: none;
+}
+.glass-shimmer:hover::after {
+    left: 140%;
+}
+
+/* 6. Heart Pop Bounce Animation */
+.heart-bounce {
+    animation: heartPop 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+@keyframes heartPop {
+    0% { transform: scale(0.7); }
+    50% { transform: scale(1.45); }
+    100% { transform: scale(1); }
+}
+
+/* 7. Modal Pop Spring Entrance */
+.modal-spring-enter {
+    animation: modalSpring 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+@keyframes modalSpring {
+    0% {
+        opacity: 0;
+        transform: scale(0.85) translateY(18px);
+        filter: blur(8px);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+        filter: blur(0px);
+    }
+}
+
+/* 8. Button Hover Glow Ripple */
+.glow-hover {
+    transition: all 0.25s ease;
+}
+.glow-hover:hover {
+    box-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+    transform: translateY(-1px) scale(1.03);
+}
+.glow-hover:active {
+    transform: translateY(0px) scale(0.97);
+}
+
+/* 9. Enhanced Lyrics Active Line Pulse & Gradient */
+.lyric-line.active {
+    opacity: 1 !important;
+    transform: scale(1.08) translateY(-1px) !important;
+    background: linear-gradient(135deg, #38bdf8 0%, #a855f7 50%, #ec4899 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 800;
+    filter: drop-shadow(0 0 14px rgba(56, 189, 248, 0.7));
+    animation: lyricGlowPulse 2.5s ease-in-out infinite alternate;
+}
+@keyframes lyricGlowPulse {
+    0% { filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.6)); }
+    100% { filter: drop-shadow(0 0 20px rgba(236, 72, 153, 0.9)); }
+}
