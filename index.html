@@ -1295,9 +1295,26 @@
                 height: '1',
                 width: '1',
                 videoId: 'L4dSipbZj8A',
-                playerVars: { 'autoplay': 1, 'controls': 0, 'disablekb': 1, 'playsinline': 1 },
+                playerVars: { 
+                    'autoplay': 1, 
+                    'controls': 0, 
+                    'disablekb': 1, 
+                    'playsinline': 1,
+                    'iv_load_policy': 3,
+                    'rel': 0,
+                    'modestbranding': 1,
+                    'cc_load_policy': 0,
+                    'fs': 0,
+                    'autohide': 1,
+                    'enablejsapi': 1,
+                    'widget_referrer': window.location.origin
+                },
                 events: {
-                    'onReady': (e) => { ytPlayerReady = true; ytPlayer.setVolume(80); },
+                    'onReady': (e) => { 
+                        ytPlayerReady = true; 
+                        ytPlayer.setVolume(100); 
+                        if (ytPlayer.unMute) ytPlayer.unMute();
+                    },
                     'onStateChange': (e) => {
                         if (e.data === YT.PlayerState.PLAYING) {
                             isPlaying = true;
@@ -2916,14 +2933,48 @@
             }
         }
 
+        let webAudioCtx = null;
+        let webAudioGainNode = null;
+        let webAudioMediaSource = null;
+
+        function initWebAudioGainBoost() {
+            if (!webAudioCtx) {
+                const AudioCtxClass = window.AudioContext || window.webkitAudioContext;
+                if (AudioCtxClass) {
+                    try {
+                        webAudioCtx = new AudioCtxClass();
+                        webAudioGainNode = webAudioCtx.createGain();
+                        webAudioGainNode.gain.value = 1.8; // 180% Volume Booster
+
+                        webAudioMediaSource = webAudioCtx.createMediaElementSource(audio);
+                        webAudioMediaSource.connect(webAudioGainNode);
+                        webAudioGainNode.connect(webAudioCtx.destination);
+                    } catch(e) {}
+                }
+            }
+            if (webAudioCtx && webAudioCtx.state === 'suspended') {
+                webAudioCtx.resume();
+            }
+        }
+
         function changeVolume(val) {
-            const vol = Math.floor(val * 100);
+            const parsedVal = parseFloat(val);
+            const vol = Math.floor(parsedVal * 100);
+
             if (ytPlayerReady && ytPlayer && ytPlayer.setVolume) {
                 ytPlayer.setVolume(vol);
             }
-            audio.volume = val;
-            if (val == 0) iconVolume.className = 'fa-solid fa-volume-xmark';
-            else if (val < 0.5) iconVolume.className = 'fa-solid fa-volume-low';
+
+            audio.volume = Math.min(1.0, Math.max(0, parsedVal));
+
+            initWebAudioGainBoost();
+            if (webAudioGainNode) {
+                // Dynamically amplify audio signal gain up to 2.2x (220% volume output)
+                webAudioGainNode.gain.value = parsedVal * 2.2;
+            }
+
+            if (parsedVal == 0) iconVolume.className = 'fa-solid fa-volume-xmark';
+            else if (parsedVal < 0.5) iconVolume.className = 'fa-solid fa-volume-low';
             else iconVolume.className = 'fa-solid fa-volume-high';
         }
 
