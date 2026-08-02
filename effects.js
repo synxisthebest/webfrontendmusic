@@ -128,7 +128,7 @@ function initParticleBackground() {
     const icons = ['fa-music', 'fa-note-sticky', 'fa-compact-disc', 'fa-heart', 'fa-headphones', 'fa-record-vinyl', 'fa-bolt'];
     const colors = ['text-pink-400/40', 'text-purple-400/40', 'text-cyan-400/40', 'text-indigo-400/40', 'text-white/30'];
 
-    for (let i = 0; i < 28; i++) {
+    for (let i = 0; i < 12; i++) {
         const particle = document.createElement('i');
         const randomIcon = icons[Math.floor(Math.random() * icons.length)];
         const randomColor = colors[Math.floor(Math.random() * colors.length)];
@@ -136,15 +136,14 @@ function initParticleBackground() {
         
         const startLeft = Math.random() * 100;
         const startTop = Math.random() * 100;
-        const duration = 10 + Math.random() * 20;
-        const delay = Math.random() * 8;
-        const scale = 0.5 + Math.random() * 0.9;
+        const duration = 12 + Math.random() * 18;
+        const delay = Math.random() * 6;
+        const scale = 0.5 + Math.random() * 0.7;
 
         particle.style.left = `${startLeft}%`;
         particle.style.top = `${startTop}%`;
-        particle.style.animation = `floatParticle ${duration}s cubic-bezier(0.4, 0, 0.2, 1) ${delay}s infinite alternate`;
+        particle.style.animation = `floatParticle ${duration}s ease-in-out ${delay}s infinite alternate`;
         particle.style.transform = `scale(${scale})`;
-        particle.style.filter = 'drop-shadow(0 0 6px currentColor)';
 
         particleContainer.appendChild(particle);
     }
@@ -154,16 +153,16 @@ function initParticleBackground() {
     style.textContent = `
         @keyframes floatParticle {
             0% {
-                transform: translateY(0px) rotate(0deg) scale(0.7);
-                opacity: 0.15;
+                transform: translateY(0px) rotate(0deg);
+                opacity: 0.2;
             }
             50% {
-                transform: translateY(-50px) rotate(180deg) scale(1.2);
-                opacity: 0.7;
+                transform: translateY(-40px) rotate(180deg);
+                opacity: 0.6;
             }
             100% {
-                transform: translateY(-100px) rotate(360deg) scale(0.7);
-                opacity: 0.15;
+                transform: translateY(-80px) rotate(360deg);
+                opacity: 0.2;
             }
         }
     `;

@@ -373,7 +373,7 @@ canvas#visualizer {
 }
 .vinyl-disc.is-playing::before {
     opacity: 0.95;
-    filter: blur(20px);
+    filter: blur(16px);
     animation: vinylAuraPulse 3s ease-in-out infinite alternate;
 }
 .vinyl-disc #album-cover-img {
@@ -390,12 +390,10 @@ canvas#visualizer {
 }
 @keyframes vinylAuraPulse {
     0% {
-        filter: blur(14px);
-        opacity: 0.7;
+        opacity: 0.5;
     }
     100% {
-        filter: blur(26px);
-        opacity: 1;
+        opacity: 0.95;
     }
 }
 
@@ -503,18 +501,11 @@ canvas#visualizer {
     transform: translateY(0px) scale(0.97);
 }
 
-/* 9. Enhanced Lyrics Active Line Pulse & Gradient */
 .lyric-line.active {
     opacity: 1 !important;
-    transform: scale(1.08) translateY(-1px) !important;
+    transform: scale(1.05) translateY(-1px) !important;
     background: linear-gradient(135deg, #38bdf8 0%, #a855f7 50%, #ec4899 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     font-weight: 800;
-    filter: drop-shadow(0 0 14px rgba(56, 189, 248, 0.7));
-    animation: lyricGlowPulse 2.5s ease-in-out infinite alternate;
-}
-@keyframes lyricGlowPulse {
-    0% { filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.6)); }
-    100% { filter: drop-shadow(0 0 20px rgba(236, 72, 153, 0.9)); }
 }
